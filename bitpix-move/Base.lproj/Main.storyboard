@@ -25,11 +25,42 @@
                                     <constraint firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="height" multiplier="1:1" id="hiz-Ym-YFt"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcF-c1-SQV">
+                                <rect key="frame" x="10" y="330" width="130" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="6BC-FE-3cF"/>
+                                    <constraint firstAttribute="width" constant="130" id="bG5-Hm-bht"/>
+                                </constraints>
+                                <state key="normal" title=" Previous"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YeM-IY-bts">
+                                <rect key="frame" x="180" y="330" width="130" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="oyM-kP-WJC"/>
+                                    <constraint firstAttribute="width" constant="130" id="t4E-4k-XkD"/>
+                                </constraints>
+                                <state key="normal" title="Next"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HXh-49-EQY">
+                                <rect key="frame" x="140" y="330" width="40" height="40"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="HXh-49-EQY" secondAttribute="height" multiplier="1:1" id="WzN-Gq-amw"/>
+                                    <constraint firstAttribute="width" constant="40" id="ec7-bi-B6S"/>
+                                </constraints>
+                                <state key="normal" title="+"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="YeM-IY-bts" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" id="6pP-AE-S8A"/>
+                            <constraint firstItem="AcF-c1-SQV" firstAttribute="leading" secondItem="bnd-cn-txH" secondAttribute="leading" id="6zd-a9-kUe"/>
+                            <constraint firstItem="HXh-49-EQY" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" id="D9W-jS-dbw"/>
+                            <constraint firstItem="AcF-c1-SQV" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" id="DnU-7I-wF4"/>
+                            <constraint firstItem="HXh-49-EQY" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="hzg-M9-87Y"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="pDg-t9-hiz"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wUw-Or-OO2"/>
+                            <constraint firstItem="YeM-IY-bts" firstAttribute="trailing" secondItem="bnd-cn-txH" secondAttribute="trailing" id="xbd-1s-rbG"/>
                         </constraints>
                     </view>
                     <connections>

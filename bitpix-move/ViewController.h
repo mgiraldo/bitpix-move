@@ -10,6 +10,7 @@
 
 @interface ViewController : UIViewController
 
+@property (nonatomic) NSMutableArray *framesArray;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
 
 @end

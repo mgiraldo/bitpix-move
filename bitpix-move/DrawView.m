@@ -10,15 +10,18 @@
 
 @implementation DrawView
 
-float _lineWidth = 1.0f;
+static float _lineWidth = 1.0f;
+static float _opacity = 0.35f;
+static UIColor *_strokeColor;
 
 - (id)initWithFrame:(CGRect)rect {
 	self = [super initWithFrame:rect];
 	if (self) {
-		// Initialization code
+		_strokeColor = [UIColor greenColor];
+		self.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
 		self.lineList = [[NSMutableArray alloc] initWithCapacity:1];
 		self.drawingImageView = [[UIImageView alloc] initWithFrame:self.frame];
-		self.drawingImageView.backgroundColor = [UIColor redColor];
+		self.drawingImageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:_opacity];
 		[self addSubview:self.drawingImageView];
 	}
 	return self;
@@ -35,7 +38,6 @@ float _lineWidth = 1.0f;
 	int i, j;
 	NSValue *from;
 	NSValue *to;
-	self.drawingImageView.image = [UIImage imageNamed:@""];
 	UIGraphicsBeginImageContext(self.drawingImageView.frame.size);
 	[self.drawingImageView.image drawInRect:CGRectMake(self.drawingImageView.bounds.origin.x, self.drawingImageView.bounds.origin.y, self.drawingImageView.frame.size.width, self.drawingImageView.frame.size.height)];
 	for (i=0; i<l; i++) {
@@ -97,7 +99,7 @@ float _lineWidth = 1.0f;
 	CGPoint from = [fromValue CGPointValue];
 	CGPoint to = [toValue CGPointValue];
 
-	[[UIColor greenColor] set];
+	[_strokeColor set];
 	CGContextSetLineWidth(context, _lineWidth);
 	CGContextSetLineCap(context, kCGLineCapRound);
 	CGContextMoveToPoint(context, from.x, from.y);

@@ -15,11 +15,20 @@
 
 @implementation ViewController
 
+static UIColor *_sketchColor;
+
+- (void)addFrame {
+	DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
+	[self.framesArray addObject:drawView];
+	[self.sketchView addSubview:drawView];
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-	DrawView * drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
-	[self.sketchView addSubview:drawView];
+	_sketchColor = [UIColor redColor];
+	self.sketchView.backgroundColor = _sketchColor;
+	self.framesArray = [[NSMutableArray alloc] initWithCapacity:1];
+	[self addFrame];
 }
 
 - (void)didReceiveMemoryWarning {
