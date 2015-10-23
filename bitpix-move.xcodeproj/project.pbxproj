@@ -306,6 +306,7 @@
 				CC4D07AE1BD85D5400A52613 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
