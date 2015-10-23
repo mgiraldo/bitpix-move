@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "DrawView.h"
 
 @interface ViewController ()
 
@@ -17,6 +18,8 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+	DrawView * drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
+	[self.sketchView addSubview:drawView];
 }
 
 - (void)didReceiveMemoryWarning {

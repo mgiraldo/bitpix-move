@@ -13,6 +13,7 @@
 		CC4D07A31BD85D5400A52613 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A11BD85D5400A52613 /* Main.storyboard */; };
 		CC4D07A51BD85D5400A52613 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A41BD85D5400A52613 /* Assets.xcassets */; };
 		CC4D07A81BD85D5400A52613 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */; };
+		CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D07B01BD85F3400A52613 /* DrawView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		CC4D07A41BD85D5400A52613 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC4D07A71BD85D5400A52613 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC4D07A91BD85D5400A52613 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC4D07AF1BD85F3400A52613 /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
+		CC4D07B01BD85F3400A52613 /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */,
 				CC4D07A91BD85D5400A52613 /* Info.plist */,
 				CC4D07981BD85D5400A52613 /* Supporting Files */,
+				CC4D07AF1BD85F3400A52613 /* DrawView.h */,
+				CC4D07B01BD85F3400A52613 /* DrawView.m */,
 			);
 			path = "bitpix-move";
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 			files = (
 				CC4D07A01BD85D5400A52613 /* ViewController.m in Sources */,
 				CC4D079D1BD85D5400A52613 /* AppDelegate.m in Sources */,
+				CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */,
 				CC4D079A1BD85D5400A52613 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
