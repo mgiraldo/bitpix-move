@@ -11,7 +11,7 @@
 @implementation DrawView
 
 static float _lineWidth = 1.0f;
-static float _opacity = 0.35f;
+static float _opacity = 0.55f;
 static UIColor *_strokeColor;
 
 - (id)initWithFrame:(CGRect)rect {

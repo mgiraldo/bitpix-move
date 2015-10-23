@@ -15,8 +15,6 @@
 
 @implementation ViewController
 
-static UIColor *_sketchColor;
-
 - (void)addFrame {
 	DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
 	[self.framesArray addObject:drawView];
@@ -25,8 +23,7 @@ static UIColor *_sketchColor;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	_sketchColor = [UIColor redColor];
-	self.sketchView.backgroundColor = _sketchColor;
+	self.sketchView.backgroundColor = [UIColor whiteColor];
 	self.framesArray = [[NSMutableArray alloc] initWithCapacity:1];
 	[self addFrame];
 }
@@ -36,4 +33,13 @@ static UIColor *_sketchColor;
 	// Dispose of any resources that can be recreated.
 }
 
+- (IBAction)onNextTapped:(id)sender {
+}
+
+- (IBAction)onAddTapped:(id)sender {
+	[self addFrame];
+}
+
+- (IBAction)onPreviousTapped:(id)sender {
+}
 @end
