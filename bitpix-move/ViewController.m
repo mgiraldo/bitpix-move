@@ -97,7 +97,7 @@ static BOOL _isPreviewing = NO;
 
 - (void)nextFrame {
     _currentFrame++;
-    if (_currentFrame > self.framesArray.count) _currentFrame = self.framesArray.count - 1;
+    if (_currentFrame > self.framesArray.count) _currentFrame = (int)self.framesArray.count - 1;
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
     [self updateUI];
@@ -136,7 +136,7 @@ static BOOL _isPreviewing = NO;
         self.deleteButton.enabled = NO;
     }
     
-    self.frameLabel.text = [NSString stringWithFormat:@"%i/%i", _currentFrame+1, self.framesArray.count];
+    self.frameLabel.text = [NSString stringWithFormat:@"%i/%lu", _currentFrame+1, (unsigned long)self.framesArray.count];
 }
 
 - (void)disableUI {

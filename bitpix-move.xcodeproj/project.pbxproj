@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC139DE41BDC34F800BF0A5B /* bitpix-move-76.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */; };
+		CC139DE51BDC34F800BF0A5B /* bitpix-move-120.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */; };
+		CC139DE61BDC34F800BF0A5B /* bitpix-move-152.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */; };
+		CC139DE81BDC353100BF0A5B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE71BDC353100BF0A5B /* Images.xcassets */; };
 		CC4D079A1BD85D5400A52613 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D07991BD85D5400A52613 /* main.m */; };
 		CC4D079D1BD85D5400A52613 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D079C1BD85D5400A52613 /* AppDelegate.m */; };
 		CC4D07A01BD85D5400A52613 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D079F1BD85D5400A52613 /* ViewController.m */; };
@@ -17,6 +21,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-76.png"; sourceTree = "<group>"; };
+		CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-120.png"; sourceTree = "<group>"; };
+		CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-152.png"; sourceTree = "<group>"; };
+		CC139DE71BDC353100BF0A5B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CC4D07951BD85D5400A52613 /* bitpix-move.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bitpix-move.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC4D07991BD85D5400A52613 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC4D079B1BD85D5400A52613 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -61,6 +69,9 @@
 		CC4D07971BD85D5400A52613 /* bitpix-move */ = {
 			isa = PBXGroup;
 			children = (
+				CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */,
+				CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */,
+				CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */,
 				CC4D079B1BD85D5400A52613 /* AppDelegate.h */,
 				CC4D079C1BD85D5400A52613 /* AppDelegate.m */,
 				CC4D079E1BD85D5400A52613 /* ViewController.h */,
@@ -71,6 +82,7 @@
 				CC4D07A41BD85D5400A52613 /* Assets.xcassets */,
 				CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */,
 				CC4D07A91BD85D5400A52613 /* Info.plist */,
+				CC139DE71BDC353100BF0A5B /* Images.xcassets */,
 				CC4D07981BD85D5400A52613 /* Supporting Files */,
 			);
 			path = "bitpix-move";
@@ -142,9 +154,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC139DE51BDC34F800BF0A5B /* bitpix-move-120.png in Resources */,
+				CC139DE61BDC34F800BF0A5B /* bitpix-move-152.png in Resources */,
+				CC139DE81BDC353100BF0A5B /* Images.xcassets in Resources */,
 				CC4D07A81BD85D5400A52613 /* LaunchScreen.storyboard in Resources */,
 				CC4D07A51BD85D5400A52613 /* Assets.xcassets in Resources */,
 				CC4D07A31BD85D5400A52613 /* Main.storyboard in Resources */,
+				CC139DE41BDC34F800BF0A5B /* bitpix-move-76.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
