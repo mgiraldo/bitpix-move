@@ -10,14 +10,25 @@
 
 @interface ViewController : UIViewController
 
+@property (nonatomic) NSTimer *previewTimer;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
+@property (weak, nonatomic) IBOutlet UIView *previewView;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousButton;
+@property (weak, nonatomic) IBOutlet UILabel *frameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *exportButton;
+@property (weak, nonatomic) IBOutlet UIButton *previewButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;
 - (IBAction)onPreviousTapped:(id)sender;
+- (IBAction)onPreviewTapped:(id)sender;
+- (IBAction)onExportTapped:(id)sender;
+- (IBAction)onDeleteTapped:(id)sender;
+- (IBAction)onStopPreviewTapped:(id)sender;
 @end
 

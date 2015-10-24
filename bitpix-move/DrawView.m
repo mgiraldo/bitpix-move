@@ -32,7 +32,7 @@ static UIColor *_strokeColor;
 }
 
 - (void)drawLines {
-	NSLog(@"draw");
+//	NSLog(@"draw");
 	NSUInteger l = self.lineList.count;
 	NSArray *lines;
 	int i, j;
@@ -73,25 +73,25 @@ static UIColor *_strokeColor;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"began");
+//	NSLog(@"began");
 	[self resetLastLine];
 	[self addTouch:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"move");
+//	NSLog(@"move");
 	[self addTouch:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"end");
+//	NSLog(@"end");
 	[self addTouch:touches withEvent:event];
 	[self.lineList addObject:[NSArray arrayWithArray:self.lastLine]];
 	[self resetLastLine];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"cancel");
+//	NSLog(@"cancel");
 	[self touchesEnded:touches withEvent:event];
 }
 
