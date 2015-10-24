@@ -10,14 +10,14 @@
 
 @implementation DrawView
 
-static float _lineWidth = 1.0f;
-static float _opacity = 0.55f;
+static float _lineWidth = 2.0f;
+static float _opacity = 0.8f;
 static UIColor *_strokeColor;
 
 - (id)initWithFrame:(CGRect)rect {
 	self = [super initWithFrame:rect];
 	if (self) {
-		_strokeColor = [UIColor greenColor];
+		_strokeColor = [UIColor blackColor];
 		self.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
 		self.lineList = [[NSMutableArray alloc] initWithCapacity:1];
 		self.drawingImageView = [[UIImageView alloc] initWithFrame:self.frame];
@@ -33,7 +33,7 @@ static UIColor *_strokeColor;
 
 - (void)drawLines {
 	NSLog(@"draw");
-	int l = self.lineList.count;
+	NSUInteger l = self.lineList.count;
 	NSArray *lines;
 	int i, j;
 	NSValue *from;
