@@ -18,11 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ucA-SB-Xb5">
-                                <rect key="frame" x="10" y="90" width="300" height="300"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bnd-cn-txH">
                                 <rect key="frame" x="10" y="90" width="300" height="300"/>
                                 <animations/>
@@ -31,6 +26,11 @@
                                     <constraint firstAttribute="width" constant="300" id="Fgs-kc-JWu"/>
                                     <constraint firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="height" multiplier="1:1" id="hiz-Ym-YFt"/>
                                 </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ucA-SB-Xb5" customClass="UIImageView">
+                                <rect key="frame" x="10" y="90" width="300" height="300"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcF-c1-SQV">
                                 <rect key="frame" x="10" y="390" width="130" height="40"/>

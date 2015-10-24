@@ -10,10 +10,9 @@
 
 @interface ViewController : UIViewController
 
-@property (nonatomic) NSTimer *previewTimer;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
-@property (weak, nonatomic) IBOutlet UIView *previewView;
+@property (weak, nonatomic) IBOutlet UIImageView *previewView;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousButton;

@@ -15,15 +15,19 @@
 
 @implementation ViewController
 
+static const float _borderWidth = 5.0f;
 static int _currentFrame = -1;
 static const int _maxFrames = 100;
-static const int _fps = 2;
+static float _fps = 3.0f;
 static BOOL _isPreviewing = NO;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
     self.stopPreviewButton.hidden = YES;
+    self.previewView.hidden = YES;
 	self.sketchView.backgroundColor = [UIColor whiteColor];
+    self.sketchView.layer.borderColor = [UIColor blackColor].CGColor;
+    self.sketchView.layer.borderWidth = _borderWidth;
 	self.framesArray = [[NSMutableArray alloc] initWithCapacity:1];
 	[self addFrame];
 }
@@ -34,36 +38,34 @@ static BOOL _isPreviewing = NO;
 }
 
 - (void)showPreview {
-    _currentFrame = 0;
     _isPreviewing = YES;
     [self disableUI];
     self.previewButton.hidden = YES;
     self.stopPreviewButton.hidden = NO;
-    self.previewTimer = [NSTimer scheduledTimerWithTimeInterval:1/_fps target:self selector:@selector(playPreview:) userInfo:nil repeats:YES];
+    self.previewView.hidden = NO;
+
+    NSMutableArray *imageArray = [@[] mutableCopy];
+    for (int i = 0; i < self.framesArray.count; i++) {
+        DrawView *drawView = [self.framesArray objectAtIndex:i];
+        UIImage *frameImage = [UIImage imageWithCGImage:drawView.drawingImageView.image.CGImage];
+        [imageArray addObject:frameImage];
+    }
+    
+    self.previewView.animationImages = imageArray;
+    self.previewView.animationRepeatCount = 0;
+    self.previewView.animationDuration = 1.0f/_fps;
+    
+    self.previewView.image = imageArray[0];
+    [self.previewView startAnimating];
 }
 
 - (void)stopPreview {
-    [self.previewTimer invalidate];
-    self.previewTimer = nil;
+    self.previewView.image = nil;
     self.stopPreviewButton.hidden = YES;
     self.previewButton.hidden = NO;
+    self.previewView.hidden = YES;
     _isPreviewing = NO;
     [self updateUI];
-}
-
-- (void)playPreview:(NSTimer *)timer {
-    if (_currentFrame == 0) {
-        [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    }
-
-    DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
-    [self.sketchView addSubview:drawView];
-
-    _currentFrame++;
-    
-    if (_currentFrame >= self.framesArray.count) {
-        _currentFrame = 0;
-    }
 }
 
 - (void)addFrame {
