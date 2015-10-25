@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "DrawView.h"
 
 @interface ViewController ()
 
@@ -18,13 +17,14 @@
 static const float _borderWidth = 5.0f;
 static int _currentFrame = -1;
 static const int _maxFrames = 100;
-static float _fps = 3.0f;
+static float _fps = 2.0f;
 static BOOL _isPreviewing = NO;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
+    self.undoButton.hidden = YES;
 	self.sketchView.backgroundColor = [UIColor whiteColor];
     self.sketchView.layer.borderColor = [UIColor blackColor].CGColor;
     self.sketchView.layer.borderWidth = _borderWidth;
@@ -71,9 +71,22 @@ static BOOL _isPreviewing = NO;
 - (void)addFrame {
     _currentFrame++;
     DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
+    drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
     [self updateUI];
+}
+
+- (void)drawViewChanged:(DrawView *)drawView {
+    [self updateUndoButtonForDrawView:drawView];
+}
+
+- (void)updateUndoButtonForDrawView:(DrawView *)drawView {
+    if ([drawView hasLines]) {
+        self.undoButton.hidden = NO;
+    } else {
+        self.undoButton.hidden = YES;
+    }
 }
 
 - (void)deleteCurrentFrame {
@@ -112,6 +125,9 @@ static BOOL _isPreviewing = NO;
 }
 
 - (void)updateUI {
+    DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
+    [self updateUndoButtonForDrawView:drawView];
+
     if (_currentFrame <= 0) {
         self.previousButton.enabled = NO;
     } else {
@@ -135,14 +151,21 @@ static BOOL _isPreviewing = NO;
     } else {
         self.deleteButton.enabled = NO;
     }
-    
-    self.frameLabel.text = [NSString stringWithFormat:@"%i/%lu", _currentFrame+1, (unsigned long)self.framesArray.count];
+
+    self.frameLabel.text = [NSString stringWithFormat:@"Frame: %i/%i", _currentFrame+1, (int)self.framesArray.count];
+}
+
+- (void)undo {
+    DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
+    [drawView undo];
+    [self updateUI];
 }
 
 - (void)disableUI {
     self.previousButton.enabled = NO;
     self.nextButton.enabled = NO;
     self.addButton.enabled = NO;
+    self.undoButton.hidden = YES;
 }
 
 - (IBAction)onNextTapped:(id)sender {
@@ -163,6 +186,10 @@ static BOOL _isPreviewing = NO;
 
 - (IBAction)onStopPreviewTapped:(id)sender {
     [self stopPreview];
+}
+
+- (IBAction)onUndoTapped:(id)sender {
+    [self undo];
 }
 
 - (IBAction)onPreviewTapped:(id)sender {

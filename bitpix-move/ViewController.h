@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DrawView.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <DrawViewDelegate>
 
 @property (nonatomic) NSMutableArray *framesArray;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
@@ -21,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *previewButton;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
+@property (weak, nonatomic) IBOutlet UIButton *undoButton;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;
@@ -29,5 +31,6 @@
 - (IBAction)onExportTapped:(id)sender;
 - (IBAction)onDeleteTapped:(id)sender;
 - (IBAction)onStopPreviewTapped:(id)sender;
+- (IBAction)onUndoTapped:(id)sender;
 @end
 

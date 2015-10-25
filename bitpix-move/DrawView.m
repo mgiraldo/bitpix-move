@@ -38,6 +38,7 @@ static UIColor *_strokeColor;
 	int i, j;
 	NSValue *from;
 	NSValue *to;
+    self.drawingImageView.image = [UIImage imageNamed:@""];
 	UIGraphicsBeginImageContext(self.drawingImageView.frame.size);
 	[self.drawingImageView.image drawInRect:CGRectMake(self.drawingImageView.bounds.origin.x, self.drawingImageView.bounds.origin.y, self.drawingImageView.frame.size.width, self.drawingImageView.frame.size.height)];
 	for (i=0; i<l; i++) {
@@ -88,6 +89,7 @@ static UIColor *_strokeColor;
 	[self addTouch:touches withEvent:event];
 	[self.lineList addObject:[NSArray arrayWithArray:self.lastLine]];
 	[self resetLastLine];
+    [self.delegate drawViewChanged:self];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -106,6 +108,17 @@ static UIColor *_strokeColor;
 	CGContextAddLineToPoint(context, to.x , to.y);
 	
 	CGContextStrokePath(context);
+}
+
+- (void)undo {
+    if (self.lineList.count > 0) {
+        [self.lineList removeObject:self.lineList.lastObject];
+    }
+    [self drawLines];
+}
+
+- (BOOL)hasLines {
+    return self.lineList.count > 0;
 }
 
 //
