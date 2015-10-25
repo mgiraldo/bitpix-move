@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "DrawView.h"
+#import "DrawViewAnimator.h"
+#import "GridViewController.h"
+#import "UserData.h"
 
-@interface ViewController : UIViewController <DrawViewDelegate>
+@interface ViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate>
 
+@property (nonatomic) UserData *appData;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
-@property (weak, nonatomic) IBOutlet UIImageView *previewView;
+@property (weak, nonatomic) IBOutlet DrawViewAnimator *previewView;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousButton;
@@ -32,5 +36,7 @@
 - (IBAction)onDeleteTapped:(id)sender;
 - (IBAction)onStopPreviewTapped:(id)sender;
 - (IBAction)onUndoTapped:(id)sender;
+- (IBAction)onMyAnimationsTapped:(id)sender;
+
 @end
 

@@ -18,6 +18,10 @@
 		CC4D07A51BD85D5400A52613 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A41BD85D5400A52613 /* Assets.xcassets */; };
 		CC4D07A81BD85D5400A52613 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */; };
 		CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D07B01BD85F3400A52613 /* DrawView.m */; };
+		CCF3F9761BDC59F80019059B /* DrawViewAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */; };
+		CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F9781BDC5E6E0019059B /* GridViewController.m */; };
+		CCF3F97C1BDC60850019059B /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F97B1BDC60850019059B /* UserData.m */; };
+		CCF3F9811BDC61EC0019059B /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCF3F9801BDC61EC0019059B /* Data.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +41,13 @@
 		CC4D07A91BD85D5400A52613 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC4D07AF1BD85F3400A52613 /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
 		CC4D07B01BD85F3400A52613 /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
+		CCF3F9741BDC59F80019059B /* DrawViewAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawViewAnimator.h; sourceTree = "<group>"; };
+		CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawViewAnimator.m; sourceTree = "<group>"; };
+		CCF3F9771BDC5E6E0019059B /* GridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewController.h; sourceTree = "<group>"; };
+		CCF3F9781BDC5E6E0019059B /* GridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridViewController.m; sourceTree = "<group>"; };
+		CCF3F97A1BDC60850019059B /* UserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserData.h; sourceTree = "<group>"; };
+		CCF3F97B1BDC60850019059B /* UserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
+		CCF3F9801BDC61EC0019059B /* Data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Data.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,20 +80,19 @@
 		CC4D07971BD85D5400A52613 /* bitpix-move */ = {
 			isa = PBXGroup;
 			children = (
-				CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */,
-				CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */,
-				CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */,
 				CC4D079B1BD85D5400A52613 /* AppDelegate.h */,
 				CC4D079C1BD85D5400A52613 /* AppDelegate.m */,
 				CC4D079E1BD85D5400A52613 /* ViewController.h */,
 				CC4D079F1BD85D5400A52613 /* ViewController.m */,
+				CCF3F9771BDC5E6E0019059B /* GridViewController.h */,
+				CCF3F9781BDC5E6E0019059B /* GridViewController.m */,
+				CCF3F97A1BDC60850019059B /* UserData.h */,
+				CCF3F97B1BDC60850019059B /* UserData.m */,
 				CC4D07AF1BD85F3400A52613 /* DrawView.h */,
 				CC4D07B01BD85F3400A52613 /* DrawView.m */,
-				CC4D07A11BD85D5400A52613 /* Main.storyboard */,
-				CC4D07A41BD85D5400A52613 /* Assets.xcassets */,
-				CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */,
-				CC4D07A91BD85D5400A52613 /* Info.plist */,
-				CC139DE71BDC353100BF0A5B /* Images.xcassets */,
+				CCF3F9741BDC59F80019059B /* DrawViewAnimator.h */,
+				CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */,
+				CCF3F97D1BDC61880019059B /* Visual assets */,
 				CC4D07981BD85D5400A52613 /* Supporting Files */,
 			);
 			path = "bitpix-move";
@@ -91,9 +101,25 @@
 		CC4D07981BD85D5400A52613 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CC4D07A91BD85D5400A52613 /* Info.plist */,
 				CC4D07991BD85D5400A52613 /* main.m */,
+				CCF3F9801BDC61EC0019059B /* Data.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CCF3F97D1BDC61880019059B /* Visual assets */ = {
+			isa = PBXGroup;
+			children = (
+				CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */,
+				CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */,
+				CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */,
+				CC4D07A11BD85D5400A52613 /* Main.storyboard */,
+				CC4D07A41BD85D5400A52613 /* Assets.xcassets */,
+				CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */,
+				CC139DE71BDC353100BF0A5B /* Images.xcassets */,
+			);
+			name = "Visual assets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,6 +186,7 @@
 				CC4D07A81BD85D5400A52613 /* LaunchScreen.storyboard in Resources */,
 				CC4D07A51BD85D5400A52613 /* Assets.xcassets in Resources */,
 				CC4D07A31BD85D5400A52613 /* Main.storyboard in Resources */,
+				CCF3F9811BDC61EC0019059B /* Data.plist in Resources */,
 				CC139DE41BDC34F800BF0A5B /* bitpix-move-76.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,8 +199,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC4D07A01BD85D5400A52613 /* ViewController.m in Sources */,
+				CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */,
+				CCF3F97C1BDC60850019059B /* UserData.m in Sources */,
 				CC4D079D1BD85D5400A52613 /* AppDelegate.m in Sources */,
 				CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */,
+				CCF3F9761BDC59F80019059B /* DrawViewAnimator.m in Sources */,
 				CC4D079A1BD85D5400A52613 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
