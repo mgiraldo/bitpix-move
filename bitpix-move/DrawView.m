@@ -36,25 +36,30 @@ static UIColor *_strokeColor;
 	NSUInteger l = self.lineList.count;
 	NSArray *lines;
 	int i, j;
-	NSValue *from;
-	NSValue *to;
+	NSArray *fromArray;
+    NSArray *toArray;
+    
+    // clear the canvas
     self.drawingImageView.image = [UIImage imageNamed:@""];
+    
 	UIGraphicsBeginImageContext(self.drawingImageView.frame.size);
-	[self.drawingImageView.image drawInRect:CGRectMake(self.drawingImageView.bounds.origin.x, self.drawingImageView.bounds.origin.y, self.drawingImageView.frame.size.width, self.drawingImageView.frame.size.height)];
-	for (i=0; i<l; i++) {
+	
+    [self.drawingImageView.image drawInRect:CGRectMake(self.drawingImageView.bounds.origin.x, self.drawingImageView.bounds.origin.y, self.drawingImageView.frame.size.width, self.drawingImageView.frame.size.height)];
+	
+    for (i=0; i<l; i++) {
 		lines = [NSArray arrayWithArray:[self.lineList objectAtIndex:i]];
 		for (j=0; j<lines.count-1; j++) {
-			from = [lines objectAtIndex:j];
-			to = [lines objectAtIndex:j+1];
-			[self drawLineInContext:UIGraphicsGetCurrentContext() from:from endPoint:to];
+            fromArray = [lines objectAtIndex:j];
+            toArray = [lines objectAtIndex:j+1];
+			[self drawLineInContext:UIGraphicsGetCurrentContext() from:fromArray endPoint:toArray];
 		}
 	}
 	// draw the current line
 	if (self.lastLine.count > 0) {
 		for (j=0; j<self.lastLine.count-1; j++) {
-			from = [self.lastLine objectAtIndex:j];
-			to = [self.lastLine objectAtIndex:j+1];
-			[self drawLineInContext:UIGraphicsGetCurrentContext() from:from endPoint:to];
+            fromArray = [self.lastLine objectAtIndex:j];
+            toArray = [self.lastLine objectAtIndex:j+1];
+			[self drawLineInContext:UIGraphicsGetCurrentContext() from:fromArray endPoint:toArray];
 		}
 	}
 	self.drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext();
@@ -68,8 +73,9 @@ static UIColor *_strokeColor;
 - (void)addTouch:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
 	CGPoint p = [touch locationInView:self];
-	NSValue* point = [NSValue valueWithCGPoint:p];
-	[self.lastLine addObject:point];
+	NSNumber *x = [NSNumber numberWithFloat:p.x];
+    NSNumber *y = [NSNumber numberWithFloat:p.y];
+	[self.lastLine addObject:@[x,y]];
 	[self setNeedsDisplay];
 }
 
@@ -97,11 +103,11 @@ static UIColor *_strokeColor;
 	[self touchesEnded:touches withEvent:event];
 }
 
-- (void)drawLineInContext:(CGContextRef)context from:(NSValue*)fromValue endPoint:(NSValue*)toValue {
-	CGPoint from = [fromValue CGPointValue];
-	CGPoint to = [toValue CGPointValue];
+- (void)drawLineInContext:(CGContextRef)context from:(NSArray *)fromArray endPoint:(NSArray *)toArray {
+    CGPoint from = CGPointMake([[fromArray objectAtIndex:0] floatValue], [[fromArray objectAtIndex:1] floatValue]);
+    CGPoint to = CGPointMake([[toArray objectAtIndex:0] floatValue], [[toArray objectAtIndex:1] floatValue]);
 
-	[_strokeColor set];
+    [_strokeColor set];
 	CGContextSetLineWidth(context, _lineWidth);
 	CGContextSetLineCap(context, kCGLineCapRound);
 	CGContextMoveToPoint(context, from.x, from.y);

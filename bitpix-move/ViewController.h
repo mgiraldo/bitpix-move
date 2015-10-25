@@ -16,6 +16,7 @@
 
 @property (nonatomic) UserData *appData;
 @property (nonatomic) NSMutableArray *framesArray;
+@property (nonatomic) NSString  *uuid;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
 @property (weak, nonatomic) IBOutlet DrawViewAnimator *previewView;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;

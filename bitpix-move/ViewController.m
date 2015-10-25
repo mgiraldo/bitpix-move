@@ -22,9 +22,10 @@ static BOOL _isPreviewing = NO;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    self.uuid = [[NSUUID UUID] UUIDString];
 
     self.appData = [[UserData alloc] initWithDefaultData];
-    // TODO: create new entry in disk for this animation
     
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
@@ -62,14 +63,22 @@ static BOOL _isPreviewing = NO;
 
 - (void)drawViewChanged:(DrawView *)drawView {
     [self updateUndoButtonForDrawView:drawView];
-    // TODO: update disk version of animation
-/* from bitpix
-	NSDate *today = [NSDate date];
-	NSDictionary *imageInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:today, path, filter, nil] forKeys:[NSArray arrayWithObjects:@"date", @"path", @"filter", nil]];
-	[self.appData.userPhotos addObject:imageInfo];
- 
-	[self.appData save];
-*/
+    [self saveToDisk];
+}
+
+- (void)saveToDisk {
+    // update disk version of animation
+    NSDate *today = [NSDate date];
+
+    NSMutableArray *frames = [@[] mutableCopy];
+    for (int i = 0; i < self.framesArray.count; i++) {
+        DrawView *drawView = [self.framesArray objectAtIndex:i];
+        [frames addObject:drawView.lineList];
+    }
+
+    NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:today, frames, nil] forKeys:[NSArray arrayWithObjects:@"date", @"frames", nil]];
+    [self.appData.userAnimations setObject:animationInfo forKey:self.uuid];
+    [self.appData save];
 }
 
 - (void)addFrame {

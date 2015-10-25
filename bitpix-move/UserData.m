@@ -49,42 +49,14 @@
         NSDictionary *defaultDictionary = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Data" ofType:@"plist"]];
         self.data = [[NSMutableDictionary alloc] initWithDictionary:defaultDictionary];
     }
-    self.userAnimations = [[NSMutableArray alloc] initWithArray:[self.data objectForKey:@"userAnimations"]];
+    self.userAnimations = [[NSMutableDictionary alloc] initWithDictionary:[self.data objectForKey:@"userAnimations"]];
+    NSLog(@"size: %lu", (unsigned long)[self.userAnimations allKeys].count);
 }
 
 - (void)resetDataFile {
     NSDictionary *defaultDictionary = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Data" ofType:@"plist"]];
     self.data = [[NSMutableDictionary alloc] initWithDictionary:defaultDictionary];
-    self.userAnimations = [[NSMutableArray alloc] initWithArray:[self.data objectForKey:@"userAnimations"]];
-}
-
-- (void)cleanDataFile {
-    NSDictionary *userDictionary = [[NSDictionary alloc] initWithContentsOfFile:[UserData dataFilePath:@"Data.plist"]];
-    self.data = [[NSMutableDictionary alloc] initWithDictionary:userDictionary];
-    self.userAnimations = [[NSMutableArray alloc] initWithArray:[self.data objectForKey:@"userAnimations"]];
-    int i;
-    int l = (int)[self.userAnimations count];
-    int changed = 0;
-    for (i=0;i<l;++i) {
-        NSMutableDictionary *d = [[NSMutableDictionary alloc] initWithDictionary:[self.userAnimations objectAtIndex:i]];
-        NSString *path = [d valueForKey:@"path"];
-        NSRange lastSlash = [path rangeOfString:@"/" options:NSBackwardsSearch];
-        NSString *newPath;
-        if (lastSlash.location != NSNotFound) {
-            newPath = [path substringFromIndex:lastSlash.location+1];
-            [d setObject:newPath forKey:@"path"];
-            [self.userAnimations replaceObjectAtIndex:i withObject:d];
-            changed = 1;
-        }
-        path = [d valueForKey:@"path"];
-        NSRange dotPNG = [path rangeOfString:@".png"];
-        if (dotPNG.location != NSNotFound) {
-            newPath = [path substringToIndex:dotPNG.location];
-            [d setObject:newPath forKey:@"path"];
-            [self.userAnimations replaceObjectAtIndex:i withObject:d];
-            changed = 1;
-        }
-    }
+    self.userAnimations = [[NSMutableDictionary alloc] initWithDictionary:[self.data objectForKey:@"userAnimations"]];
 }
 
 - (void)save {
