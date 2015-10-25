@@ -63,7 +63,7 @@
     self.data = [[NSMutableDictionary alloc] initWithDictionary:userDictionary];
     self.userAnimations = [[NSMutableArray alloc] initWithArray:[self.data objectForKey:@"userAnimations"]];
     int i;
-    int l = [self.userAnimations count];
+    int l = (int)[self.userAnimations count];
     int changed = 0;
     for (i=0;i<l;++i) {
         NSMutableDictionary *d = [[NSMutableDictionary alloc] initWithDictionary:[self.userAnimations objectAtIndex:i]];

@@ -29,7 +29,7 @@
 		CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-120.png"; sourceTree = "<group>"; };
 		CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-152.png"; sourceTree = "<group>"; };
 		CC139DE71BDC353100BF0A5B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CC4D07951BD85D5400A52613 /* bitpix-move.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bitpix-move.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC4D07951BD85D5400A52613 /* Bitpix Move.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bitpix Move.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC4D07991BD85D5400A52613 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC4D079B1BD85D5400A52613 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CC4D079C1BD85D5400A52613 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 		CC4D07961BD85D5400A52613 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CC4D07951BD85D5400A52613 /* bitpix-move.app */,
+				CC4D07951BD85D5400A52613 /* Bitpix Move.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,7 +139,7 @@
 			);
 			name = "bitpix-move";
 			productName = "bitpix-move";
-			productReference = CC4D07951BD85D5400A52613 /* bitpix-move.app */;
+			productReference = CC4D07951BD85D5400A52613 /* Bitpix Move.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -321,7 +321,7 @@
 				INFOPLIST_FILE = "bitpix-move/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Bitpix Move";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -335,7 +335,7 @@
 				INFOPLIST_FILE = "bitpix-move/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Bitpix Move";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
