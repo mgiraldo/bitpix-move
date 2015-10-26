@@ -31,6 +31,9 @@
     self.imageArray = [@[] mutableCopy];
     for (int i = 0; i < framesArray.count; i++) {
         DrawView *drawView = [framesArray objectAtIndex:i];
+        if (drawView.isClean) {
+            [drawView drawLines];
+        }
         UIImage *frameImage = [UIImage imageWithCGImage:drawView.drawingImageView.image.CGImage];
         [self.imageArray addObject:frameImage];
     }

@@ -27,6 +27,7 @@ static BOOL _isPreviewing = NO;
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
     
+    self.exportButton.enabled = NO;
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
     self.undoButton.hidden = YES;
@@ -41,15 +42,7 @@ static BOOL _isPreviewing = NO;
 	// Dispose of any resources that can be recreated.
 }
 
-- (void)newAnimation {
-    // new name for animation
-    self.uuid = [[NSUUID UUID] UUIDString];
-    // cleanup
-    [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.framesArray = [@[] mutableCopy];
-    _currentFrame = -1;
-    [self addFrame];
-}
+#pragma mark - Preview stuff
 
 - (void)showPreview {
     _isPreviewing = YES;
@@ -57,7 +50,7 @@ static BOOL _isPreviewing = NO;
     self.previewButton.hidden = YES;
     self.stopPreviewButton.hidden = NO;
     self.previewView.hidden = NO;
-
+    
     [self.previewView createFrames:self.framesArray];
     self.previewView.speed = _fps;
     [self.previewView animate];
@@ -72,25 +65,57 @@ static BOOL _isPreviewing = NO;
     [self updateUI];
 }
 
-- (void)drawViewChanged:(DrawView *)drawView {
-    [self updateUndoButtonForDrawView:drawView];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
+#pragma mark - Load/new/save stuff
+
+- (void)newAnimation {
+    // new name for animation
+    self.uuid = [[NSUUID UUID] UUIDString];
+    // cleanup
+    [self removeFrames];
+    _currentFrame = -1;
+    [self addFrame];
+}
+
+- (void)loadAnimation:(int)index {
+    DebugLog(@"load: %i", index);
+    NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
+    // new name for animation
+    self.uuid = [animation objectForKey:@"name"];
+    // cleanup
+    [self removeFrames];
+    // add frames
+    NSArray *frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
+    for (int i=0; i<frames.count; i++) {
+        NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:i]];
+        DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
+        drawView.uuid = self.uuid;
+        drawView.delegate = self;
+        drawView.lineList = [lines mutableCopy];
+        [self.framesArray addObject:drawView];
+        if (i==0) {
+            [drawView drawLines];
+            [self.sketchView addSubview:drawView];
+        }
+    }
+    _currentFrame = 0;
+    [self updateUI];
 }
 
 - (void)saveToDisk {
     // update disk version of animation
     NSDate *today = [NSDate date];
-
+    
     NSMutableArray *frames = [@[] mutableCopy];
     for (int i = 0; i < self.framesArray.count; i++) {
         DrawView *drawView = [self.framesArray objectAtIndex:i];
         [frames addObject:drawView.lineList];
     }
-
+    
     NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.uuid, today, frames, nil] forKeys:[NSArray arrayWithObjects:@"name", @"date", @"frames", nil]];
     
-    int index = [self.appData.userAnimations indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        BOOL found = [[obj objectForKey:@"name"] isEqualToString:self.uuid];
+    int index = [self.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *animation = (NSDictionary *)obj;
+        BOOL found = [[animation objectForKey:@"name"] isEqualToString:self.uuid];
         return found;
     }];
     
@@ -99,9 +124,9 @@ static BOOL _isPreviewing = NO;
         [self.appData.userAnimations addObject:animationInfo];
     } else {
         // old animation
-        [self.appData.userAnimations insertObject:animationInfo atIndex:index];
+        [self.appData.userAnimations replaceObjectAtIndex:index withObject:animationInfo];
     }
-
+    
     [self.appData save];
     
     [self createThumbnail];
@@ -110,6 +135,18 @@ static BOOL _isPreviewing = NO;
 - (void)createThumbnail {
     DrawView *drawView = [self.framesArray objectAtIndex:0];
     [drawView createThumbnail];
+}
+
+#pragma mark - Frame stuff
+
+- (void)removeFrames {
+    [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.framesArray = [@[] mutableCopy];
+}
+
+- (void)drawViewChanged:(DrawView *)drawView {
+    [self updateUndoButtonForDrawView:drawView];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)addFrame {
@@ -156,6 +193,8 @@ static BOOL _isPreviewing = NO;
     if (_currentFrame < 0) _currentFrame = 0;
     [self updateUI];
 }
+
+#pragma mark - UI/undo stuff
 
 - (void)updateUI {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
@@ -223,9 +262,14 @@ static BOOL _isPreviewing = NO;
 }
 
 - (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(int)index {
+    if (_isPreviewing) {
+        [self stopPreview];
+    }
+//    __block ViewController *weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        // TODO: draw the selected animation
+        // in case we want to wait until finished
     }];
+    [self loadAnimation:index];
 }
 
 #pragma mark - Button actions

@@ -116,7 +116,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 #pragma mark <UICollectionViewDelegate>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: Select Item
+    [self.delegate gridViewControllerDidFinish:self withAnimationIndex:indexPath.row];
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Deselect item

@@ -18,4 +18,12 @@
 }
 */
 
+- (id)initWithFrame:(CGRect)rect {
+    self = [super initWithFrame:rect];
+    if (self) {
+        //
+    }
+    return self;
+}
+
 @end

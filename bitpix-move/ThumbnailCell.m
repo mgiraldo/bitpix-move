@@ -23,10 +23,14 @@
     UIImage *img = [UIImage imageWithContentsOfFile:pngFilePath];
     
     self.backgroundColor = [UIColor whiteColor];
-    self.thumbnailView.image = img;
+    self.thumbnailView.backgroundColor = [UIColor whiteColor];
     
-    NSLog(@"image: %@", img);
-    NSLog(@"path: %@", pngFilePath);
+    if (self.thumbnailView == nil) {
+        self.thumbnailView = [[ThumbnailView alloc] initWithFrame:self.contentView.frame];
+        [self.contentView addSubview:self.thumbnailView];
+    }
+ 
+    self.thumbnailView.image = img;
 }
 
 @end

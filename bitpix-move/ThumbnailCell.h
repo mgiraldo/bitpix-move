@@ -12,6 +12,6 @@
 @interface ThumbnailCell : UICollectionViewCell
 
 @property (nonatomic) NSString *filename;
-@property (weak, nonatomic) IBOutlet ThumbnailView *thumbnailView;
+@property (nonatomic) ThumbnailView *thumbnailView;
 
 @end

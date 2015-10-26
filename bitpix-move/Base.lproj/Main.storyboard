@@ -242,25 +242,10 @@
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zz2-eq-41G" customClass="ThumbnailView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                    <animations/>
-                                                </imageView>
-                                            </subviews>
                                             <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <animations/>
-                                        <constraints>
-                                            <constraint firstItem="zz2-eq-41G" firstAttribute="centerY" secondItem="On4-0H-4Wf" secondAttribute="centerY" id="jxR-wj-mpJ"/>
-                                            <constraint firstItem="zz2-eq-41G" firstAttribute="height" secondItem="On4-0H-4Wf" secondAttribute="height" id="mK2-nP-yIi"/>
-                                            <constraint firstItem="zz2-eq-41G" firstAttribute="width" secondItem="On4-0H-4Wf" secondAttribute="width" id="nbK-jp-w69"/>
-                                            <constraint firstItem="zz2-eq-41G" firstAttribute="centerX" secondItem="On4-0H-4Wf" secondAttribute="centerX" id="vW3-io-4P8"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="thumbnailView" destination="zz2-eq-41G" id="6Zs-qM-Ir8"/>
-                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
