@@ -32,7 +32,7 @@
     }
 
     UIImage *thumb = [UIImage imageWithCGImage:self.drawingImageView.image.CGImage];
-    [thumb scaleToSize:CGSizeMake(_thumbSize, _thumbSize)];
+    thumb = [thumb scaleToSize:CGSizeMake(_thumbSize, _thumbSize)];
     [thumb saveToDiskWithName:[NSString stringWithFormat:@"%@_t.png", self.uuid]];
 }
 

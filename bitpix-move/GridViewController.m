@@ -7,7 +7,7 @@
 //
 
 #import "GridViewController.h"
-#import "GridViewCell.h"
+#import "ThumbnailCell.h"
 #import "DrawView.h"
 #import "DrawViewAnimator.h"
 #import "Config.h"
@@ -29,7 +29,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[ThumbnailCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     // Do any additional setup after loading the view.
     [self buildThumbnails];
@@ -51,7 +51,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     for (i=0; i<self.appData.userAnimations.count; i++) {
         animation = (NSDictionary *)[self.appData.userAnimations objectAtIndex:i];
         // check if thumbnail exists
-        BOOL dataExists = [fm fileExistsAtPath:[NSString stringWithFormat:@"%@_.png",[animation objectForKey:@"name"]]];
+        BOOL dataExists = [fm fileExistsAtPath:[NSString stringWithFormat:@"%@_t.png",[animation objectForKey:@"name"]]];
         if (dataExists) continue;
         // get the frames
         frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
@@ -102,17 +102,13 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    GridViewCell *cell = (GridViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:indexPath.row];
     NSString *filename = [NSString stringWithFormat:@"%@_t.png", [animation objectForKey:@"name"]];
 
     // Configure the cell
-    cell.backgroundColor = [UIColor whiteColor];
     cell.filename = filename;
-
-//    DrawViewAnimator *previewView = (DrawViewAnimator *)[cell viewWithTag:100];
-//    [previewView animateWithFrames:self.framesArray andSpeed:_fps];
 
     return cell;
 }

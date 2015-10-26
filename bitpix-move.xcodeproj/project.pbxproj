@@ -23,7 +23,7 @@
 		CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F9781BDC5E6E0019059B /* GridViewController.m */; };
 		CCF3F97C1BDC60850019059B /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F97B1BDC60850019059B /* UserData.m */; };
 		CCF3F9811BDC61EC0019059B /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCF3F9801BDC61EC0019059B /* Data.plist */; };
-		CCFB14FB1BDDAD2300D513D3 /* GridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FA1BDDAD2300D513D3 /* GridViewCell.m */; };
+		CCFB14FB1BDDAD2300D513D3 /* ThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FA1BDDAD2300D513D3 /* ThumbnailCell.m */; };
 		CCFB14FE1BDDAF2800D513D3 /* ThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */; };
 /* End PBXBuildFile section */
 
@@ -54,8 +54,8 @@
 		CCF3F97A1BDC60850019059B /* UserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserData.h; sourceTree = "<group>"; };
 		CCF3F97B1BDC60850019059B /* UserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
 		CCF3F9801BDC61EC0019059B /* Data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Data.plist; sourceTree = "<group>"; };
-		CCFB14F91BDDAD2300D513D3 /* GridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewCell.h; sourceTree = "<group>"; };
-		CCFB14FA1BDDAD2300D513D3 /* GridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridViewCell.m; sourceTree = "<group>"; };
+		CCFB14F91BDDAD2300D513D3 /* ThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailCell.h; sourceTree = "<group>"; };
+		CCFB14FA1BDDAD2300D513D3 /* ThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailCell.m; sourceTree = "<group>"; };
 		CCFB14FC1BDDAF2800D513D3 /* ThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailView.h; sourceTree = "<group>"; };
 		CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,8 +99,8 @@
 				CC4D079F1BD85D5400A52613 /* ViewController.m */,
 				CCF3F9771BDC5E6E0019059B /* GridViewController.h */,
 				CCF3F9781BDC5E6E0019059B /* GridViewController.m */,
-				CCFB14F91BDDAD2300D513D3 /* GridViewCell.h */,
-				CCFB14FA1BDDAD2300D513D3 /* GridViewCell.m */,
+				CCFB14F91BDDAD2300D513D3 /* ThumbnailCell.h */,
+				CCFB14FA1BDDAD2300D513D3 /* ThumbnailCell.m */,
 				CCFB14FC1BDDAF2800D513D3 /* ThumbnailView.h */,
 				CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */,
 				CCF3F97A1BDC60850019059B /* UserData.h */,
@@ -218,7 +218,7 @@
 				CC4D07A01BD85D5400A52613 /* ViewController.m in Sources */,
 				CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */,
 				CCF3F97C1BDC60850019059B /* UserData.m in Sources */,
-				CCFB14FB1BDDAD2300D513D3 /* GridViewCell.m in Sources */,
+				CCFB14FB1BDDAD2300D513D3 /* ThumbnailCell.m in Sources */,
 				CC4D079D1BD85D5400A52613 /* AppDelegate.m in Sources */,
 				CCFB14FE1BDDAF2800D513D3 /* ThumbnailView.m in Sources */,
 				CC1D32691BDD9D6D002E9294 /* UIImageXtras.m in Sources */,

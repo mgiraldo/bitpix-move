@@ -1,5 +1,5 @@
 //
-//  GridViewCell.h
+//  ThumbnailCell.h
 //  bitpix-move
 //
 //  Created by Mauricio Giraldo on 25/10/15.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ThumbnailView.h"
 
-@interface GridViewCell : UICollectionViewCell
+@interface ThumbnailCell : UICollectionViewCell
 
 @property (nonatomic) NSString *filename;
 @property (weak, nonatomic) IBOutlet ThumbnailView *thumbnailView;
