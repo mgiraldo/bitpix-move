@@ -120,25 +120,25 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCm-vQ-cWe">
-                                <rect key="frame" x="100" y="430" width="120" height="40"/>
+                                <rect key="frame" x="190" y="430" width="120" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="wks-eO-fQP"/>
                                     <constraint firstAttribute="width" constant="120" id="yrT-rD-Sbi"/>
                                 </constraints>
-                                <state key="normal" title="Animations"/>
+                                <state key="normal" title="All animations"/>
                                 <connections>
                                     <action selector="onMyAnimationsTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jbz-Zf-jpx"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Pe-wh-vGc">
-                                <rect key="frame" x="50" y="430" width="50" height="40"/>
+                                <rect key="frame" x="10" y="430" width="120" height="40"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="QPr-FH-hsM"/>
+                                    <constraint firstAttribute="width" constant="120" id="QPr-FH-hsM"/>
                                     <constraint firstAttribute="height" constant="40" id="hQc-hp-URZ"/>
                                 </constraints>
-                                <state key="normal" title="New"/>
+                                <state key="normal" title="New animation"/>
                                 <connections>
                                     <action selector="onNewTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qOa-ay-0mJ"/>
                                 </connections>
@@ -173,20 +173,20 @@
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="Hdh-YI-BGa"/>
                             <constraint firstItem="egh-fJ-Dr0" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="40" id="Kb2-FB-W3A"/>
                             <constraint firstItem="if2-WW-VGb" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="top" id="Nfr-HN-d0q"/>
-                            <constraint firstItem="FCm-vQ-cWe" firstAttribute="centerX" secondItem="ucA-SB-Xb5" secondAttribute="centerX" id="PQT-75-BdC"/>
                             <constraint firstItem="if2-WW-VGb" firstAttribute="trailing" secondItem="bnd-cn-txH" secondAttribute="trailing" id="PZz-HO-4E7"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="leading" secondItem="HXh-49-EQY" secondAttribute="trailing" id="Q9B-G2-HTP"/>
                             <constraint firstItem="HXh-49-EQY" firstAttribute="leading" secondItem="AcF-c1-SQV" secondAttribute="trailing" id="QNZ-K8-yHQ"/>
+                            <constraint firstItem="2Pe-wh-vGc" firstAttribute="leading" secondItem="bnd-cn-txH" secondAttribute="leading" id="QpF-iT-SOJ"/>
                             <constraint firstItem="Gc7-BE-d1B" firstAttribute="height" secondItem="egh-fJ-Dr0" secondAttribute="height" id="W2N-kZ-NaN"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="centerY" secondItem="HXh-49-EQY" secondAttribute="centerY" id="XgW-3J-CeA"/>
                             <constraint firstItem="AcF-c1-SQV" firstAttribute="centerY" secondItem="HXh-49-EQY" secondAttribute="centerY" id="cKi-oG-LKR"/>
                             <constraint firstItem="ISY-oE-qn4" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="40" id="fHj-G6-57M"/>
+                            <constraint firstItem="FCm-vQ-cWe" firstAttribute="trailing" secondItem="bnd-cn-txH" secondAttribute="trailing" id="gKA-i3-OJd"/>
                             <constraint firstItem="AcF-c1-SQV" firstAttribute="height" secondItem="HXh-49-EQY" secondAttribute="height" id="hp6-93-0gf"/>
                             <constraint firstItem="HXh-49-EQY" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="hzg-M9-87Y"/>
                             <constraint firstItem="egh-fJ-Dr0" firstAttribute="leading" secondItem="bnd-cn-txH" secondAttribute="leading" id="kVP-NF-t9Y"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="height" secondItem="HXh-49-EQY" secondAttribute="height" id="l2z-gY-ItY"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="pDg-t9-hiz"/>
-                            <constraint firstItem="FCm-vQ-cWe" firstAttribute="leading" secondItem="2Pe-wh-vGc" secondAttribute="trailing" id="t0P-7b-itJ"/>
                             <constraint firstItem="ZUf-cq-p2a" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="veG-H3-Rz8"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wUw-Or-OO2"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="wv7-rI-yWx"/>
