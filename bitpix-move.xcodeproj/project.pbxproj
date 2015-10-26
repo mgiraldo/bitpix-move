@@ -11,6 +11,7 @@
 		CC139DE51BDC34F800BF0A5B /* bitpix-move-120.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */; };
 		CC139DE61BDC34F800BF0A5B /* bitpix-move-152.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */; };
 		CC139DE81BDC353100BF0A5B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE71BDC353100BF0A5B /* Images.xcassets */; };
+		CC1D32691BDD9D6D002E9294 /* UIImageXtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1D32681BDD9D6D002E9294 /* UIImageXtras.m */; };
 		CC4D079A1BD85D5400A52613 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D07991BD85D5400A52613 /* main.m */; };
 		CC4D079D1BD85D5400A52613 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D079C1BD85D5400A52613 /* AppDelegate.m */; };
 		CC4D07A01BD85D5400A52613 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D079F1BD85D5400A52613 /* ViewController.m */; };
@@ -22,6 +23,8 @@
 		CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F9781BDC5E6E0019059B /* GridViewController.m */; };
 		CCF3F97C1BDC60850019059B /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F97B1BDC60850019059B /* UserData.m */; };
 		CCF3F9811BDC61EC0019059B /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCF3F9801BDC61EC0019059B /* Data.plist */; };
+		CCFB14FB1BDDAD2300D513D3 /* GridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FA1BDDAD2300D513D3 /* GridViewCell.m */; };
+		CCFB14FE1BDDAF2800D513D3 /* ThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 		CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-120.png"; sourceTree = "<group>"; };
 		CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-152.png"; sourceTree = "<group>"; };
 		CC139DE71BDC353100BF0A5B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CC1D32671BDD9D6D002E9294 /* UIImageXtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageXtras.h; sourceTree = "<group>"; };
+		CC1D32681BDD9D6D002E9294 /* UIImageXtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageXtras.m; sourceTree = "<group>"; };
+		CC1D326A1BDDA14C002E9294 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		CC4D07951BD85D5400A52613 /* Bitpix Move.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bitpix Move.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC4D07991BD85D5400A52613 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC4D079B1BD85D5400A52613 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -48,6 +54,10 @@
 		CCF3F97A1BDC60850019059B /* UserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserData.h; sourceTree = "<group>"; };
 		CCF3F97B1BDC60850019059B /* UserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
 		CCF3F9801BDC61EC0019059B /* Data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Data.plist; sourceTree = "<group>"; };
+		CCFB14F91BDDAD2300D513D3 /* GridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewCell.h; sourceTree = "<group>"; };
+		CCFB14FA1BDDAD2300D513D3 /* GridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridViewCell.m; sourceTree = "<group>"; };
+		CCFB14FC1BDDAF2800D513D3 /* ThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailView.h; sourceTree = "<group>"; };
+		CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,12 +90,19 @@
 		CC4D07971BD85D5400A52613 /* bitpix-move */ = {
 			isa = PBXGroup;
 			children = (
+				CC1D326A1BDDA14C002E9294 /* Config.h */,
+				CC1D32671BDD9D6D002E9294 /* UIImageXtras.h */,
+				CC1D32681BDD9D6D002E9294 /* UIImageXtras.m */,
 				CC4D079B1BD85D5400A52613 /* AppDelegate.h */,
 				CC4D079C1BD85D5400A52613 /* AppDelegate.m */,
 				CC4D079E1BD85D5400A52613 /* ViewController.h */,
 				CC4D079F1BD85D5400A52613 /* ViewController.m */,
 				CCF3F9771BDC5E6E0019059B /* GridViewController.h */,
 				CCF3F9781BDC5E6E0019059B /* GridViewController.m */,
+				CCFB14F91BDDAD2300D513D3 /* GridViewCell.h */,
+				CCFB14FA1BDDAD2300D513D3 /* GridViewCell.m */,
+				CCFB14FC1BDDAF2800D513D3 /* ThumbnailView.h */,
+				CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */,
 				CCF3F97A1BDC60850019059B /* UserData.h */,
 				CCF3F97B1BDC60850019059B /* UserData.m */,
 				CC4D07AF1BD85F3400A52613 /* DrawView.h */,
@@ -201,7 +218,10 @@
 				CC4D07A01BD85D5400A52613 /* ViewController.m in Sources */,
 				CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */,
 				CCF3F97C1BDC60850019059B /* UserData.m in Sources */,
+				CCFB14FB1BDDAD2300D513D3 /* GridViewCell.m in Sources */,
 				CC4D079D1BD85D5400A52613 /* AppDelegate.m in Sources */,
+				CCFB14FE1BDDAF2800D513D3 /* ThumbnailView.m in Sources */,
+				CC1D32691BDD9D6D002E9294 /* UIImageXtras.m in Sources */,
 				CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */,
 				CCF3F9761BDC59F80019059B /* DrawViewAnimator.m in Sources */,
 				CC4D079A1BD85D5400A52613 /* main.m in Sources */,

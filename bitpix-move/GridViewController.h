@@ -18,9 +18,9 @@
 @end
 
 
-@interface GridViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) id <GridViewControllerDelegate> delegate;
 @property (nonatomic) UserData *appData;
 

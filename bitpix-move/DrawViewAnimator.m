@@ -7,6 +7,7 @@
 //
 
 #import "DrawViewAnimator.h"
+#import "Config.h"
 
 @implementation DrawViewAnimator
 
@@ -18,27 +19,28 @@
 }
 */
 
-//- (id)initWithFrame:(CGRect)rect {
-//    self = [super initWithFrame:rect];
-//    if (self) {
-//        //
-//    }
-//    return self;
-//}
+- (id)initWithFrame:(CGRect)rect {
+    self = [super initWithFrame:rect];
+    if (self) {
+        self.speed = _fps;
+    }
+    return self;
+}
 
-- (void)animateWithFrames:(NSArray *)framesArray andSpeed:(int)fps {
-    NSMutableArray *imageArray = [@[] mutableCopy];
+- (void)createFrames:(NSArray *)framesArray {
+    self.imageArray = [@[] mutableCopy];
     for (int i = 0; i < framesArray.count; i++) {
         DrawView *drawView = [framesArray objectAtIndex:i];
         UIImage *frameImage = [UIImage imageWithCGImage:drawView.drawingImageView.image.CGImage];
-        [imageArray addObject:frameImage];
+        [self.imageArray addObject:frameImage];
     }
-    
-    self.animationImages = imageArray;
+    self.image = self.imageArray[0];
+}
+
+- (void)animate {
+    self.animationImages = self.imageArray;
     self.animationRepeatCount = 0;
-    self.animationDuration = 1.0f/fps;
-    
-    self.image = imageArray[0];
+    self.animationDuration = 1.0f/self.speed;
     [self startAnimating];
 }
 

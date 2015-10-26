@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "UIImageXtras.h"
+#import "Config.h"
 
 @interface ViewController ()
 
@@ -14,18 +16,16 @@
 
 @implementation ViewController
 
-static const float _borderWidth = 5.0f;
 static int _currentFrame = -1;
-static const int _maxFrames = 100;
-static float _fps = 2.0f;
 static BOOL _isPreviewing = NO;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
-    self.uuid = [[NSUUID UUID] UUIDString];
-
     self.appData = [[UserData alloc] initWithDefaultData];
+    
+    // the next id will be the count
+    self.uuid = [[NSUUID UUID] UUIDString];
     
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
@@ -33,13 +33,22 @@ static BOOL _isPreviewing = NO;
 	self.sketchView.backgroundColor = [UIColor whiteColor];
     self.sketchView.layer.borderColor = [UIColor blackColor].CGColor;
     self.sketchView.layer.borderWidth = _borderWidth;
-	self.framesArray = [[NSMutableArray alloc] initWithCapacity:1];
-	[self addFrame];
+	[self newAnimation];
 }
 
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
 	// Dispose of any resources that can be recreated.
+}
+
+- (void)newAnimation {
+    // new name for animation
+    self.uuid = [[NSUUID UUID] UUIDString];
+    // cleanup
+    [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.framesArray = [@[] mutableCopy];
+    _currentFrame = -1;
+    [self addFrame];
 }
 
 - (void)showPreview {
@@ -49,7 +58,9 @@ static BOOL _isPreviewing = NO;
     self.stopPreviewButton.hidden = NO;
     self.previewView.hidden = NO;
 
-    [self.previewView animateWithFrames:self.framesArray andSpeed:_fps];
+    [self.previewView createFrames:self.framesArray];
+    self.previewView.speed = _fps;
+    [self.previewView animate];
 }
 
 - (void)stopPreview {
@@ -63,7 +74,7 @@ static BOOL _isPreviewing = NO;
 
 - (void)drawViewChanged:(DrawView *)drawView {
     [self updateUndoButtonForDrawView:drawView];
-    [self saveToDisk];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)saveToDisk {
@@ -76,14 +87,35 @@ static BOOL _isPreviewing = NO;
         [frames addObject:drawView.lineList];
     }
 
-    NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:today, frames, nil] forKeys:[NSArray arrayWithObjects:@"date", @"frames", nil]];
-    [self.appData.userAnimations setObject:animationInfo forKey:self.uuid];
+    NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.uuid, today, frames, nil] forKeys:[NSArray arrayWithObjects:@"name", @"date", @"frames", nil]];
+    
+    int index = [self.appData.userAnimations indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        BOOL found = [[obj objectForKey:@"name"] isEqualToString:self.uuid];
+        return found;
+    }];
+    
+    if (index == NSNotFound) {
+        // a new animation
+        [self.appData.userAnimations addObject:animationInfo];
+    } else {
+        // old animation
+        [self.appData.userAnimations insertObject:animationInfo atIndex:index];
+    }
+
     [self.appData save];
+    
+    [self createThumbnail];
+}
+
+- (void)createThumbnail {
+    DrawView *drawView = [self.framesArray objectAtIndex:0];
+    [drawView createThumbnail];
 }
 
 - (void)addFrame {
     _currentFrame++;
     DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
+    drawView.uuid = self.uuid;
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
@@ -200,6 +232,13 @@ static BOOL _isPreviewing = NO;
 
 - (IBAction)onMyAnimationsTapped:(id)sender {
     [self performSegueWithIdentifier:@"viewGrid" sender:self];
+}
+
+- (IBAction)onNewTapped:(id)sender {
+    if (_isPreviewing) {
+        [self stopPreview];
+    }
+    [self newAnimation];
 }
 
 - (IBAction)onNextTapped:(id)sender {

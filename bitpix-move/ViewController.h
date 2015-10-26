@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *undoButton;
+@property (weak, nonatomic) IBOutlet UIButton *myAnimationsButton;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;
@@ -38,6 +39,7 @@
 - (IBAction)onStopPreviewTapped:(id)sender;
 - (IBAction)onUndoTapped:(id)sender;
 - (IBAction)onMyAnimationsTapped:(id)sender;
+- (IBAction)onNewTapped:(id)sender;
 
 @end
 

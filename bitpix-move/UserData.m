@@ -7,12 +7,7 @@
 //
 
 #import "UserData.h"
-
-#ifdef DEBUG
-#define DebugLog( s, ... ) NSLog( @"<%p %@:%d (%@)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  NSStringFromSelector(_cmd), [NSString stringWithFormat:(s), ##__VA_ARGS__] )
-#else
-#define DebugLog( s, ... )
-#endif
+#import "Config.h"
 
 @implementation UserData
 
@@ -45,22 +40,36 @@
     if (dataExists) {
         NSDictionary *userDictionary = [[NSDictionary alloc] initWithContentsOfFile:[UserData dataFilePath:@"Data.plist"]];
         self.data = [[NSMutableDictionary alloc] initWithDictionary:userDictionary];
+        DebugLog(@"loaded: %@", [UserData dataFilePath:@"Data.plist"]);
     } else {
         NSDictionary *defaultDictionary = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Data" ofType:@"plist"]];
         self.data = [[NSMutableDictionary alloc] initWithDictionary:defaultDictionary];
     }
-    self.userAnimations = [[NSMutableDictionary alloc] initWithDictionary:[self.data objectForKey:@"userAnimations"]];
-    NSLog(@"size: %lu", (unsigned long)[self.userAnimations allKeys].count);
+    
+    self.userAnimations = [@[] mutableCopy];
+    if ([[self.data objectForKey:@"userAnimations"] isKindOfClass:[NSDictionary class]]) {
+        // legacy stuff
+        NSDictionary *animations = [NSDictionary dictionaryWithDictionary:[self.data objectForKey:@"userAnimations"]];
+        for (NSString *key in animations) {
+            NSMutableDictionary *animation = [[NSDictionary dictionaryWithDictionary:[animations objectForKey:key]] mutableCopy];
+            [animation setObject:key forKey:@"name"];
+            [self.userAnimations addObject:animation];
+        }
+    } else {
+        self.userAnimations = [[NSArray arrayWithArray:[self.data objectForKey:@"userAnimations"]] mutableCopy];
+    }
+
+    NSLog(@"size: %lu", (unsigned long)self.userAnimations.count);
 }
 
 - (void)resetDataFile {
     NSDictionary *defaultDictionary = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Data" ofType:@"plist"]];
     self.data = [[NSMutableDictionary alloc] initWithDictionary:defaultDictionary];
-    self.userAnimations = [[NSMutableDictionary alloc] initWithDictionary:[self.data objectForKey:@"userAnimations"]];
+    self.userAnimations = [[NSMutableArray alloc] initWithArray:[self.data objectForKey:@"userAnimations"]];
 }
 
 - (void)save {
-    DebugLog(@"saved appdata plist");
+    DebugLog(@"saved appdata plist: %@", [UserData dataFilePath:@"Data.plist"]);
     [self.data setObject:self.userAnimations forKey:@"userAnimations"];
     //escribir el plist
     [self.data writeToFile:[UserData dataFilePath:@"Data.plist"] atomically:YES];

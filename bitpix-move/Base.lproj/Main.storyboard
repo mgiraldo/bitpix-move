@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bnd-cn-txH">
-                                <rect key="frame" x="10" y="90" width="300" height="300"/>
+                                <rect key="frame" x="10" y="50" width="300" height="300"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -28,12 +28,12 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ucA-SB-Xb5" customClass="DrawViewAnimator">
-                                <rect key="frame" x="10" y="90" width="300" height="300"/>
+                                <rect key="frame" x="10" y="50" width="300" height="300"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcF-c1-SQV">
-                                <rect key="frame" x="40" y="390" width="100" height="40"/>
+                                <rect key="frame" x="40" y="350" width="100" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="bG5-Hm-bht"/>
@@ -44,7 +44,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YeM-IY-bts">
-                                <rect key="frame" x="180" y="390" width="100" height="40"/>
+                                <rect key="frame" x="180" y="350" width="100" height="40"/>
                                 <animations/>
                                 <state key="normal" title="Next"/>
                                 <connections>
@@ -52,7 +52,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HXh-49-EQY">
-                                <rect key="frame" x="140" y="390" width="40" height="40"/>
+                                <rect key="frame" x="140" y="350" width="40" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="HXh-49-EQY" secondAttribute="height" multiplier="1:1" id="WzN-Gq-amw"/>
@@ -64,7 +64,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frame: 100/100" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUf-cq-p2a">
-                                <rect key="frame" x="110" y="60" width="100" height="30"/>
+                                <rect key="frame" x="110" y="20" width="100" height="30"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="VzD-6P-Z4s"/>
@@ -75,7 +75,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gc7-BE-d1B">
-                                <rect key="frame" x="10" y="20" width="120" height="40"/>
+                                <rect key="frame" x="10" y="390" width="120" height="40"/>
                                 <animations/>
                                 <state key="normal" title="Stop Preview"/>
                                 <connections>
@@ -83,7 +83,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egh-fJ-Dr0">
-                                <rect key="frame" x="10" y="20" width="120" height="40"/>
+                                <rect key="frame" x="10" y="390" width="120" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="AHM-OH-vDT"/>
@@ -95,7 +95,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qfn-62-Bj9">
-                                <rect key="frame" x="190" y="20" width="120" height="40"/>
+                                <rect key="frame" x="190" y="390" width="120" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="WuX-r8-lk4"/>
@@ -106,20 +106,8 @@
                                     <action selector="onExportTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="seB-wN-v5K"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ISY-oE-qn4">
-                                <rect key="frame" x="140" y="20" width="40" height="40"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="NBd-nU-dNR"/>
-                                    <constraint firstAttribute="width" secondItem="ISY-oE-qn4" secondAttribute="height" multiplier="1:1" id="lKk-xS-Iwk"/>
-                                </constraints>
-                                <state key="normal" title="-"/>
-                                <connections>
-                                    <action selector="onDeleteTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qg5-Sc-Ptk"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if2-WW-VGb">
-                                <rect key="frame" x="250" y="90" width="60" height="40"/>
+                                <rect key="frame" x="250" y="50" width="60" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="pJX-ic-5iM"/>
@@ -142,36 +130,62 @@
                                     <action selector="onMyAnimationsTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jbz-Zf-jpx"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Pe-wh-vGc">
+                                <rect key="frame" x="50" y="430" width="50" height="40"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="QPr-FH-hsM"/>
+                                    <constraint firstAttribute="height" constant="40" id="hQc-hp-URZ"/>
+                                </constraints>
+                                <state key="normal" title="New"/>
+                                <connections>
+                                    <action selector="onNewTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qOa-ay-0mJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ISY-oE-qn4">
+                                <rect key="frame" x="140" y="390" width="40" height="40"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="NBd-nU-dNR"/>
+                                    <constraint firstAttribute="width" secondItem="ISY-oE-qn4" secondAttribute="height" multiplier="1:1" id="lKk-xS-Iwk"/>
+                                </constraints>
+                                <state key="normal" title="-"/>
+                                <connections>
+                                    <action selector="onDeleteTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qg5-Sc-Ptk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerY" secondItem="bnd-cn-txH" secondAttribute="centerY" id="0wv-g4-VLk"/>
-                            <constraint firstItem="FCm-vQ-cWe" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="40" id="2N1-sn-uri"/>
+                            <constraint firstItem="FCm-vQ-cWe" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="80" id="2N1-sn-uri"/>
                             <constraint firstItem="Gc7-BE-d1B" firstAttribute="centerX" secondItem="egh-fJ-Dr0" secondAttribute="centerX" id="2dw-OR-itB"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="width" secondItem="AcF-c1-SQV" secondAttribute="width" id="3Z9-pc-Wkb"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="height" secondItem="bnd-cn-txH" secondAttribute="height" id="5JA-Sa-9gU"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="ZUf-cq-p2a" secondAttribute="bottom" id="9vo-BZ-eDo"/>
-                            <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="egh-fJ-Dr0" secondAttribute="bottom" constant="30" id="CNn-66-3Bp"/>
+                            <constraint firstItem="Qfn-62-Bj9" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="40" id="A6X-jw-lm5"/>
                             <constraint firstItem="HXh-49-EQY" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" id="D9W-jS-dbw"/>
                             <constraint firstItem="ISY-oE-qn4" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="FYu-TO-vQB"/>
                             <constraint firstItem="Qfn-62-Bj9" firstAttribute="trailing" secondItem="bnd-cn-txH" secondAttribute="trailing" id="Fqh-DM-Kaw"/>
+                            <constraint firstItem="2Pe-wh-vGc" firstAttribute="centerY" secondItem="FCm-vQ-cWe" secondAttribute="centerY" id="GF0-Yk-lW6"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="Hdh-YI-BGa"/>
+                            <constraint firstItem="egh-fJ-Dr0" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="40" id="Kb2-FB-W3A"/>
                             <constraint firstItem="if2-WW-VGb" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="top" id="Nfr-HN-d0q"/>
                             <constraint firstItem="FCm-vQ-cWe" firstAttribute="centerX" secondItem="ucA-SB-Xb5" secondAttribute="centerX" id="PQT-75-BdC"/>
                             <constraint firstItem="if2-WW-VGb" firstAttribute="trailing" secondItem="bnd-cn-txH" secondAttribute="trailing" id="PZz-HO-4E7"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="leading" secondItem="HXh-49-EQY" secondAttribute="trailing" id="Q9B-G2-HTP"/>
                             <constraint firstItem="HXh-49-EQY" firstAttribute="leading" secondItem="AcF-c1-SQV" secondAttribute="trailing" id="QNZ-K8-yHQ"/>
-                            <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="ISY-oE-qn4" secondAttribute="bottom" constant="30" id="VZz-Gs-Dse"/>
                             <constraint firstItem="Gc7-BE-d1B" firstAttribute="height" secondItem="egh-fJ-Dr0" secondAttribute="height" id="W2N-kZ-NaN"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="centerY" secondItem="HXh-49-EQY" secondAttribute="centerY" id="XgW-3J-CeA"/>
                             <constraint firstItem="AcF-c1-SQV" firstAttribute="centerY" secondItem="HXh-49-EQY" secondAttribute="centerY" id="cKi-oG-LKR"/>
+                            <constraint firstItem="ISY-oE-qn4" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="40" id="fHj-G6-57M"/>
                             <constraint firstItem="AcF-c1-SQV" firstAttribute="height" secondItem="HXh-49-EQY" secondAttribute="height" id="hp6-93-0gf"/>
                             <constraint firstItem="HXh-49-EQY" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="hzg-M9-87Y"/>
                             <constraint firstItem="egh-fJ-Dr0" firstAttribute="leading" secondItem="bnd-cn-txH" secondAttribute="leading" id="kVP-NF-t9Y"/>
                             <constraint firstItem="YeM-IY-bts" firstAttribute="height" secondItem="HXh-49-EQY" secondAttribute="height" id="l2z-gY-ItY"/>
-                            <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="70" id="pDg-t9-hiz"/>
-                            <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="Qfn-62-Bj9" secondAttribute="bottom" constant="30" id="ueM-zW-Osv"/>
+                            <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="pDg-t9-hiz"/>
+                            <constraint firstItem="FCm-vQ-cWe" firstAttribute="leading" secondItem="2Pe-wh-vGc" secondAttribute="trailing" id="t0P-7b-itJ"/>
                             <constraint firstItem="ZUf-cq-p2a" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="veG-H3-Rz8"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wUw-Or-OO2"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="wv7-rI-yWx"/>
@@ -184,6 +198,7 @@
                         <outlet property="deleteButton" destination="ISY-oE-qn4" id="exP-wy-paN"/>
                         <outlet property="exportButton" destination="Qfn-62-Bj9" id="Mjq-eo-2qb"/>
                         <outlet property="frameLabel" destination="ZUf-cq-p2a" id="Rwm-g9-o6C"/>
+                        <outlet property="myAnimationsButton" destination="FCm-vQ-cWe" id="Asb-X3-21P"/>
                         <outlet property="nextButton" destination="YeM-IY-bts" id="NlY-VN-zeP"/>
                         <outlet property="previewButton" destination="egh-fJ-Dr0" id="qNb-b6-feh"/>
                         <outlet property="previewView" destination="ucA-SB-Xb5" id="pPu-vP-Wjt"/>
@@ -214,24 +229,43 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dwv-ra-jpp">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AnimationCell" id="WBe-Rl-kCu">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AnimationCell" id="WBe-Rl-kCu" customClass="GridViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iD7-28-YdV" customClass="ThumbnailView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                    <animations/>
+                                                </imageView>
+                                            </subviews>
                                             <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <animations/>
+                                        <constraints>
+                                            <constraint firstItem="iD7-28-YdV" firstAttribute="width" secondItem="WBe-Rl-kCu" secondAttribute="width" id="FMX-R6-F2o"/>
+                                            <constraint firstItem="iD7-28-YdV" firstAttribute="centerX" secondItem="WBe-Rl-kCu" secondAttribute="centerX" id="dbi-N8-WOa"/>
+                                            <constraint firstItem="iD7-28-YdV" firstAttribute="height" secondItem="WBe-Rl-kCu" secondAttribute="height" id="v9w-H4-jlU"/>
+                                            <constraint firstItem="iD7-28-YdV" firstAttribute="centerY" secondItem="WBe-Rl-kCu" secondAttribute="centerY" id="yzc-Hi-Gvg"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="thumbnailView" destination="iD7-28-YdV" id="i7V-za-bHm"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="CoQ-FN-aMX" id="kde-6P-kKD"/>
+                                    <outlet property="delegate" destination="CoQ-FN-aMX" id="Jbx-vY-Drn"/>
+                                </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GEs-1p-d0Q">
                                 <rect key="frame" x="136" y="270" width="46" height="30"/>

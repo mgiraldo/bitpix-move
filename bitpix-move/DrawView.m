@@ -7,17 +7,16 @@
 //
 
 #import "DrawView.h"
+#import "UIImageXtras.h"
+#import "Config.h"
 
 @implementation DrawView
-
-static float _lineWidth = 2.0f;
-static float _opacity = 0.8f;
-static UIColor *_strokeColor;
 
 - (id)initWithFrame:(CGRect)rect {
 	self = [super initWithFrame:rect];
 	if (self) {
-		_strokeColor = [UIColor blackColor];
+        self.isClean = YES;
+		self.strokeColor = [UIColor blackColor];
 		self.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
 		self.lineList = [[NSMutableArray alloc] initWithCapacity:1];
 		self.drawingImageView = [[UIImageView alloc] initWithFrame:self.frame];
@@ -25,6 +24,16 @@ static UIColor *_strokeColor;
 		[self addSubview:self.drawingImageView];
 	}
 	return self;
+}
+
+- (void)createThumbnail {
+    if (self.isClean) {
+        [self drawLines];
+    }
+
+    UIImage *thumb = [UIImage imageWithCGImage:self.drawingImageView.image.CGImage];
+    [thumb scaleToSize:CGSizeMake(_thumbSize, _thumbSize)];
+    [thumb saveToDiskWithName:[NSString stringWithFormat:@"%@_t.png", self.uuid]];
 }
 
 - (void)resetLastLine {
@@ -64,6 +73,7 @@ static UIColor *_strokeColor;
 	}
 	self.drawingImageView.image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
+    self.isClean = NO;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -107,7 +117,7 @@ static UIColor *_strokeColor;
     CGPoint from = CGPointMake([[fromArray objectAtIndex:0] floatValue], [[fromArray objectAtIndex:1] floatValue]);
     CGPoint to = CGPointMake([[toArray objectAtIndex:0] floatValue], [[toArray objectAtIndex:1] floatValue]);
 
-    [_strokeColor set];
+    [self.strokeColor set];
 	CGContextSetLineWidth(context, _lineWidth);
 	CGContextSetLineCap(context, kCGLineCapRound);
 	CGContextMoveToPoint(context, from.x, from.y);

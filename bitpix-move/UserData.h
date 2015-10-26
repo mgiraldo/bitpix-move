@@ -11,7 +11,7 @@
 @interface UserData : NSObject
 
 @property (nonatomic) NSMutableDictionary *data;
-@property (nonatomic) NSMutableDictionary *userAnimations;
+@property (nonatomic) NSMutableArray *userAnimations;
 
 - (id)initWithDefaultData;
 + (NSString *)dataFilePath:(NSString *)filename;

@@ -16,6 +16,9 @@
 
 @interface DrawView : UIView
 
+@property (nonatomic) BOOL isClean;
+@property (nonatomic) UIColor *strokeColor;
+@property (nonatomic) NSString  *uuid;
 @property (nonatomic) UIImageView *drawingImageView;
 @property (nonatomic) NSMutableArray *lineList;
 @property (nonatomic) NSMutableArray *lastLine;
@@ -23,5 +26,7 @@
 
 - (void)undo;
 - (BOOL)hasLines;
+- (void)drawLines;
+- (void)createThumbnail;
 
 @end

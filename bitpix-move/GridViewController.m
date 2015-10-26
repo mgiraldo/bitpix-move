@@ -7,6 +7,10 @@
 //
 
 #import "GridViewController.h"
+#import "GridViewCell.h"
+#import "DrawView.h"
+#import "DrawViewAnimator.h"
+#import "Config.h"
 
 @interface GridViewController ()
 
@@ -20,7 +24,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     [super viewDidLoad];
     
     self.appData = [[UserData alloc] initWithDefaultData];
-
+    
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -28,11 +32,48 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     // Do any additional setup after loading the view.
+    [self buildThumbnails];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [self.collectionView reloadData];
+}
+
+- (void)buildThumbnails {
+    int i;
+    NSDictionary *animation;
+    NSArray *frames;
+    NSArray *lines;
+    DrawView *drawView;
+
+    NSFileManager *fm = [[NSFileManager alloc] init];
+
+    for (i=0; i<self.appData.userAnimations.count; i++) {
+        animation = (NSDictionary *)[self.appData.userAnimations objectAtIndex:i];
+        // check if thumbnail exists
+        BOOL dataExists = [fm fileExistsAtPath:[NSString stringWithFormat:@"%@_.png",[animation objectForKey:@"name"]]];
+        if (dataExists) continue;
+        // get the frames
+        frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
+        // get the lines in the frame
+        // only need the first to build the drawview
+        lines = [NSArray arrayWithArray:[frames objectAtIndex:0]];
+        // build the drawview
+        drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+        drawView.lineList = [lines mutableCopy];
+        drawView.uuid = [animation objectForKey:@"name"];
+        [drawView createThumbnail];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidUnload {
+    self.collectionView = nil;
+    [super viewDidUnload];
 }
 
 /*
@@ -45,26 +86,45 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 }
 */
 
+- (IBAction)onReturnTapped:(id)sender {
+    [self.delegate gridViewControllerDidFinish:self];
+}
+
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return self.appData.userAnimations.count;
+    return 1;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 0;
+    return self.appData.userAnimations.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
+    GridViewCell *cell = (GridViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+
+    NSDictionary *animation = [self.appData.userAnimations objectAtIndex:indexPath.row];
+    NSString *filename = [NSString stringWithFormat:@"%@_t.png", [animation objectForKey:@"name"]];
+
     // Configure the cell
-    
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.filename = filename;
+
+//    DrawViewAnimator *previewView = (DrawViewAnimator *)[cell viewWithTag:100];
+//    [previewView animateWithFrames:self.framesArray andSpeed:_fps];
+
     return cell;
 }
 
 #pragma mark <UICollectionViewDelegate>
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    // TODO: Select Item
+}
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    // TODO: Deselect item
+}
 
 /*
 // Uncomment this method to specify if the specified item should be highlighted during tracking
@@ -95,8 +155,15 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 }
 */
 
-- (IBAction)onReturnTapped:(id)sender {
-    [self.delegate gridViewControllerDidFinish:self];
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGSize retval = CGSizeMake(_thumbSize, _thumbSize);
+    return retval;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(10, 0, 0, 0);
 }
 
 @end

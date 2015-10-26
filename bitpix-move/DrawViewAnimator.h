@@ -12,6 +12,10 @@
 
 @interface DrawViewAnimator : UIImageView
 
-- (void)animateWithFrames:(NSArray *)framesArray andSpeed:(int)fps;
+@property (nonatomic) float speed;
+@property (nonatomic) NSMutableArray *imageArray;
+
+- (void)createFrames:(NSArray *)framesArray;
+- (void)animate;
 
 @end
