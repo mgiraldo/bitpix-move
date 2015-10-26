@@ -245,6 +245,7 @@ static BOOL _isPreviewing = NO;
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView undo];
+    [self saveToDisk];
     [self updateUI];
 }
 

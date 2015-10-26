@@ -23,5 +23,4 @@ static const int _thumbSize = 100;
 static float _lineWidth = 2.0f;
 static float _opacity = 0.8f;
 
-
 #endif /* Config_h */

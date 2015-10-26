@@ -159,7 +159,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(10, 0, 0, 0);
+    return UIEdgeInsetsMake(20, 10, 50, 10);
 }
 
 @end
