@@ -14,7 +14,7 @@
 
 @protocol GridViewControllerDelegate
 - (void)gridViewControllerDidFinish:(GridViewController *)controller;
-- (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(int)index;
+- (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(NSInteger)index;
 @end
 
 

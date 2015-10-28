@@ -9,6 +9,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <ImageIO/ImageIO.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface UIImage (CS_Extensions)
 
@@ -21,5 +23,6 @@
 - (UIImage *)imageRotatedByDegrees:(CGFloat)degrees;
 - (NSString *)saveToDiskWithName:(NSString *)name;
 - (NSString *)saveToDisk;
++ (NSString *)saveToDiskAnimatedGIFWithFrames:(NSArray *)frames withName:(NSString *)name andSpeed:(float)speed;
 
 @end

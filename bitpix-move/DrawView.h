@@ -27,6 +27,5 @@
 - (void)undo;
 - (BOOL)hasLines;
 - (void)drawLines;
-- (void)createThumbnail;
 
 @end

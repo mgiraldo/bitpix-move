@@ -11,6 +11,7 @@
 
 @interface ThumbnailCell : UICollectionViewCell
 
+@property (nonatomic) float duration;
 @property (nonatomic) NSString *filename;
 @property (nonatomic) ThumbnailView *thumbnailView;
 

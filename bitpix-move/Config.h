@@ -17,7 +17,7 @@
 
 static const float _borderWidth = 5.0f;
 static const int _maxFrames = 100;
-static float _fps = 1.0f;
+static float _fps = 5.0f;
 static const int _animationSize = 300;
 static const int _thumbSize = 100;
 static float _lineWidth = 2.0f;

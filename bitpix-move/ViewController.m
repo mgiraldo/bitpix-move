@@ -26,8 +26,8 @@ static BOOL _isPreviewing = NO;
     
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
+    self.previewView.uuid = self.uuid;
     
-    self.exportButton.enabled = NO;
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
     self.undoButton.hidden = YES;
@@ -51,13 +51,13 @@ static BOOL _isPreviewing = NO;
     self.stopPreviewButton.hidden = NO;
     self.previewView.hidden = NO;
     
-    [self.previewView createFrames:self.framesArray];
-    self.previewView.speed = _fps;
+    [self.previewView createFrames:self.framesArray withSpeed:_fps];
     [self.previewView animate];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)stopPreview {
-    self.previewView.image = nil;
+    [self.previewView stop];
     self.stopPreviewButton.hidden = YES;
     self.previewButton.hidden = NO;
     self.previewView.hidden = YES;
@@ -70,17 +70,19 @@ static BOOL _isPreviewing = NO;
 - (void)newAnimation {
     // new name for animation
     self.uuid = [[NSUUID UUID] UUIDString];
+    self.previewView.uuid = self.uuid;
     // cleanup
     [self removeFrames];
     _currentFrame = -1;
     [self addFrame];
 }
 
-- (void)loadAnimation:(int)index {
-    DebugLog(@"load: %i", index);
+- (void)loadAnimation:(NSInteger)index {
+    DebugLog(@"load: %li", (long)index);
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
     // new name for animation
     self.uuid = [animation objectForKey:@"name"];
+    self.previewView.uuid = self.uuid;
     // cleanup
     [self removeFrames];
     // add frames
@@ -97,11 +99,18 @@ static BOOL _isPreviewing = NO;
             [self.sketchView addSubview:drawView];
         }
     }
+    [self.previewView createFrames:self.framesArray withSpeed:_fps];
     _currentFrame = 0;
     [self updateUI];
 }
 
 - (void)saveToDisk {
+    // ignore if empty
+    if (self.framesArray.count == 0) return;
+    DrawView *drawView = [self.framesArray objectAtIndex:0];
+    // do not save if only one frame that is clean
+    if (self.framesArray.count == 1 && [drawView isClean]) return;
+
     // update disk version of animation
     NSDate *today = [NSDate date];
     
@@ -129,12 +138,7 @@ static BOOL _isPreviewing = NO;
     
     [self.appData save];
     
-    [self createThumbnail];
-}
-
-- (void)createThumbnail {
-    DrawView *drawView = [self.framesArray objectAtIndex:0];
-    [drawView createThumbnail];
+    [self.previewView createAllGIFs];
 }
 
 #pragma mark - Frame stuff
@@ -142,6 +146,7 @@ static BOOL _isPreviewing = NO;
 - (void)removeFrames {
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.framesArray = [@[] mutableCopy];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)drawViewChanged:(DrawView *)drawView {
@@ -156,6 +161,7 @@ static BOOL _isPreviewing = NO;
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
     [self updateUI];
 }
 
@@ -175,6 +181,7 @@ static BOOL _isPreviewing = NO;
         _currentFrame--;
     }
 
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
     [self updateUI];
 }
 
@@ -223,6 +230,12 @@ static BOOL _isPreviewing = NO;
     } else {
         self.deleteButton.enabled = NO;
     }
+    
+    if (self.framesArray.count > 1) {
+        self.exportButton.enabled = YES;
+    } else {
+        self.exportButton.enabled = NO;
+    }
 
     self.frameLabel.text = [NSString stringWithFormat:@"Frame: %i/%i", _currentFrame+1, (int)self.framesArray.count];
 }
@@ -231,6 +244,8 @@ static BOOL _isPreviewing = NO;
     self.previousButton.enabled = NO;
     self.nextButton.enabled = NO;
     self.addButton.enabled = NO;
+    self.deleteButton.enabled = NO;
+    self.exportButton.enabled = NO;
     self.undoButton.hidden = YES;
 }
 
@@ -262,7 +277,7 @@ static BOOL _isPreviewing = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(int)index {
+- (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(NSInteger)index {
     if (_isPreviewing) {
         [self stopPreview];
     }
@@ -315,6 +330,30 @@ static BOOL _isPreviewing = NO;
 }
 
 - (IBAction)onExportTapped:(id)sender {
+    NSString *textToShare = @"Check out this GIF I created with MovePix!";
+    
+    NSArray *objectsToShare;
+    
+    NSString *filename = [NSString stringWithFormat:@"%@.gif", self.uuid];
+    NSString *path = [UserData dataFilePath:filename];
+    NSData *fileData = [NSData dataWithContentsOfFile:path];
+    
+    objectsToShare = @[textToShare, fileData];
+    
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
+                                      applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[UIActivityTypePrint,
+                                   UIActivityTypeCopyToPasteboard, // TODO: maybe fix this exclusion in the future
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToTencentWeibo];
+    
+    activityViewController.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityViewController
+                       animated:YES
+                     completion:^{}];
 }
 
 @end

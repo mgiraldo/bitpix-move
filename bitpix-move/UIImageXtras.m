@@ -255,4 +255,53 @@ static CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
 	
 }
 
++ (NSString *)saveToDiskAnimatedGIFWithFrames:(NSArray *)frames withName:(NSString *)name andSpeed:(float)speed {
+    // based on http://stackoverflow.com/questions/14915138/create-and-and-export-an-animated-gif-via-ios
+    NSUInteger kFrameCount = frames.count;
+    
+    NSDictionary *fileProperties = @{
+        (__bridge id)kCGImagePropertyGIFDictionary: @{
+             (__bridge id)kCGImagePropertyGIFLoopCount: @0, // 0 means loop forever
+             }
+        };
+    
+    NSDictionary *frameProperties = @{
+        (__bridge id)kCGImagePropertyGIFDictionary: @{
+              (__bridge id)kCGImagePropertyGIFDelayTime: @(speed), // a float (not double!) in seconds, rounded to centiseconds in the GIF data
+              }
+        };
+    
+    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
+    NSURL *fileURL = [documentsDirectoryURL URLByAppendingPathComponent:name];
+
+    // FIX: CGImageDestinationCreateWithURL is not deleting preexisting images
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath =  [documentsDirectory stringByAppendingPathComponent:name];
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    BOOL isDirectory;
+    BOOL dataExists = [fm fileExistsAtPath:filePath isDirectory:&isDirectory];
+    if (dataExists && !isDirectory) {
+        [fm removeItemAtPath:filePath error:nil];
+    }
+    // ENDFIX: CGImageDestinationCreateWithURL is not deleting preexisting images
+
+    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, kFrameCount, NULL);
+    CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
+    
+    for (NSUInteger i = 0; i < kFrameCount; i++) {
+        @autoreleasepool {
+            UIImage *image = [frames objectAtIndex:i];
+            CGImageDestinationAddImage(destination, image.CGImage, (__bridge CFDictionaryRef)frameProperties);
+        }
+    }
+    
+    if (!CGImageDestinationFinalize(destination)) {
+        NSLog(@"failed to finalize image destination");
+    }
+    CFRelease(destination);
+    
+    return [fileURL absoluteString];
+}
+
 @end

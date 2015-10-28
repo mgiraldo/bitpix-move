@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CC4D07941BD85D5400A52613"
-               BuildableName = "Bitpix Move.app"
+               BuildableName = "MovePix.app"
                BlueprintName = "bitpix-move"
                ReferencedContainer = "container:bitpix-move.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CC4D07941BD85D5400A52613"
-            BuildableName = "Bitpix Move.app"
+            BuildableName = "MovePix.app"
             BlueprintName = "bitpix-move"
             ReferencedContainer = "container:bitpix-move.xcodeproj">
          </BuildableReference>
@@ -56,7 +56,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CC4D07941BD85D5400A52613"
-            BuildableName = "Bitpix Move.app"
+            BuildableName = "MovePix.app"
             BlueprintName = "bitpix-move"
             ReferencedContainer = "container:bitpix-move.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CC4D07941BD85D5400A52613"
-            BuildableName = "Bitpix Move.app"
+            BuildableName = "MovePix.app"
             BlueprintName = "bitpix-move"
             ReferencedContainer = "container:bitpix-move.xcodeproj">
          </BuildableReference>

@@ -26,16 +26,6 @@
 	return self;
 }
 
-- (void)createThumbnail {
-    if (self.isClean) {
-        [self drawLines];
-    }
-
-    UIImage *thumb = [UIImage imageWithCGImage:self.drawingImageView.image.CGImage];
-    thumb = [thumb scaleToSize:CGSizeMake(_thumbSize, _thumbSize)];
-    [thumb saveToDiskWithName:[NSString stringWithFormat:@"%@_t.png", self.uuid]];
-}
-
 - (void)resetLastLine {
 	self.lastLine = [[NSMutableArray alloc] initWithCapacity:1];
 }

@@ -13,14 +13,7 @@
 - (void)setFilename:(NSString *)filename {
     _filename = filename;
 
-    NSFileManager *fm = [[NSFileManager alloc] init];
-    NSString *dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *pngFilePath = [NSString stringWithFormat:@"%@/%@",dir,filename];
-    BOOL fileExists = [fm fileExistsAtPath:pngFilePath];
-    
-    if (!fileExists) return;
-
-    UIImage *img = [UIImage imageWithContentsOfFile:pngFilePath];
+    UIImage *img = [UIImage animatedImageNamed:filename duration:self.duration];
     
     self.backgroundColor = [UIColor whiteColor];
     self.thumbnailView.backgroundColor = [UIColor whiteColor];
@@ -31,6 +24,7 @@
     }
  
     self.thumbnailView.image = img;
+    [self.thumbnailView startAnimating];
 }
 
 @end

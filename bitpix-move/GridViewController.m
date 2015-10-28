@@ -40,29 +40,39 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 }
 
 - (void)buildThumbnails {
-    int i;
+    int i, j;
     NSDictionary *animation;
     NSArray *frames;
-    NSArray *lines;
-    DrawView *drawView;
+    NSMutableArray *drawViewArray;
+    NSString *uuid;
 
     NSFileManager *fm = [[NSFileManager alloc] init];
 
     for (i=0; i<self.appData.userAnimations.count; i++) {
         animation = (NSDictionary *)[self.appData.userAnimations objectAtIndex:i];
         // check if thumbnail exists
-        BOOL dataExists = [fm fileExistsAtPath:[NSString stringWithFormat:@"%@_t.png",[animation objectForKey:@"name"]]];
+        uuid = [animation objectForKey:@"name"];
+
+        NSString *filename = [NSString stringWithFormat:@"%@_t0.png", [animation objectForKey:@"name"]];
+        NSString *filePath = [UserData dataFilePath:filename];
+        BOOL dataExists = [fm fileExistsAtPath:filePath];
         if (dataExists) continue;
+        DebugLog(@"no frames");
+
         // get the frames
         frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
-        // get the lines in the frame
-        // only need the first to build the drawview
-        lines = [NSArray arrayWithArray:[frames objectAtIndex:0]];
-        // build the drawview
-        drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-        drawView.lineList = [lines mutableCopy];
-        drawView.uuid = [animation objectForKey:@"name"];
-        [drawView createThumbnail];
+        drawViewArray = [@[] mutableCopy];
+        for (j=0; j<frames.count; j++) {
+            NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
+            DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+            drawView.uuid = uuid;
+            drawView.lineList = [lines mutableCopy];
+            [drawViewArray addObject:drawView];
+        }
+        DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+        animator.uuid = uuid;
+        [animator createFrames:drawViewArray withSpeed:_fps];
+        [animator createAllGIFs];
     }
 }
 
@@ -105,10 +115,12 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:indexPath.row];
-    NSString *filename = [NSString stringWithFormat:@"%@_t.png", [animation objectForKey:@"name"]];
-
+    NSString *filename = [NSString stringWithFormat:@"%@_t", [animation objectForKey:@"name"]];
+    NSString *filePath = [UserData dataFilePath:filename];
+    
     // Configure the cell
-    cell.filename = filename;
+    cell.duration = [NSArray arrayWithArray:[animation objectForKey:@"frames"]].count / _fps;
+    cell.filename = filePath;
 
     return cell;
 }
