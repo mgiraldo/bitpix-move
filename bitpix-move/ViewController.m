@@ -18,6 +18,7 @@
 
 static int _currentFrame = -1;
 static BOOL _isPreviewing = NO;
+static BOOL _isClean = YES;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -52,6 +53,12 @@ static BOOL _isPreviewing = NO;
     self.previewView.hidden = NO;
     
     [self.previewView createFrames:self.framesArray withSpeed:_fps];
+
+    if (!_isClean) {
+        _isClean = YES;
+        [self.previewView createAllGIFs];
+    }
+
     [self.previewView animate];
     [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
@@ -100,6 +107,7 @@ static BOOL _isPreviewing = NO;
         }
     }
     [self.previewView createFrames:self.framesArray withSpeed:_fps];
+    _isClean = YES;
     _currentFrame = 0;
     [self updateUI];
 }
@@ -138,36 +146,38 @@ static BOOL _isPreviewing = NO;
     
     [self.appData save];
     
-    [self.previewView createAllGIFs];
+    _isClean = YES;
 }
 
 #pragma mark - Frame stuff
 
 - (void)removeFrames {
+    _isClean = YES;
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.framesArray = [@[] mutableCopy];
 }
 
 - (void)drawViewChanged:(DrawView *)drawView {
+    _isClean = NO;
     [self updateUndoButtonForDrawView:drawView];
     [self.framesArray replaceObjectAtIndex:_currentFrame withObject:drawView];
-    [self.previewView createFrames:self.framesArray withSpeed:_fps];
-    [self saveToDisk];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)addFrame {
+    _isClean = NO;
     _currentFrame++;
     DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
     drawView.uuid = self.uuid;
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
-    [self.previewView createFrames:self.framesArray withSpeed:_fps];
     [self saveToDisk];
     [self updateUI];
 }
 
 - (void)deleteCurrentFrame {
+    _isClean = NO;
     // dispose of view
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView removeFromSuperview];
@@ -183,7 +193,6 @@ static BOOL _isPreviewing = NO;
         _currentFrame--;
     }
 
-    [self.previewView createFrames:self.framesArray withSpeed:_fps];
     [self saveToDisk];
     [self updateUI];
 }
@@ -284,7 +293,9 @@ static BOOL _isPreviewing = NO;
     if (_isPreviewing) {
         [self stopPreview];
     }
-//    __block ViewController *weakSelf = self;
+    
+    _isClean = NO;
+
     [self dismissViewControllerAnimated:YES completion:^{
         // in case we want to wait until finished
     }];
@@ -294,6 +305,11 @@ static BOOL _isPreviewing = NO;
 #pragma mark - Button actions
 
 - (IBAction)onMyAnimationsTapped:(id)sender {
+    if (!_isClean) {
+        [self.previewView createFrames:self.framesArray withSpeed:_fps];
+        [self.previewView createAllGIFs];
+    }
+    
     [self performSegueWithIdentifier:@"viewGrid" sender:self];
 }
 
