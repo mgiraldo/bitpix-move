@@ -24,15 +24,14 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     [super viewDidLoad];
     
     self.appData = [[UserData alloc] initWithDefaultData];
+
+    [self buildThumbnails];
     
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
     [self.collectionView registerClass:[ThumbnailCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    // Do any additional setup after loading the view.
-    [self buildThumbnails];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -44,20 +43,19 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     NSDictionary *animation;
     NSArray *frames;
     NSMutableArray *drawViewArray;
-    NSString *uuid;
-
+    
     NSFileManager *fm = [[NSFileManager alloc] init];
 
     for (i=0; i<self.appData.userAnimations.count; i++) {
         animation = (NSDictionary *)[self.appData.userAnimations objectAtIndex:i];
         // check if thumbnail exists
-        uuid = [animation objectForKey:@"name"];
+        NSString *uuid = [animation objectForKey:@"name"];
 
-        NSString *filename = [NSString stringWithFormat:@"%@_t0.png", [animation objectForKey:@"name"]];
+        NSString *filename = [NSString stringWithFormat:@"%@/%@_t0.png", uuid, uuid];
         NSString *filePath = [UserData dataFilePath:filename];
         BOOL dataExists = [fm fileExistsAtPath:filePath];
         if (dataExists) continue;
-        DebugLog(@"no frames");
+        DebugLog(@"no frames: %@", filePath);
 
         // get the frames
         frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
@@ -115,7 +113,8 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:indexPath.row];
-    NSString *filename = [NSString stringWithFormat:@"%@_t", [animation objectForKey:@"name"]];
+    NSDictionary *uuid = [animation objectForKey:@"name"];
+    NSString *filename = [NSString stringWithFormat:@"%@/%@_t", uuid, uuid];
     NSString *filePath = [UserData dataFilePath:filename];
     
     // Configure the cell

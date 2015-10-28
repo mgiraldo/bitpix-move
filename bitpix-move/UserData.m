@@ -29,7 +29,7 @@
 
 - (void)load {
     if (self.data==nil) {
-        DebugLog(@"had to reload");
+//        DebugLog(@"had to reload");
         [self reload];
     }
 }

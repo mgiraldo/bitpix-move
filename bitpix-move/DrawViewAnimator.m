@@ -9,6 +9,7 @@
 #import "DrawViewAnimator.h"
 #import "Config.h"
 #import "UIImageXtras.h"
+#import "UserData.h"
 
 @implementation DrawViewAnimator
 
@@ -69,6 +70,12 @@
     self.image = self.imageArray[0];
 }
 
+- (void)resetWithNewUUID:(NSString *)uuid {
+    self.thumbArray = [@[] mutableCopy];
+    self.imageArray = [@[] mutableCopy];
+    self.uuid = uuid;
+}
+
 - (void)animate {
     self.animationImages = self.imageArray;
     self.animationRepeatCount = 0;
@@ -88,8 +95,17 @@
 
 - (void)createThumbnailGIFs {
     int i;
+
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSString *path = [NSString stringWithFormat:@"%@", self.uuid];
+    NSString *fullPath = [UserData dataFilePath:path];
+    
+    [fm removeItemAtPath:fullPath error:nil];
+    [fm createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
+
     for (i=0; i<self.thumbArray.count; i++) {
-        NSString *thumbname = [NSString stringWithFormat:@"%@_t%d.png", self.uuid, i];
+        NSString *thumbname = [NSString stringWithFormat:@"%@/%@_t%d.png", path, self.uuid, i];
+        NSLog(@"th: %@", thumbname);
         UIImage *thumbnail = [self.thumbArray objectAtIndex:i];
         [thumbnail saveToDiskWithName:thumbname];
     }

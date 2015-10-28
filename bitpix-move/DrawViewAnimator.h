@@ -18,6 +18,7 @@
 @property (nonatomic) NSMutableArray *thumbArray;
 
 - (void)createFrames:(NSArray *)framesArray withSpeed:(float)speed;
+- (void)resetWithNewUUID:(NSString *)uuid;
 - (void)animate;
 - (void)stop;
 - (void)createAllGIFs;

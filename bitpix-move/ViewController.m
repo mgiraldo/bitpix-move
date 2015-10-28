@@ -70,7 +70,7 @@ static BOOL _isPreviewing = NO;
 - (void)newAnimation {
     // new name for animation
     self.uuid = [[NSUUID UUID] UUIDString];
-    self.previewView.uuid = self.uuid;
+    [self.previewView resetWithNewUUID:self.uuid];
     // cleanup
     [self removeFrames];
     _currentFrame = -1;
@@ -82,7 +82,7 @@ static BOOL _isPreviewing = NO;
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
     // new name for animation
     self.uuid = [animation objectForKey:@"name"];
-    self.previewView.uuid = self.uuid;
+    [self.previewView resetWithNewUUID:self.uuid];
     // cleanup
     [self removeFrames];
     // add frames
@@ -146,12 +146,13 @@ static BOOL _isPreviewing = NO;
 - (void)removeFrames {
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.framesArray = [@[] mutableCopy];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)drawViewChanged:(DrawView *)drawView {
     [self updateUndoButtonForDrawView:drawView];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
+    [self.framesArray replaceObjectAtIndex:_currentFrame withObject:drawView];
+    [self.previewView createFrames:self.framesArray withSpeed:_fps];
+    [self saveToDisk];
 }
 
 - (void)addFrame {
@@ -161,7 +162,8 @@ static BOOL _isPreviewing = NO;
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
+    [self.previewView createFrames:self.framesArray withSpeed:_fps];
+    [self saveToDisk];
     [self updateUI];
 }
 
@@ -181,7 +183,8 @@ static BOOL _isPreviewing = NO;
         _currentFrame--;
     }
 
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
+    [self.previewView createFrames:self.framesArray withSpeed:_fps];
+    [self saveToDisk];
     [self updateUI];
 }
 

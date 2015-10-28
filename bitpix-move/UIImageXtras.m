@@ -45,6 +45,7 @@ static CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
 - (NSString *)saveToDiskWithName:(NSString *)name {
     NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *pngFilePath = [NSString stringWithFormat:@"%@/%@",docDir,name];
+//    DebugLog(@"%@",pngFilePath);
     NSData *data = [NSData dataWithData:UIImagePNGRepresentation(self)];
     [data writeToFile:pngFilePath atomically:YES];
     return pngFilePath;
@@ -297,7 +298,7 @@ static CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
     }
     
     if (!CGImageDestinationFinalize(destination)) {
-        NSLog(@"failed to finalize image destination");
+        DebugLog(@"failed to finalize image destination");
     }
     CFRelease(destination);
     
