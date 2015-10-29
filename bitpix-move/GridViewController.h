@@ -18,12 +18,14 @@
 @end
 
 
-@interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
+@property (nonatomic) UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) id <GridViewControllerDelegate> delegate;
 @property (nonatomic) UserData *appData;
 
 - (IBAction)onReturnTapped:(id)sender;
+- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer;
 
 @end

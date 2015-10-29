@@ -110,6 +110,7 @@ static BOOL _isClean = YES;
     _isClean = YES;
     _currentFrame = 0;
     [self updateUI];
+    [self showPreview];
 }
 
 - (void)saveToDisk {
@@ -272,7 +273,6 @@ static BOOL _isClean = YES;
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView undo];
-    [self saveToDisk];
     [self updateUI];
 }
 

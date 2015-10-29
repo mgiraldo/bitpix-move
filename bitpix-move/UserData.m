@@ -8,6 +8,7 @@
 
 #import "UserData.h"
 #import "Config.h"
+#import "UIImageXtras.h"
 
 @implementation UserData
 
@@ -60,6 +61,46 @@
     }
 
     NSLog(@"size: %lu", (unsigned long)self.userAnimations.count);
+}
+
+- (void)deleteAnimationAtIndex:(NSInteger)index {
+    NSDictionary *animation = [self.userAnimations objectAtIndex:index];
+    NSString *uuid = [animation valueForKey:@"name"];
+    [self removeThumbnailsForUUID:uuid];
+    [self removeAnimationImageForUUI:uuid];
+    [self.userAnimations removeObjectAtIndex:index];
+    [self save];
+}
+
+- (void)removeThumbnailsForUUID:(NSString *)uuid {
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSString *path = [NSString stringWithFormat:@"%@", uuid];
+    NSString *fullPath = [UserData dataFilePath:path];
+    
+    [fm removeItemAtPath:fullPath error:nil];
+}
+
+- (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray {
+    [self removeThumbnailsForUUID:uuid];
+    NSString *path = [NSString stringWithFormat:@"%@", uuid];
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSString *fullPath = [UserData dataFilePath:path];
+    [fm createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
+    int i;
+    for (i=0; i<thumbArray.count; i++) {
+        NSString *thumbname = [NSString stringWithFormat:@"%@/%@_t%d.png", path, uuid, i];
+        NSLog(@"th: %@", thumbname);
+        UIImage *thumbnail = [thumbArray objectAtIndex:i];
+        [thumbnail saveToDiskWithName:thumbname];
+    }
+}
+
+- (void)removeAnimationImageForUUI:(NSString *)uuid {
+    NSString *filename = [NSString stringWithFormat:@"%@.gif", uuid];
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSString *path = [NSString stringWithFormat:@"%@", filename];
+    NSString *fullPath = [UserData dataFilePath:path];
+    [fm removeItemAtPath:fullPath error:nil];
 }
 
 - (void)resetDataFile {

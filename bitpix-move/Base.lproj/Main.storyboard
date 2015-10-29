@@ -229,6 +229,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WCC-jN-hJn">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
+                                <gestureRecognizers/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Y4R-c1-25i">
                                     <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -251,6 +252,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="CoQ-FN-aMX" id="pC7-eX-n3K"/>
                                     <outlet property="delegate" destination="CoQ-FN-aMX" id="pC1-Mu-vRf"/>
+                                    <outletCollection property="gestureRecognizers" destination="kgn-HG-Qok" appends="YES" id="Zcr-t2-cQ0"/>
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GEs-1p-d0Q">
@@ -283,6 +285,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fEw-Fx-zWv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="kgn-HG-Qok"/>
             </objects>
             <point key="canvasLocation" x="934" y="402"/>
         </scene>

@@ -94,21 +94,8 @@
 }
 
 - (void)createThumbnailGIFs {
-    int i;
-
-    NSFileManager *fm = [[NSFileManager alloc] init];
-    NSString *path = [NSString stringWithFormat:@"%@", self.uuid];
-    NSString *fullPath = [UserData dataFilePath:path];
-    
-    [fm removeItemAtPath:fullPath error:nil];
-    [fm createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
-
-    for (i=0; i<self.thumbArray.count; i++) {
-        NSString *thumbname = [NSString stringWithFormat:@"%@/%@_t%d.png", path, self.uuid, i];
-        NSLog(@"th: %@", thumbname);
-        UIImage *thumbnail = [self.thumbArray objectAtIndex:i];
-        [thumbnail saveToDiskWithName:thumbname];
-    }
+    UserData *appData = [[UserData alloc] initWithDefaultData];
+    [appData createThumbnailsForUUID:self.uuid withArray:self.thumbArray];
 }
 
 - (void)createLargeGIF {

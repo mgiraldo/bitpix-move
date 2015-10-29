@@ -19,6 +19,7 @@
 @implementation GridViewController
 
 static NSString * const reuseIdentifier = @"AnimationCell";
+static NSInteger _deletedRow;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,6 +30,12 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
+    
+    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    recognizer.minimumPressDuration = 0.5;
+    recognizer.delaysTouchesBegan = YES;
+    recognizer.delegate = self;
+    [self.collectionView addGestureRecognizer:recognizer];
     
     // Register cell classes
     [self.collectionView registerClass:[ThumbnailCell class] forCellWithReuseIdentifier:reuseIdentifier];
@@ -171,6 +178,56 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(20, 10, 50, 10);
+}
+
+#pragma mark – Long press stuff
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    DebugLog(@"scroll");
+    if (self.deleteButton != nil) {
+        [self.deleteButton removeFromSuperview];
+        self.deleteButton = nil;
+    }
+}
+
+- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
+    DebugLog(@"long press");
+    if (recognizer.state != UIGestureRecognizerStateEnded) return;
+
+    if (self.deleteButton != nil) {
+        [self.deleteButton removeFromSuperview];
+        self.deleteButton = nil;
+    }
+    
+    CGPoint p = [recognizer locationInView:self.collectionView];
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+    
+    if (indexPath == nil) {
+        DebugLog(@"could not find index path");
+    } else {
+        ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        UIImage *deleteImage = [UIImage imageNamed:@"delete"];
+        self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _deletedRow = indexPath.row;
+        CGFloat w = deleteImage.size.width;
+        CGFloat h = deleteImage.size.height;
+        self.deleteButton.frame = CGRectMake(cell.frame.origin.x - w*.5, cell.frame.origin.y - h*.25, w, h);
+        [self.deleteButton setBackgroundImage:deleteImage forState:UIControlStateNormal];
+        [self.collectionView addSubview:self.deleteButton];
+        [self.collectionView bringSubviewToFront:self.deleteButton];
+        [self.deleteButton addTarget:self action:@selector(deleteAnimation:) forControlEvents:UIControlEventTouchUpInside];
+        DebugLog(@"added: %@", cell);
+    }
+}
+
+- (void)deleteAnimation:(id)sender {
+    DebugLog(@"deleted: %d", _deletedRow);
+    [self.deleteButton removeFromSuperview];
+    self.deleteButton = nil;
+    if (_deletedRow == -1) return;
+    [self.appData deleteAnimationAtIndex:_deletedRow];
+    [self.collectionView reloadData];
+    _deletedRow = -1;
 }
 
 @end

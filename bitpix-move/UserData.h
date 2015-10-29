@@ -18,6 +18,8 @@
 - (void)load;
 - (void)reload;
 - (void)resetDataFile;
+- (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray;
+- (void)deleteAnimationAtIndex:(NSInteger)index;
 - (void)save;
 
 @end
