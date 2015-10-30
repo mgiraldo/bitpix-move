@@ -86,7 +86,7 @@
 }
 
 - (void)copyFilesFrom:(NSString *)fromUUID to:(NSString *)toUUID withCount:(NSInteger)count {
-    DebugLog(@"copying %d files from %@ to %@", count, fromUUID, toUUID);
+    DebugLog(@"copying %ld files from %@ to %@", (long)count, fromUUID, toUUID);
     NSFileManager *fm = [[NSFileManager alloc] init];
     NSString *fromPath, *toPath;
     NSError *error;

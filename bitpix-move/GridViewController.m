@@ -144,6 +144,7 @@ static BOOL _deletedParentAnimation = NO;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [self.delegate gridViewControllerDidFinish:self withAnimationIndex:indexPath.row];
 }
+ 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     // TODO: Deselect item
 }
@@ -185,7 +186,7 @@ static BOOL _deletedParentAnimation = NO;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 10, 50, 10);
+    return UIEdgeInsetsMake(20, 10, 100, 10);
 }
 
 #pragma mark – Duplicate/delete stuff
@@ -258,19 +259,26 @@ static BOOL _deletedParentAnimation = NO;
 }
 
 - (void)deleteAnimation {
-    DebugLog(@"deleted: %d", _selectedRow);
+    DebugLog(@"deleted: %ld", (long)_selectedRow);
     [self removeAccessoryButtons];
     if (_selectedRow == -1) return;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
+    NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.appData deleteAnimationAtIndex:_selectedRow];
+    [self.collectionView deleteItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
     _selectedRow = -1;
 }
 
 - (void)duplicateAnimation {
-    DebugLog(@"duplicated: %d", _selectedRow);
+    DebugLog(@"duplicated: %ld", (long)_selectedRow);
     [self removeAccessoryButtons];
     if (_selectedRow == -1) return;
+    NSInteger newIndex = self.appData.userAnimations.count;
     [self.appData duplicateAnimationAtIndex:_selectedRow];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
+    NSArray *indexes = [NSArray arrayWithObject:indexPath];
+    [self.collectionView insertItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
     _selectedRow = -1;
 }

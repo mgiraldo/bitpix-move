@@ -206,7 +206,7 @@ static BOOL _isClean = YES;
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
-    [self saveToDisk];
+    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
     [self updateUI];
 }
 
