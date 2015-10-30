@@ -158,7 +158,7 @@ static BOOL _isClean = YES;
 - (void)export {
     [self clean];
 
-    NSString *textToShare = @"Check out this GIF I created with MovePix!";
+    NSString *textToShare = @"created with MovePix";
     
     NSArray *objectsToShare;
     

@@ -69,7 +69,9 @@ static BOOL _deletedParentAnimation = NO;
         NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:uuid] error:nil];
         int count = [filelist count];
 
-        if (count == frames.count) continue;
+        BOOL dataExists = [fm fileExistsAtPath:[UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s0.png",uuid,uuid,_fileSuffix]]];
+
+        if (count == frames.count && dataExists) continue;
         DebugLog(@"frame difference");
 
         drawViewArray = [@[] mutableCopy];
