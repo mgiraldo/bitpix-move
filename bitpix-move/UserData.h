@@ -20,6 +20,7 @@
 - (void)resetDataFile;
 - (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray;
 - (void)deleteAnimationAtIndex:(NSInteger)index;
+- (void)duplicateAnimationAtIndex:(NSInteger)index;
 - (void)save;
 
 @end

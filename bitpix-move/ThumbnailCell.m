@@ -7,14 +7,30 @@
 //
 
 #import "ThumbnailCell.h"
+#import "UserData.h"
+#import "Config.h"
 
 @implementation ThumbnailCell
 
 - (void)setFilename:(NSString *)filename {
     _filename = filename;
 
-    UIImage *img = [UIImage animatedImageNamed:filename duration:self.duration];
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:filename] error:nil];
     
+    if (filelist == nil) {
+        DebugLog(@"error loading thumb images");
+        return;
+    }
+
+    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:filelist.count];
+    
+    for (NSString *file in filelist) {
+        NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@", filename, file]];
+        UIImage *frame = [UIImage imageWithContentsOfFile:fullPath];
+        [frames addObject:frame];
+    }
+
     self.backgroundColor = [UIColor whiteColor];
     self.thumbnailView.backgroundColor = [UIColor whiteColor];
     
@@ -22,8 +38,11 @@
         self.thumbnailView = [[ThumbnailView alloc] initWithFrame:self.contentView.frame];
         [self.contentView addSubview:self.thumbnailView];
     }
- 
-    self.thumbnailView.image = img;
+
+    self.thumbnailView.animationImages = frames;
+    self.thumbnailView.animationRepeatCount = 0;
+    self.thumbnailView.animationDuration = self.duration;
+    self.thumbnailView.image = frames[0];
     [self.thumbnailView startAnimating];
 }
 

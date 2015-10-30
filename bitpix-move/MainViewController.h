@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MainViewController.h
 //  bitpix-move
 //
 //  Created by Mauricio Giraldo on 21/10/15.
@@ -12,7 +12,7 @@
 #import "GridViewController.h"
 #import "UserData.h"
 
-@interface ViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate>
+@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic) UserData *appData;
 @property (nonatomic) NSMutableArray *framesArray;

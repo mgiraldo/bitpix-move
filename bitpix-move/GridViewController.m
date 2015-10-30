@@ -11,6 +11,7 @@
 #import "DrawView.h"
 #import "DrawViewAnimator.h"
 #import "Config.h"
+#import "MainViewController.h"
 
 @interface GridViewController ()
 
@@ -19,11 +20,15 @@
 @implementation GridViewController
 
 static NSString * const reuseIdentifier = @"AnimationCell";
-static NSInteger _deletedRow;
+static NSInteger _selectedRow;
+static int _selectedAction;
+static BOOL _deletedParentAnimation = NO;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _deletedParentAnimation = NO;
+
     self.appData = [[UserData alloc] initWithDefaultData];
 
     [self buildThumbnails];
@@ -46,6 +51,7 @@ static NSInteger _deletedRow;
 }
 
 - (void)buildThumbnails {
+    DebugLog(@"buildThumbnails");
     int i, j;
     NSDictionary *animation;
     NSArray *frames;
@@ -57,15 +63,15 @@ static NSInteger _deletedRow;
         animation = (NSDictionary *)[self.appData.userAnimations objectAtIndex:i];
         // check if thumbnail exists
         NSString *uuid = [animation objectForKey:@"name"];
-
-        NSString *filename = [NSString stringWithFormat:@"%@/%@_t0.png", uuid, uuid];
-        NSString *filePath = [UserData dataFilePath:filename];
-        BOOL dataExists = [fm fileExistsAtPath:filePath];
-        if (dataExists) continue;
-        DebugLog(@"no frames: %@", filePath);
-
         // get the frames
         frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
+
+        NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:uuid] error:nil];
+        int count = [filelist count];
+
+        if (count == frames.count) continue;
+        DebugLog(@"frame difference");
+
         drawViewArray = [@[] mutableCopy];
         for (j=0; j<frames.count; j++) {
             NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
@@ -102,7 +108,11 @@ static NSInteger _deletedRow;
 */
 
 - (IBAction)onReturnTapped:(id)sender {
-    [self.delegate gridViewControllerDidFinish:self];
+    if (_deletedParentAnimation) {
+        [self.delegate gridViewControllerDidFinish:self withAnimationIndex:-1];
+    } else {
+        [self.delegate gridViewControllerDidFinish:self];
+    }
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -120,13 +130,11 @@ static NSInteger _deletedRow;
     ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:indexPath.row];
-    NSDictionary *uuid = [animation objectForKey:@"name"];
-    NSString *filename = [NSString stringWithFormat:@"%@/%@_t", uuid, uuid];
-    NSString *filePath = [UserData dataFilePath:filename];
+    NSString *uuid = [animation objectForKey:@"name"];
     
     // Configure the cell
     cell.duration = [NSArray arrayWithArray:[animation objectForKey:@"frames"]].count / _fps;
-    cell.filename = filePath;
+    cell.filename = uuid;
 
     return cell;
 }
@@ -180,54 +188,121 @@ static NSInteger _deletedRow;
     return UIEdgeInsetsMake(20, 10, 50, 10);
 }
 
-#pragma mark – Long press stuff
+#pragma mark – Duplicate/delete stuff
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    DebugLog(@"scroll");
-    if (self.deleteButton != nil) {
-        [self.deleteButton removeFromSuperview];
-        self.deleteButton = nil;
-    }
+    [self removeAccessoryButtons];
 }
 
 - (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
     DebugLog(@"long press");
-    if (recognizer.state != UIGestureRecognizerStateEnded) return;
 
-    if (self.deleteButton != nil) {
-        [self.deleteButton removeFromSuperview];
-        self.deleteButton = nil;
-    }
-    
+    [self removeAccessoryButtons];
+
     CGPoint p = [recognizer locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
     
     if (indexPath == nil) {
         DebugLog(@"could not find index path");
     } else {
+        _selectedRow = indexPath.row;
+
         ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+
         UIImage *deleteImage = [UIImage imageNamed:@"delete"];
         self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _deletedRow = indexPath.row;
         CGFloat w = deleteImage.size.width;
         CGFloat h = deleteImage.size.height;
-        self.deleteButton.frame = CGRectMake(cell.frame.origin.x - w*.5, cell.frame.origin.y - h*.25, w, h);
+        self.deleteButton.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, w, h);
         [self.deleteButton setBackgroundImage:deleteImage forState:UIControlStateNormal];
         [self.collectionView addSubview:self.deleteButton];
         [self.collectionView bringSubviewToFront:self.deleteButton];
-        [self.deleteButton addTarget:self action:@selector(deleteAnimation:) forControlEvents:UIControlEventTouchUpInside];
+        [self.deleteButton addTarget:self action:@selector(deleteTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+        UIImage *duplicateImage = [UIImage imageNamed:@"duplicate"];
+        self.duplicateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        w = duplicateImage.size.width;
+        h = duplicateImage.size.height;
+        self.duplicateButton.frame = CGRectMake(cell.frame.origin.x + cell.frame.size.width - w, cell.frame.origin.y, w, h);
+        [self.duplicateButton setBackgroundImage:duplicateImage forState:UIControlStateNormal];
+        [self.collectionView addSubview:self.duplicateButton];
+        [self.collectionView bringSubviewToFront:self.duplicateButton];
+        [self.duplicateButton addTarget:self action:@selector(duplicateTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
         DebugLog(@"added: %@", cell);
     }
 }
 
-- (void)deleteAnimation:(id)sender {
-    DebugLog(@"deleted: %d", _deletedRow);
-    [self.deleteButton removeFromSuperview];
-    self.deleteButton = nil;
-    if (_deletedRow == -1) return;
-    [self.appData deleteAnimationAtIndex:_deletedRow];
+- (void)deleteTapped:(id)sender {
+    _selectedAction = kDeleteAction;
+
+    UIActionSheet *as = [[UIActionSheet alloc]
+                         initWithTitle:nil
+                         delegate:self
+                         cancelButtonTitle:@"Cancel"
+                         destructiveButtonTitle:[NSString stringWithFormat:@"Delete animation"]
+                         otherButtonTitles:nil];
+    [as showInView:self.view.superview];
+}
+
+- (void)duplicateTapped:(id)sender {
+    _selectedAction = kDuplicateAction;
+    
+    UIActionSheet *as = [[UIActionSheet alloc]
+                         initWithTitle:nil
+                         delegate:self
+                         cancelButtonTitle:@"Cancel"
+                         destructiveButtonTitle:nil
+                         otherButtonTitles:[NSString stringWithFormat:@"Duplicate animation"], nil];
+    [as showInView:self.view.superview];
+}
+
+- (void)deleteAnimation {
+    DebugLog(@"deleted: %d", _selectedRow);
+    [self removeAccessoryButtons];
+    if (_selectedRow == -1) return;
+    [self.appData deleteAnimationAtIndex:_selectedRow];
     [self.collectionView reloadData];
-    _deletedRow = -1;
+    _selectedRow = -1;
+}
+
+- (void)duplicateAnimation {
+    DebugLog(@"duplicated: %d", _selectedRow);
+    [self removeAccessoryButtons];
+    if (_selectedRow == -1) return;
+    [self.appData duplicateAnimationAtIndex:_selectedRow];
+    [self.collectionView reloadData];
+    _selectedRow = -1;
+}
+
+- (void)removeAccessoryButtons {
+    if (self.deleteButton != nil) {
+        [self.deleteButton removeFromSuperview];
+        self.deleteButton = nil;
+    }
+    
+    if (self.duplicateButton != nil) {
+        [self.duplicateButton removeFromSuperview];
+        self.duplicateButton = nil;
+    }
+}
+
+#pragma mark - Actionsheet stuff
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (_selectedAction == kDeleteAction && buttonIndex == 0) {
+        // check to see if it was the animation user was working on
+        NSString *uuid = [[self.appData.userAnimations objectAtIndex:_selectedRow] objectForKey:@"name"];
+        MainViewController *vc = (MainViewController *)self.delegate;
+        if ([uuid isEqualToString:vc.uuid]) {
+            _deletedParentAnimation = YES;
+        }
+        [self deleteAnimation];
+    }
+
+    if (_selectedAction == kDuplicateAction && buttonIndex == 0) {
+        [self duplicateAnimation];
+    }
 }
 
 @end

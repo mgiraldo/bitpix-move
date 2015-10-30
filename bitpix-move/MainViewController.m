@@ -1,20 +1,20 @@
 //
-//  ViewController.m
+//  MainViewController.m
 //  bitpix-move
 //
 //  Created by Mauricio Giraldo on 21/10/15.
 //  Copyright © 2015 Ping Pong Estudio. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MainViewController.h"
 #import "UIImageXtras.h"
 #import "Config.h"
 
-@interface ViewController ()
+@interface MainViewController ()
 
 @end
 
-@implementation ViewController
+@implementation MainViewController
 
 static int _currentFrame = -1;
 static BOOL _isPreviewing = NO;
@@ -32,6 +32,7 @@ static BOOL _isClean = YES;
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
     self.undoButton.hidden = YES;
+    self.deleteButton.hidden = YES;
 	self.sketchView.backgroundColor = [UIColor whiteColor];
     self.sketchView.layer.borderColor = [UIColor blackColor].CGColor;
     self.sketchView.layer.borderWidth = _borderWidth;
@@ -51,14 +52,8 @@ static BOOL _isClean = YES;
     self.previewButton.hidden = YES;
     self.stopPreviewButton.hidden = NO;
     self.previewView.hidden = NO;
-    
-    [self.previewView createFrames:self.framesArray withSpeed:_fps];
 
-    if (!_isClean) {
-        _isClean = YES;
-        [self.previewView createAllGIFs];
-    }
-
+    [self clean];
     [self.previewView animate];
     [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
@@ -75,6 +70,9 @@ static BOOL _isClean = YES;
 #pragma mark - Load/new/save stuff
 
 - (void)newAnimation {
+    if (_isPreviewing) {
+        [self stopPreview];
+    }
     // new name for animation
     self.uuid = [[NSUUID UUID] UUIDString];
     [self.previewView resetWithNewUUID:self.uuid];
@@ -146,14 +144,49 @@ static BOOL _isClean = YES;
     }
     
     [self.appData save];
+}
+
+- (void)clean {
+    if (!_isClean) {
+        _isClean = YES;
+        [self.previewView createFrames:self.framesArray withSpeed:_fps];
+        [self.previewView createAllGIFs];
+        [self saveToDisk];
+    }
+}
+
+- (void)export {
+    [self clean];
+
+    NSString *textToShare = @"Check out this GIF I created with MovePix!";
     
-    _isClean = YES;
+    NSArray *objectsToShare;
+    
+    NSString *filename = [NSString stringWithFormat:@"%@.gif", self.uuid];
+    NSString *path = [UserData dataFilePath:filename];
+    NSData *fileData = [NSData dataWithContentsOfFile:path];
+    
+    objectsToShare = @[textToShare, fileData];
+    
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
+                                      applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[UIActivityTypePrint,
+                                   UIActivityTypeCopyToPasteboard, // TODO: maybe fix this exclusion in the future
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToTencentWeibo];
+    
+    activityViewController.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityViewController
+                       animated:YES
+                     completion:^{}];
 }
 
 #pragma mark - Frame stuff
 
 - (void)removeFrames {
-    _isClean = YES;
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.framesArray = [@[] mutableCopy];
 }
@@ -239,26 +272,30 @@ static BOOL _isClean = YES;
     }
 
     if (self.framesArray.count > 1) {
-        self.deleteButton.enabled = YES;
+        self.deleteButton.hidden = NO;
     } else {
-        self.deleteButton.enabled = NO;
+        self.deleteButton.hidden = YES;
     }
     
     if (self.framesArray.count > 1) {
         self.exportButton.enabled = YES;
+        self.previewButton.enabled = YES;
     } else {
         self.exportButton.enabled = NO;
+        self.previewButton.enabled = NO;
     }
 
     self.frameLabel.text = [NSString stringWithFormat:@"Frame: %i/%i", _currentFrame+1, (int)self.framesArray.count];
 }
 
 - (void)disableUI {
+    // things to disable
     self.previousButton.enabled = NO;
     self.nextButton.enabled = NO;
     self.addButton.enabled = NO;
-    self.deleteButton.enabled = NO;
     self.exportButton.enabled = NO;
+    // things to hide
+    self.deleteButton.hidden = YES;
     self.undoButton.hidden = YES;
 }
 
@@ -273,6 +310,7 @@ static BOOL _isClean = YES;
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView undo];
+    [self saveToDisk];
     [self updateUI];
 }
 
@@ -281,42 +319,42 @@ static BOOL _isClean = YES;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //	NSLog(@"prepare for segue: [%@] sender: [%@]", [segue identifier], sender);
     if ([[segue identifier] isEqualToString:@"viewGrid"]) {
+        [self clean];
         [[segue destinationViewController] setDelegate:self];
     }
 }
 
 - (void)gridViewControllerDidFinish:(GridViewController *)controller {
+    self.appData = [[UserData alloc] initWithDefaultData];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(NSInteger)index {
+    self.appData = [[UserData alloc] initWithDefaultData];
+
     if (_isPreviewing) {
         [self stopPreview];
     }
     
-    _isClean = NO;
-
     [self dismissViewControllerAnimated:YES completion:^{
         // in case we want to wait until finished
     }];
-    [self loadAnimation:index];
+    
+    if (index != -1) {
+        [self loadAnimation:index];
+    } else {
+        [self newAnimation];
+    }
 }
 
 #pragma mark - Button actions
 
 - (IBAction)onMyAnimationsTapped:(id)sender {
-    if (!_isClean) {
-        [self.previewView createFrames:self.framesArray withSpeed:_fps];
-        [self.previewView createAllGIFs];
-    }
-    
     [self performSegueWithIdentifier:@"viewGrid" sender:self];
 }
 
 - (IBAction)onNewTapped:(id)sender {
-    if (_isPreviewing) {
-        [self stopPreview];
-    }
     [self newAnimation];
 }
 
@@ -333,7 +371,13 @@ static BOOL _isClean = YES;
 }
 
 - (IBAction)onDeleteTapped:(id)sender {
-    [self deleteCurrentFrame];
+    UIActionSheet *as = [[UIActionSheet alloc]
+                         initWithTitle:nil
+                         delegate:self
+                         cancelButtonTitle:@"Cancel"
+                         destructiveButtonTitle:[NSString stringWithFormat:@"Delete frame"]
+                         otherButtonTitles:nil];
+    [as showInView:self.view.superview];
 }
 
 - (IBAction)onStopPreviewTapped:(id)sender {
@@ -349,30 +393,15 @@ static BOOL _isClean = YES;
 }
 
 - (IBAction)onExportTapped:(id)sender {
-    NSString *textToShare = @"Check out this GIF I created with MovePix!";
-    
-    NSArray *objectsToShare;
-    
-    NSString *filename = [NSString stringWithFormat:@"%@.gif", self.uuid];
-    NSString *path = [UserData dataFilePath:filename];
-    NSData *fileData = [NSData dataWithContentsOfFile:path];
-    
-    objectsToShare = @[textToShare, fileData];
-    
-    UIActivityViewController *activityViewController =
-    [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
-                                      applicationActivities:nil];
-    
-    NSArray *excludeActivities = @[UIActivityTypePrint,
-                                   UIActivityTypeCopyToPasteboard, // TODO: maybe fix this exclusion in the future
-                                   UIActivityTypeAddToReadingList,
-                                   UIActivityTypePostToTencentWeibo];
-    
-    activityViewController.excludedActivityTypes = excludeActivities;
-    
-    [self presentViewController:activityViewController
-                       animated:YES
-                     completion:^{}];
+    [self export];
+}
+
+#pragma mark - Actionsheet stuff
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self deleteCurrentFrame];
+    }
 }
 
 @end

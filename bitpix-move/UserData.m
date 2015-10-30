@@ -72,6 +72,45 @@
     [self save];
 }
 
+- (void)duplicateAnimationAtIndex:(NSInteger)index {
+    NSMutableDictionary *animation = [[self.userAnimations objectAtIndex:index] mutableCopy];
+    NSString *olduuid = [animation valueForKey:@"name"];
+    NSString *uuid = [[NSUUID UUID] UUIDString];
+    NSDate *today = [NSDate date];
+    [animation setValue:uuid forKey:@"name"];
+    [animation setValue:today forKey:@"date"];
+    [self.userAnimations addObject:animation];
+    NSArray *frames = [animation objectForKey:@"frames"];
+    [self copyFilesFrom:olduuid to:uuid withCount:frames.count];
+    [self save];
+}
+
+- (void)copyFilesFrom:(NSString *)fromUUID to:(NSString *)toUUID withCount:(NSInteger)count {
+    DebugLog(@"copying %d files from %@ to %@", count, fromUUID, toUUID);
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSString *fromPath, *toPath;
+    NSError *error;
+    // create the folder
+    NSString *dirPath = [UserData dataFilePath:toUUID];
+    [fm createDirectoryAtPath:dirPath withIntermediateDirectories:YES attributes:nil error:nil];
+    // add the gif
+    fromPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@.gif", fromUUID]];
+    toPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@.gif", toUUID]];
+    [fm copyItemAtPath:fromPath toPath:toPath error:&error];
+    if (error) {
+        DebugLog(@"error: %@", error);
+    }
+    // copy each frame
+    for (int i=0; i<count; i++) {
+        fromPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", fromUUID, fromUUID, _fileSuffix, i]];
+        toPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", toUUID, toUUID, _fileSuffix, i]];
+        [fm copyItemAtPath:fromPath toPath:toPath error:&error];
+        if (error) {
+            DebugLog(@"error: %@", error);
+        }
+    }
+}
+
 - (void)removeThumbnailsForUUID:(NSString *)uuid {
     NSFileManager *fm = [[NSFileManager alloc] init];
     NSString *path = [NSString stringWithFormat:@"%@", uuid];
@@ -88,8 +127,7 @@
     [fm createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     int i;
     for (i=0; i<thumbArray.count; i++) {
-        NSString *thumbname = [NSString stringWithFormat:@"%@/%@_t%d.png", path, uuid, i];
-        NSLog(@"th: %@", thumbname);
+        NSString *thumbname = [NSString stringWithFormat:@"%@/%@%s%d.png", path, uuid, _fileSuffix, i];
         UIImage *thumbnail = [thumbArray objectAtIndex:i];
         [thumbnail saveToDiskWithName:thumbname];
     }
