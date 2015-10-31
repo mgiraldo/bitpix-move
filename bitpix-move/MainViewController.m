@@ -37,8 +37,6 @@ static dispatch_queue_t backgroundSaveQueue;
     self.undoButton.hidden = YES;
     self.deleteButton.hidden = YES;
 	self.sketchView.backgroundColor = [UIColor whiteColor];
-    self.sketchView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.sketchView.layer.borderWidth = _borderWidth;
 	[self newAnimation];
 }
 
@@ -316,6 +314,8 @@ static dispatch_queue_t backgroundSaveQueue;
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [self updateUndoButtonForDrawView:drawView];
 
+    self.backgroundView.hidden = NO;
+
     if (_currentFrame <= 0) {
         self.previousButton.enabled = NO;
     } else {
@@ -353,6 +353,7 @@ static dispatch_queue_t backgroundSaveQueue;
 
 - (void)disableUI {
     // things to disable
+    self.backgroundView.hidden = YES;
     self.previousButton.enabled = NO;
     self.nextButton.enabled = NO;
     self.addButton.enabled = NO;
