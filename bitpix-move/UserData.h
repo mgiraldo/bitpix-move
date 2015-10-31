@@ -15,9 +15,11 @@
 
 - (id)initWithDefaultData;
 + (NSString *)dataFilePath:(NSString *)filename;
++ (void)emptyUserFolder;
 - (void)load;
 - (void)reload;
 - (void)resetDataFile;
+- (void)removeThumbnailsForUUID:(NSString *)uuid;
 - (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray;
 - (void)deleteAnimationAtIndex:(NSInteger)index;
 - (void)duplicateAnimationAtIndex:(NSInteger)index;

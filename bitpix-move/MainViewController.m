@@ -161,7 +161,7 @@ static dispatch_queue_t backgroundSaveQueue;
 - (void)export {
     [self clean];
 
-    NSString *textToShare = @"created with MovePix";
+//    NSString *textToShare = @"created with MovePix";
     
     NSArray *objectsToShare;
     
@@ -169,14 +169,13 @@ static dispatch_queue_t backgroundSaveQueue;
     NSString *path = [UserData dataFilePath:filename];
     NSData *fileData = [NSData dataWithContentsOfFile:path];
     
-    objectsToShare = @[textToShare, fileData];
+    objectsToShare = @[fileData];
     
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
                                       applicationActivities:nil];
     
     NSArray *excludeActivities = @[UIActivityTypePrint,
-                                   UIActivityTypeCopyToPasteboard, // TODO: maybe fix this exclusion in the future
                                    UIActivityTypeAddToReadingList,
                                    UIActivityTypePostToTencentWeibo];
     
@@ -257,7 +256,11 @@ static dispatch_queue_t backgroundSaveQueue;
 }
 
 - (void)buildThumbnails {
-    self.statusLabel.text = @"Performing GIFness. This may take a while depending on how many animations you have. In the meantime, enjoy some emoji:\n\n👯";
+    NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾"];
+    int emojiCount = (int)emojiArray.count;
+    int index = rand()%emojiCount;
+    NSString *emoji = [emojiArray objectAtIndex:index];
+    self.statusLabel.text = [NSString stringWithFormat:@"Performing GIFness. This may take a while depending on how many animations you have. In the meantime, enjoy some emoji:\n\n%@", emoji];
     self.statusView.hidden = NO;
 
     dispatch_async(backgroundSaveQueue, ^{
@@ -269,7 +272,6 @@ static dispatch_queue_t backgroundSaveQueue;
 }
 
 - (void)dispatchedBuild {
-//    DebugLog(@"buildThumbnails");
     int i;
     NSDictionary *animation;
     NSArray *frames;
@@ -277,11 +279,13 @@ static dispatch_queue_t backgroundSaveQueue;
 
     NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
     
+    [UserData emptyUserFolder];
+    
     for (i=0; i<animationCount; i++) {
-//        DebugLog(@"Refreshing %d of %ld", i+1, (long)animationCount);
         animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:i];
         // check if thumbnail exists
         NSString *uuid = [animation objectForKey:@"name"];
+        [self.appDelegate.appData removeThumbnailsForUUID:uuid];
         // get the frames
         frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
         

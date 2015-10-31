@@ -84,10 +84,24 @@ static dispatch_queue_t backgroundActionsQueue;
     [self.userAnimations addObject:animation];
     NSArray *frames = [animation objectForKey:@"frames"];
     NSInteger frameCount = frames.count;
+    [self copyFilesFrom:olduuid to:uuid withCount:frameCount];
     [self save];
-    dispatch_async(backgroundActionsQueue, ^{
-        [self copyFilesFrom:olduuid to:uuid withCount:frameCount];
-    });
+}
+
++ (void)emptyUserFolder {
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:@""] error:nil];
+    NSString *fullPath;
+    
+    if (filelist == nil) {
+        return;
+    }
+    
+    for (NSString *file in filelist) {
+        if ([file isEqualToString:@"Data.plist"]) continue;
+        fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@", file]];
+        [fm removeItemAtPath:fullPath error:nil];
+    }
 }
 
 - (void)copyFilesFrom:(NSString *)fromUUID to:(NSString *)toUUID withCount:(NSInteger)count {
