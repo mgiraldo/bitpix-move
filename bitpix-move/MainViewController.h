@@ -11,10 +11,11 @@
 #import "DrawViewAnimator.h"
 #import "GridViewController.h"
 #import "UserData.h"
+#import "AppDelegate.h"
 
 @interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, UIActionSheetDelegate>
 
-@property (nonatomic) UserData *appData;
+@property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (nonatomic) NSString  *uuid;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
@@ -29,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *undoButton;
 @property (weak, nonatomic) IBOutlet UIButton *myAnimationsButton;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UIView *statusView;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;
@@ -40,6 +43,7 @@
 - (IBAction)onUndoTapped:(id)sender;
 - (IBAction)onMyAnimationsTapped:(id)sender;
 - (IBAction)onNewTapped:(id)sender;
+- (IBAction)onRebuildTapped:(id)sender;
 
 @end
 

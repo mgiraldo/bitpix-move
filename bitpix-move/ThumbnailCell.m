@@ -39,11 +39,13 @@
         [self.contentView addSubview:self.thumbnailView];
     }
 
-    self.thumbnailView.animationImages = frames;
-    self.thumbnailView.animationRepeatCount = 0;
-    self.thumbnailView.animationDuration = self.duration;
-    self.thumbnailView.image = frames[0];
-    [self.thumbnailView startAnimating];
+    if (frames.count > 0) {
+        self.thumbnailView.animationImages = frames;
+        self.thumbnailView.animationRepeatCount = 0;
+        self.thumbnailView.animationDuration = self.duration;
+        self.thumbnailView.image = frames[0];
+        [self.thumbnailView startAnimating];
+    }
 }
 
 @end

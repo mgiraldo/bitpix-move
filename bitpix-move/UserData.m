@@ -12,10 +12,12 @@
 
 @implementation UserData
 
+static dispatch_queue_t backgroundActionsQueue;
+
 - (id)init {
     self = [super init];
     if (self) {
-        //
+        backgroundActionsQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgactionqueue", NULL);
     }
     return self;
 }
@@ -81,8 +83,11 @@
     [animation setValue:today forKey:@"date"];
     [self.userAnimations addObject:animation];
     NSArray *frames = [animation objectForKey:@"frames"];
-    [self copyFilesFrom:olduuid to:uuid withCount:frames.count];
+    NSInteger frameCount = frames.count;
     [self save];
+    dispatch_async(backgroundActionsQueue, ^{
+        [self copyFilesFrom:olduuid to:uuid withCount:frameCount];
+    });
 }
 
 - (void)copyFilesFrom:(NSString *)fromUUID to:(NSString *)toUUID withCount:(NSInteger)count {
@@ -148,7 +153,7 @@
 }
 
 - (void)save {
-    DebugLog(@"saved appdata plist: %@", [UserData dataFilePath:@"Data.plist"]);
+//    DebugLog(@"saved appdata plist: %@", [UserData dataFilePath:@"Data.plist"]);
     [self.data setObject:self.userAnimations forKey:@"userAnimations"];
     //escribir el plist
     [self.data writeToFile:[UserData dataFilePath:@"Data.plist"] atomically:YES];

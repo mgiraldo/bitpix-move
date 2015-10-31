@@ -19,16 +19,19 @@
 static int _currentFrame = -1;
 static BOOL _isPreviewing = NO;
 static BOOL _isClean = YES;
+static dispatch_queue_t backgroundSaveQueue;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
-    self.appData = [[UserData alloc] initWithDefaultData];
+    self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    backgroundSaveQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgqueue", NULL);
     
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
     self.previewView.uuid = self.uuid;
-    
+    self.statusView.hidden = YES;
     self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
     self.undoButton.hidden = YES;
@@ -55,7 +58,6 @@ static BOOL _isClean = YES;
 
     [self clean];
     [self.previewView animate];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
 }
 
 - (void)stopPreview {
@@ -84,7 +86,7 @@ static BOOL _isClean = YES;
 
 - (void)loadAnimation:(NSInteger)index {
     DebugLog(@"load: %li", (long)index);
-    NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
+    NSDictionary *animation = [self.appDelegate.appData.userAnimations objectAtIndex:index];
     // new name for animation
     self.uuid = [animation objectForKey:@"name"];
     [self.previewView resetWithNewUUID:self.uuid];
@@ -108,7 +110,6 @@ static BOOL _isClean = YES;
     _isClean = YES;
     _currentFrame = 0;
     [self updateUI];
-    [self showPreview];
 }
 
 - (void)saveToDisk {
@@ -129,7 +130,7 @@ static BOOL _isClean = YES;
     
     NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.uuid, today, frames, nil] forKeys:[NSArray arrayWithObjects:@"name", @"date", @"frames", nil]];
     
-    NSUInteger index = [self.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSDictionary *animation = (NSDictionary *)obj;
         BOOL found = [[animation objectForKey:@"name"] isEqualToString:self.uuid];
         return found;
@@ -137,13 +138,13 @@ static BOOL _isClean = YES;
     
     if (index == NSNotFound) {
         // a new animation
-        [self.appData.userAnimations addObject:animationInfo];
+        [self.appDelegate.appData.userAnimations addObject:animationInfo];
     } else {
         // old animation
-        [self.appData.userAnimations replaceObjectAtIndex:index withObject:animationInfo];
+        [self.appDelegate.appData.userAnimations replaceObjectAtIndex:index withObject:animationInfo];
     }
     
-    [self.appData save];
+    [self.appDelegate.appData save];
 }
 
 - (void)clean {
@@ -151,7 +152,9 @@ static BOOL _isClean = YES;
         _isClean = YES;
         [self.previewView createFrames:self.framesArray withSpeed:_fps];
         [self.previewView createAllGIFs];
-        [self saveToDisk];
+        dispatch_async(backgroundSaveQueue, ^{
+            [self saveToDisk];
+        });
     }
 }
 
@@ -195,7 +198,9 @@ static BOOL _isClean = YES;
     _isClean = NO;
     [self updateUndoButtonForDrawView:drawView];
     [self.framesArray replaceObjectAtIndex:_currentFrame withObject:drawView];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
+    dispatch_async(backgroundSaveQueue, ^{
+        [self saveToDisk];
+    });
 }
 
 - (void)addFrame {
@@ -206,7 +211,9 @@ static BOOL _isClean = YES;
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
-    [self performSelectorInBackground:@selector(saveToDisk) withObject:nil];
+    dispatch_async(backgroundSaveQueue, ^{
+        [self saveToDisk];
+    });
     [self updateUI];
 }
 
@@ -227,7 +234,9 @@ static BOOL _isClean = YES;
         _currentFrame--;
     }
 
-    [self saveToDisk];
+    dispatch_async(backgroundSaveQueue, ^{
+        [self saveToDisk];
+    });
     [self updateUI];
 }
 
@@ -245,6 +254,56 @@ static BOOL _isClean = YES;
     _currentFrame--;
     if (_currentFrame < 0) _currentFrame = 0;
     [self updateUI];
+}
+
+- (void)buildThumbnails {
+    self.statusLabel.text = @"Performing GIFness. This may take a while depending on how many animations you have. In the meantime, enjoy some emoji:\n\n👯";
+    self.statusView.hidden = NO;
+
+    dispatch_async(backgroundSaveQueue, ^{
+        [self dispatchedBuild];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self removeStatusLabel];
+        });
+    });
+}
+
+- (void)dispatchedBuild {
+//    DebugLog(@"buildThumbnails");
+    int i;
+    NSDictionary *animation;
+    NSArray *frames;
+    NSMutableArray *drawViewArray;
+
+    NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
+    
+    for (i=0; i<animationCount; i++) {
+//        DebugLog(@"Refreshing %d of %ld", i+1, (long)animationCount);
+        animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:i];
+        // check if thumbnail exists
+        NSString *uuid = [animation objectForKey:@"name"];
+        // get the frames
+        frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
+        
+        drawViewArray = [@[] mutableCopy];
+        for (int j=0; j<frames.count; j++) {
+            NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
+            DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+            drawView.uuid = uuid;
+            drawView.lineList = [lines mutableCopy];
+            [drawViewArray addObject:drawView];
+        }
+        DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+        animator.uuid = uuid;
+        [animator createFrames:drawViewArray withSpeed:_fps];
+        [animator createAllGIFs];
+    }
+
+}
+
+- (void)removeStatusLabel {
+    self.statusLabel.text = @"";
+    self.statusView.hidden = YES;
 }
 
 #pragma mark - UI/undo stuff
@@ -310,7 +369,9 @@ static BOOL _isClean = YES;
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView undo];
-    [self saveToDisk];
+    dispatch_async(backgroundSaveQueue, ^{
+        [self saveToDisk];
+    });
     [self updateUI];
 }
 
@@ -325,14 +386,10 @@ static BOOL _isClean = YES;
 }
 
 - (void)gridViewControllerDidFinish:(GridViewController *)controller {
-    self.appData = [[UserData alloc] initWithDefaultData];
-
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)gridViewControllerDidFinish:(GridViewController *)controller withAnimationIndex:(NSInteger)index {
-    self.appData = [[UserData alloc] initWithDefaultData];
-
     if (_isPreviewing) {
         [self stopPreview];
     }
@@ -356,6 +413,24 @@ static BOOL _isClean = YES;
 
 - (IBAction)onNewTapped:(id)sender {
     [self newAnimation];
+}
+
+- (IBAction)onRebuildTapped:(id)sender {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Rebuild images"
+                                                                   message:@"This will rebuild the GIFs generated by your animations. None of your animations will be modified."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Rebuild" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self buildThumbnails];
+                                                          }];
+
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (IBAction)onNextTapped:(id)sender {

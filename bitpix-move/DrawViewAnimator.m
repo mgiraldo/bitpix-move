@@ -10,6 +10,7 @@
 #import "Config.h"
 #import "UIImageXtras.h"
 #import "UserData.h"
+#import "AppDelegate.h"
 
 @implementation DrawViewAnimator
 
@@ -94,8 +95,8 @@
 }
 
 - (void)createThumbnailGIFs {
-    UserData *appData = [[UserData alloc] initWithDefaultData];
-    [appData createThumbnailsForUUID:self.uuid withArray:self.thumbArray];
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [delegate.appData createThumbnailsForUUID:self.uuid withArray:self.thumbArray];
 }
 
 - (void)createLargeGIF {

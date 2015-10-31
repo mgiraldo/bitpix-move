@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#import "UserData.h"
+#import "AppDelegate.h"
 
 @class GridViewController;
 
@@ -20,11 +19,11 @@
 
 @interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UIActionSheetDelegate>
 
+@property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) UIButton *deleteButton;
 @property (nonatomic) UIButton *duplicateButton;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) id <GridViewControllerDelegate> delegate;
-@property (nonatomic) UserData *appData;
 
 - (IBAction)onReturnTapped:(id)sender;
 - (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer;

@@ -22,7 +22,7 @@ static const int _animationSize = 300;
 static const int _thumbSize = 100;
 static float _lineWidth = 2.0f;
 static float _opacity = 0.8f;
-static const char _fileSuffix[3] = "_th";
+static const char _fileSuffix[] = "_t";
 
 typedef enum {
     kDeleteAction,

@@ -12,6 +12,7 @@
 #import "DrawViewAnimator.h"
 #import "Config.h"
 #import "MainViewController.h"
+#import "UserData.h"
 
 @interface GridViewController ()
 
@@ -27,12 +28,10 @@ static BOOL _deletedParentAnimation = NO;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     _deletedParentAnimation = NO;
 
-    self.appData = [[UserData alloc] initWithDefaultData];
-
-    [self buildThumbnails];
-    
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -48,45 +47,6 @@ static BOOL _deletedParentAnimation = NO;
 
 - (void) viewDidAppear:(BOOL)animated {
     [self.collectionView reloadData];
-}
-
-- (void)buildThumbnails {
-    DebugLog(@"buildThumbnails");
-    int i, j;
-    NSDictionary *animation;
-    NSArray *frames;
-    NSMutableArray *drawViewArray;
-    
-    NSFileManager *fm = [[NSFileManager alloc] init];
-
-    for (i=0; i<self.appData.userAnimations.count; i++) {
-        animation = (NSDictionary *)[self.appData.userAnimations objectAtIndex:i];
-        // check if thumbnail exists
-        NSString *uuid = [animation objectForKey:@"name"];
-        // get the frames
-        frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
-
-        NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:uuid] error:nil];
-        int count = [filelist count];
-
-        BOOL dataExists = [fm fileExistsAtPath:[UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s0.png",uuid,uuid,_fileSuffix]]];
-
-        if (count == frames.count && dataExists) continue;
-        DebugLog(@"frame difference");
-
-        drawViewArray = [@[] mutableCopy];
-        for (j=0; j<frames.count; j++) {
-            NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
-            DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-            drawView.uuid = uuid;
-            drawView.lineList = [lines mutableCopy];
-            [drawViewArray addObject:drawView];
-        }
-        DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-        animator.uuid = uuid;
-        [animator createFrames:drawViewArray withSpeed:_fps];
-        [animator createAllGIFs];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,13 +85,13 @@ static BOOL _deletedParentAnimation = NO;
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.appData.userAnimations.count;
+    return self.appDelegate.appData.userAnimations.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
-    NSDictionary *animation = [self.appData.userAnimations objectAtIndex:indexPath.row];
+    NSDictionary *animation = [self.appDelegate.appData.userAnimations objectAtIndex:indexPath.row];
     NSString *uuid = [animation objectForKey:@"name"];
     
     // Configure the cell
@@ -266,7 +226,7 @@ static BOOL _deletedParentAnimation = NO;
     if (_selectedRow == -1) return;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
-    [self.appData deleteAnimationAtIndex:_selectedRow];
+    [self.appDelegate.appData deleteAnimationAtIndex:_selectedRow];
     [self.collectionView deleteItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
     _selectedRow = -1;
@@ -276,8 +236,8 @@ static BOOL _deletedParentAnimation = NO;
     DebugLog(@"duplicated: %ld", (long)_selectedRow);
     [self removeAccessoryButtons];
     if (_selectedRow == -1) return;
-    NSInteger newIndex = self.appData.userAnimations.count;
-    [self.appData duplicateAnimationAtIndex:_selectedRow];
+    NSInteger newIndex = self.appDelegate.appData.userAnimations.count;
+    [self.appDelegate.appData duplicateAnimationAtIndex:_selectedRow];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.collectionView insertItemsAtIndexPaths:indexes];
@@ -302,7 +262,7 @@ static BOOL _deletedParentAnimation = NO;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (_selectedAction == kDeleteAction && buttonIndex == 0) {
         // check to see if it was the animation user was working on
-        NSString *uuid = [[self.appData.userAnimations objectAtIndex:_selectedRow] objectForKey:@"name"];
+        NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:_selectedRow] objectForKey:@"name"];
         MainViewController *vc = (MainViewController *)self.delegate;
         if ([uuid isEqualToString:vc.uuid]) {
             _deletedParentAnimation = YES;
