@@ -175,6 +175,7 @@ static dispatch_queue_t backgroundSaveQueue;
     
     NSArray *excludeActivities = @[UIActivityTypePrint,
                                    UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToFlickr,
                                    UIActivityTypePostToTencentWeibo];
     
     activityViewController.excludedActivityTypes = excludeActivities;
