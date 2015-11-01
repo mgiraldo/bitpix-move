@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UserData : NSObject
+@interface UserData : NSObject <NSCoding>
 
 @property (nonatomic) NSMutableDictionary *data;
 @property (nonatomic) NSMutableArray *userAnimations;
@@ -21,8 +21,10 @@
 - (void)resetDataFile;
 - (void)removeThumbnailsForUUID:(NSString *)uuid;
 - (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray;
-- (void)deleteAnimationAtIndex:(NSInteger)index;
-- (void)duplicateAnimationAtIndex:(NSInteger)index;
+- (NSString *)deleteAnimationAtIndex:(NSInteger)index;
+- (void)deleteFilesWithUUID:(NSString *)uuid;
+- (NSDictionary *)duplicateAnimationAtIndex:(NSInteger)index;
+- (void)copyFilesFrom:(NSString *)fromUUID to:(NSString *)toUUID withCount:(NSInteger)count;
 - (void)save;
 
 @end

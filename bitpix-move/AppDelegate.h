@@ -12,7 +12,8 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic) UserData *appData;
-@property (strong, nonatomic) UIWindow *window;
+@property (nonatomic) UIWindow *window;
+@property (nonatomic) dispatch_queue_t backgroundSaveQueue;
 
 
 @end

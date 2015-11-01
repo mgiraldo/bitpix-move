@@ -223,26 +223,55 @@ static BOOL _deletedParentAnimation = NO;
 - (void)deleteAnimation {
     DebugLog(@"deleted: %ld", (long)_selectedRow);
     [self removeAccessoryButtons];
+    
     if (_selectedRow == -1) return;
+
+    NSString *uuuid = [self.appDelegate.appData deleteAnimationAtIndex:_selectedRow];
+
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
-    [self.appDelegate.appData deleteAnimationAtIndex:_selectedRow];
     [self.collectionView deleteItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
     _selectedRow = -1;
+    
+    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        [self.appDelegate.appData deleteFilesWithUUID:uuuid];
+    });
 }
 
 - (void)duplicateAnimation {
     DebugLog(@"duplicated: %ld", (long)_selectedRow);
     [self removeAccessoryButtons];
+
     if (_selectedRow == -1) return;
+
     NSInteger newIndex = self.appDelegate.appData.userAnimations.count;
-    [self.appDelegate.appData duplicateAnimationAtIndex:_selectedRow];
+    NSDictionary *duplicationOutput = [self.appDelegate.appData duplicateAnimationAtIndex:_selectedRow];
+    NSString *olduuid = [duplicationOutput objectForKey:@"olduuid"];
+    NSString *newuuid = [duplicationOutput objectForKey:@"newuuid"];
+    NSNumber *frameCount = [duplicationOutput objectForKey:@"frameCount"];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.collectionView insertItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
+    
     _selectedRow = -1;
+    
+    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        [self.appDelegate.appData copyFilesFrom:olduuid to:newuuid withCount:frameCount.integerValue];
+        // update the cell
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // find the index for the new uuuid
+            for (NSUInteger i = 0; i < [self.appDelegate.appData.userAnimations count]; i++) {
+                NSString *ouuid = [self.appDelegate.appData.userAnimations[i] valueForKey:@"name"];
+                if ([ouuid isEqualToString:newuuid]) {
+                    NSIndexPath *iPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [self.collectionView reloadItemsAtIndexPaths:@[iPath]];
+                    break;
+                }
+            }
+        });
+    });
 }
 
 - (void)removeAccessoryButtons {

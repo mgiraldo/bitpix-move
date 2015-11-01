@@ -15,6 +15,8 @@
 
 @interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, UIActionSheetDelegate>
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalCenterConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceConstraint;
 @property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (nonatomic) NSString  *uuid;

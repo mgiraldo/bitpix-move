@@ -30,14 +30,14 @@
         UIImage *frame = [UIImage imageWithContentsOfFile:fullPath];
         [frames addObject:frame];
     }
-
-    self.backgroundColor = [UIColor whiteColor];
-    self.thumbnailView.backgroundColor = [UIColor whiteColor];
     
     if (self.thumbnailView == nil) {
         self.thumbnailView = [[ThumbnailView alloc] initWithFrame:self.contentView.frame];
         [self.contentView addSubview:self.thumbnailView];
     }
+    
+    self.backgroundColor = [UIColor whiteColor];
+    self.thumbnailView.backgroundColor = [UIColor whiteColor];
 
     if (frames.count > 0) {
         self.thumbnailView.animationImages = frames;

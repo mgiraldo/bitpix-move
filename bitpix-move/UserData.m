@@ -12,12 +12,9 @@
 
 @implementation UserData
 
-static dispatch_queue_t backgroundActionsQueue;
-
 - (id)init {
     self = [super init];
     if (self) {
-        backgroundActionsQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgactionqueue", NULL);
     }
     return self;
 }
@@ -28,6 +25,20 @@ static dispatch_queue_t backgroundActionsQueue;
         [self load];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super init];
+    if (self) {
+        _userAnimations = [coder decodeObjectForKey:@"userAnimations"];
+        _data = [coder decodeObjectForKey:@"data"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.userAnimations forKey:@"userAnimations"];
+    [coder encodeObject:self.data forKey:@"data"];
 }
 
 - (void)load {
@@ -65,27 +76,32 @@ static dispatch_queue_t backgroundActionsQueue;
     NSLog(@"size: %lu", (unsigned long)self.userAnimations.count);
 }
 
-- (void)deleteAnimationAtIndex:(NSInteger)index {
+- (NSString *)deleteAnimationAtIndex:(NSInteger)index {
     NSDictionary *animation = [self.userAnimations objectAtIndex:index];
     NSString *uuid = [animation valueForKey:@"name"];
-    [self removeThumbnailsForUUID:uuid];
-    [self removeAnimationImageForUUI:uuid];
     [self.userAnimations removeObjectAtIndex:index];
     [self save];
+    return uuid;
 }
 
-- (void)duplicateAnimationAtIndex:(NSInteger)index {
+- (void)deleteFilesWithUUID:(NSString *)uuid {
+    [self removeThumbnailsForUUID:uuid];
+    [self removeAnimationImageForUUI:uuid];
+}
+
+- (NSDictionary *)duplicateAnimationAtIndex:(NSInteger)index {
     NSMutableDictionary *animation = [[self.userAnimations objectAtIndex:index] mutableCopy];
     NSString *olduuid = [animation valueForKey:@"name"];
     NSString *uuid = [[NSUUID UUID] UUIDString];
     NSDate *today = [NSDate date];
+    NSArray *frames = [animation objectForKey:@"frames"];
+    NSNumber *frameCount = [NSNumber numberWithInteger:frames.count];
     [animation setValue:uuid forKey:@"name"];
     [animation setValue:today forKey:@"date"];
     [self.userAnimations addObject:animation];
-    NSArray *frames = [animation objectForKey:@"frames"];
-    NSInteger frameCount = frames.count;
-    [self copyFilesFrom:olduuid to:uuid withCount:frameCount];
     [self save];
+    NSDictionary *result = [NSDictionary dictionaryWithObjects:@[olduuid, uuid, frameCount] forKeys:@[@"olduuid", @"newuuid", @"frameCount"]];
+    return result;
 }
 
 + (void)emptyUserFolder {
