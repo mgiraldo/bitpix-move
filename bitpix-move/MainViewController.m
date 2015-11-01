@@ -321,48 +321,46 @@ static BOOL _isClean = YES;
     self.backgroundView.hidden = NO;
 
     if (_currentFrame <= 0) {
-        self.previousButton.enabled = NO;
+        self.previousButton.hidden = YES;
     } else {
-        self.previousButton.enabled = YES;
+        self.previousButton.hidden = NO;
     }
 
     if (_currentFrame >= self.framesArray.count-1) {
-        self.nextButton.enabled = NO;
+        self.nextButton.hidden = YES;
     } else {
-        self.nextButton.enabled = YES;
+        self.nextButton.hidden = NO;
     }
     
     if (self.framesArray.count > _maxFrames) {
-        self.addButton.enabled = NO;
+        self.addButton.hidden = YES;
     } else {
-        self.addButton.enabled = YES;
+        self.addButton.hidden = NO;
     }
 
     if (self.framesArray.count > 1) {
-        self.deleteButton.hidden = NO;
+        self.deleteButton.hidden = YES;
     } else {
         self.deleteButton.hidden = YES;
     }
     
     if (self.framesArray.count > 1) {
-        self.exportButton.enabled = YES;
-        self.previewButton.enabled = YES;
+        self.exportButton.hidden = NO;
+        self.previewButton.hidden = NO;
     } else {
-        self.exportButton.enabled = NO;
-        self.previewButton.enabled = NO;
+        self.exportButton.hidden = YES;
+        self.previewButton.hidden = YES;
     }
 
     self.frameLabel.text = [NSString stringWithFormat:@"%i/%i", _currentFrame+1, (int)self.framesArray.count];
 }
 
 - (void)disableUI {
-    // things to disable
     self.backgroundView.hidden = YES;
-    self.previousButton.enabled = NO;
-    self.nextButton.enabled = NO;
-    self.addButton.enabled = NO;
-    self.exportButton.enabled = NO;
-    // things to hide
+    self.previousButton.hidden = YES;
+    self.nextButton.hidden = YES;
+    self.addButton.hidden = YES;
+    self.exportButton.hidden = YES;
     self.deleteButton.hidden = YES;
     self.undoButton.hidden = YES;
 }
