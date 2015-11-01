@@ -339,7 +339,7 @@ static BOOL _isClean = YES;
     }
 
     if (self.framesArray.count > 1) {
-        self.deleteButton.hidden = YES;
+        self.deleteButton.hidden = NO;
     } else {
         self.deleteButton.hidden = YES;
     }
