@@ -24,31 +24,73 @@ static BOOL _isClean = YES;
 	[super viewDidLoad];
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ) {
-        if ([[UIScreen mainScreen] bounds].size.height <= 480) {
-            self.verticalCenterConstraint.active = NO;
-            self.bottomDistanceConstraint.constant = 60.0f;
-        } else {
-            self.bottomDistanceConstraint.active = NO;
-        }
-    }
     
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+
+    [self updateScreenSize:size];
+
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
     self.previewView.uuid = self.uuid;
     self.statusView.hidden = YES;
-    self.stopPreviewButton.hidden = YES;
     self.previewView.hidden = YES;
-    self.undoButton.hidden = YES;
-    self.deleteButton.hidden = YES;
+    self.stopPreviewButton.hidden = YES;
+    self.stopPreviewButtonH.hidden = YES;
 	self.sketchView.backgroundColor = [UIColor whiteColor];
 	[self newAnimation];
+    [self updateUI];
 }
 
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
 	// Dispose of any resources that can be recreated.
+}
+
+- (BOOL)shouldAutorotate {
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    if (size.height < _minHeight && size.height > size.width) {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [self updateScreenSize:size];
+}
+
+- (void)updateScreenSize:(CGSize)size {
+    if (size.height > _minHeight) {
+        self.verticalCenterConstraint.active = YES;
+        self.bottomDistanceConstraint.active = NO;
+        [self verticalUI];
+    } else {
+        if (size.height > size.width) {
+            self.verticalCenterConstraint.active = NO;
+            self.bottomDistanceConstraint.active = YES;
+            self.bottomDistanceConstraint.constant = 60.0f;
+            [self verticalUI];
+        } else {
+            self.verticalCenterConstraint.active = YES;
+            self.bottomDistanceConstraint.active = NO;
+            [self horizontalUI];
+        }
+    }
+}
+
+- (void)horizontalUI {
+    self.mainActionsView.hidden = YES;
+    self.frameActionsView.hidden = YES;
+    self.prevNextView.hidden = YES;
+    self.mainActionsViewH.hidden = NO;
+    self.frameActionsViewH.hidden = NO;
+}
+
+- (void)verticalUI {
+    self.mainActionsView.hidden = NO;
+    self.frameActionsView.hidden = NO;
+    self.prevNextView.hidden = NO;
+    self.mainActionsViewH.hidden = YES;
+    self.frameActionsViewH.hidden = YES;
 }
 
 #pragma mark - Preview stuff
@@ -58,6 +100,8 @@ static BOOL _isClean = YES;
     [self disableUI];
     self.previewButton.hidden = YES;
     self.stopPreviewButton.hidden = NO;
+    self.previewButtonH.hidden = YES;
+    self.stopPreviewButtonH.hidden = NO;
     self.previewView.hidden = NO;
 
     [self clean];
@@ -68,6 +112,8 @@ static BOOL _isClean = YES;
     [self.previewView stop];
     self.stopPreviewButton.hidden = YES;
     self.previewButton.hidden = NO;
+    self.stopPreviewButtonH.hidden = YES;
+    self.previewButtonH.hidden = NO;
     self.previewView.hidden = YES;
     _isPreviewing = NO;
     [self updateUI];
@@ -318,58 +364,77 @@ static BOOL _isClean = YES;
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [self updateUndoButtonForDrawView:drawView];
 
-    self.backgroundView.hidden = NO;
-
     if (_currentFrame <= 0) {
         self.previousButton.hidden = YES;
+        self.previousButtonH.hidden = YES;
     } else {
         self.previousButton.hidden = NO;
+        self.previousButtonH.hidden = NO;
     }
 
     if (_currentFrame >= self.framesArray.count-1) {
         self.nextButton.hidden = YES;
+        self.nextButtonH.hidden = YES;
     } else {
         self.nextButton.hidden = NO;
+        self.nextButtonH.hidden = NO;
     }
     
     if (self.framesArray.count > _maxFrames) {
         self.addButton.hidden = YES;
+        self.addButtonH.hidden = YES;
     } else {
         self.addButton.hidden = NO;
+        self.addButtonH.hidden = NO;
     }
 
     if (self.framesArray.count > 1) {
         self.deleteButton.hidden = NO;
+        self.deleteButtonH.hidden = NO;
     } else {
         self.deleteButton.hidden = YES;
+        self.deleteButtonH.hidden = YES;
     }
     
     if (self.framesArray.count > 1) {
         self.exportButton.hidden = NO;
         self.previewButton.hidden = NO;
+        self.exportButtonH.hidden = NO;
+        self.previewButtonH.hidden = NO;
     } else {
         self.exportButton.hidden = YES;
         self.previewButton.hidden = YES;
+        self.exportButtonH.hidden = YES;
+        self.previewButtonH.hidden = YES;
     }
 
     self.frameLabel.text = [NSString stringWithFormat:@"%i/%i", _currentFrame+1, (int)self.framesArray.count];
+    self.frameLabelH.text = [NSString stringWithFormat:@"%i/%i", _currentFrame+1, (int)self.framesArray.count];
 }
 
 - (void)disableUI {
-    self.backgroundView.hidden = YES;
     self.previousButton.hidden = YES;
     self.nextButton.hidden = YES;
     self.addButton.hidden = YES;
     self.exportButton.hidden = YES;
     self.deleteButton.hidden = YES;
     self.undoButton.hidden = YES;
+
+    self.previousButtonH.hidden = YES;
+    self.nextButtonH.hidden = YES;
+    self.addButtonH.hidden = YES;
+    self.exportButtonH.hidden = YES;
+    self.deleteButtonH.hidden = YES;
+    self.undoButtonH.hidden = YES;
 }
 
 - (void)updateUndoButtonForDrawView:(DrawView *)drawView {
     if ([drawView hasLines]) {
         self.undoButton.hidden = NO;
+        self.undoButtonH.hidden = NO;
     } else {
         self.undoButton.hidden = YES;
+        self.undoButtonH.hidden = YES;
     }
 }
 

@@ -23,6 +23,7 @@ static const int _thumbSize = 100;
 static float _lineWidth = 2.0f;
 static float _opacity = 0.8f;
 static const char _fileSuffix[] = "_t";
+static const float _minHeight = 500.0f;
 
 typedef enum {
     kDeleteAction,

@@ -15,13 +15,10 @@
 
 @interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, UIActionSheetDelegate>
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalCenterConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceConstraint;
 @property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (nonatomic) NSString  *uuid;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
-@property (weak, nonatomic) IBOutlet UIView *backgroundView;
 @property (weak, nonatomic) IBOutlet DrawViewAnimator *previewView;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
@@ -32,9 +29,28 @@
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *undoButton;
-@property (weak, nonatomic) IBOutlet UIButton *myAnimationsButton;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet UIView *mainActionsView;
+@property (weak, nonatomic) IBOutlet UIView *mainActionsViewH;
+@property (weak, nonatomic) IBOutlet UIView *frameActionsView;
+@property (weak, nonatomic) IBOutlet UIView *frameActionsViewH;
+@property (weak, nonatomic) IBOutlet UIView *prevNextView;
+
+// horizontal ui
+@property (weak, nonatomic) IBOutlet UILabel *frameLabelH;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *undoButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *previewButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *stopPreviewButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *exportButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *previousButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *nextButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *addButtonH;
+
+// IB contraints
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalCenterConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceConstraint;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;

@@ -20,9 +20,11 @@
 @interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic) AppDelegate *appDelegate;
+@property (nonatomic) NSMutableArray *collectionData;
 @property (nonatomic) UIButton *deleteButton;
 @property (nonatomic) UIButton *duplicateButton;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIButton *returnButton;
 @property (nonatomic, weak) id <GridViewControllerDelegate> delegate;
 
 - (IBAction)onReturnTapped:(id)sender;

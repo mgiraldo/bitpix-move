@@ -89,10 +89,9 @@
     [self removeAnimationImageForUUI:uuid];
 }
 
-- (NSDictionary *)duplicateAnimationAtIndex:(NSInteger)index {
+- (NSDictionary *)duplicateAnimationAtIndex:(NSInteger)index withUUID:(NSString *)uuid {
     NSMutableDictionary *animation = [[self.userAnimations objectAtIndex:index] mutableCopy];
     NSString *olduuid = [animation valueForKey:@"name"];
-    NSString *uuid = [[NSUUID UUID] UUIDString];
     NSDate *today = [NSDate date];
     NSArray *frames = [animation objectForKey:@"frames"];
     NSNumber *frameCount = [NSNumber numberWithInteger:frames.count];

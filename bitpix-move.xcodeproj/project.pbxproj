@@ -39,6 +39,12 @@
 		CC4D07A51BD85D5400A52613 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A41BD85D5400A52613 /* Assets.xcassets */; };
 		CC4D07A81BD85D5400A52613 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4D07A61BD85D5400A52613 /* LaunchScreen.storyboard */; };
 		CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D07B01BD85F3400A52613 /* DrawView.m */; };
+		CC4EEB641BE6C505004FDCC2 /* next-small.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB5E1BE6C505004FDCC2 /* next-small.png */; };
+		CC4EEB651BE6C505004FDCC2 /* next-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB5F1BE6C505004FDCC2 /* next-small@2x.png */; };
+		CC4EEB661BE6C505004FDCC2 /* next-small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB601BE6C505004FDCC2 /* next-small@3x.png */; };
+		CC4EEB671BE6C505004FDCC2 /* previous-small.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB611BE6C505004FDCC2 /* previous-small.png */; };
+		CC4EEB681BE6C505004FDCC2 /* previous-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB621BE6C505004FDCC2 /* previous-small@2x.png */; };
+		CC4EEB691BE6C505004FDCC2 /* previous-small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB631BE6C505004FDCC2 /* previous-small@3x.png */; };
 		CCC339A51BE2F49D00A78FD1 /* duplicate.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC339A21BE2F49D00A78FD1 /* duplicate.png */; };
 		CCC339A61BE2F49D00A78FD1 /* duplicate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC339A31BE2F49D00A78FD1 /* duplicate@2x.png */; };
 		CCC339A71BE2F49D00A78FD1 /* duplicate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC339A41BE2F49D00A78FD1 /* duplicate@3x.png */; };
@@ -104,6 +110,12 @@
 		CC4D07A91BD85D5400A52613 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC4D07AF1BD85F3400A52613 /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
 		CC4D07B01BD85F3400A52613 /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
+		CC4EEB5E1BE6C505004FDCC2 /* next-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-small.png"; sourceTree = "<group>"; };
+		CC4EEB5F1BE6C505004FDCC2 /* next-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-small@2x.png"; sourceTree = "<group>"; };
+		CC4EEB601BE6C505004FDCC2 /* next-small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-small@3x.png"; sourceTree = "<group>"; };
+		CC4EEB611BE6C505004FDCC2 /* previous-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-small.png"; sourceTree = "<group>"; };
+		CC4EEB621BE6C505004FDCC2 /* previous-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-small@2x.png"; sourceTree = "<group>"; };
+		CC4EEB631BE6C505004FDCC2 /* previous-small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-small@3x.png"; sourceTree = "<group>"; };
 		CCC339A21BE2F49D00A78FD1 /* duplicate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = duplicate.png; sourceTree = "<group>"; };
 		CCC339A31BE2F49D00A78FD1 /* duplicate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "duplicate@2x.png"; sourceTree = "<group>"; };
 		CCC339A41BE2F49D00A78FD1 /* duplicate@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "duplicate@3x.png"; sourceTree = "<group>"; };
@@ -204,6 +216,12 @@
 		CCF3F97D1BDC61880019059B /* Visual assets */ = {
 			isa = PBXGroup;
 			children = (
+				CC4EEB5E1BE6C505004FDCC2 /* next-small.png */,
+				CC4EEB5F1BE6C505004FDCC2 /* next-small@2x.png */,
+				CC4EEB601BE6C505004FDCC2 /* next-small@3x.png */,
+				CC4EEB611BE6C505004FDCC2 /* previous-small.png */,
+				CC4EEB621BE6C505004FDCC2 /* previous-small@2x.png */,
+				CC4EEB631BE6C505004FDCC2 /* previous-small@3x.png */,
 				CC45875B1BE58C8F000BFB25 /* export.png */,
 				CC45875C1BE58C8F000BFB25 /* export@2x.png */,
 				CC45875D1BE58C8F000BFB25 /* export@3x.png */,
@@ -308,22 +326,28 @@
 			files = (
 				CC4587471BE580F2000BFB25 /* list@2x.png in Resources */,
 				CC1E1C131BE1D10100F5790F /* delete@3x.png in Resources */,
+				CC4EEB691BE6C505004FDCC2 /* previous-small@3x.png in Resources */,
+				CC4EEB641BE6C505004FDCC2 /* next-small.png in Resources */,
 				CC4587521BE58659000BFB25 /* stop.png in Resources */,
 				CC139DE51BDC34F800BF0A5B /* bitpix-move-120.png in Resources */,
 				CC4587461BE580F2000BFB25 /* list.png in Resources */,
 				CC4587481BE580F2000BFB25 /* list@3x.png in Resources */,
+				CC4EEB651BE6C505004FDCC2 /* next-small@2x.png in Resources */,
 				CC1E1C121BE1D10100F5790F /* delete@2x.png in Resources */,
 				CC4587541BE58659000BFB25 /* stop@3x.png in Resources */,
 				CC139DE61BDC34F800BF0A5B /* bitpix-move-152.png in Resources */,
 				CCC339BD1BE31F9D00A78FD1 /* previous.png in Resources */,
+				CC4EEB661BE6C505004FDCC2 /* next-small@3x.png in Resources */,
 				CC139DE81BDC353100BF0A5B /* Images.xcassets in Resources */,
 				CC1E1C111BE1D10100F5790F /* delete.png in Resources */,
+				CC4EEB681BE6C505004FDCC2 /* previous-small@2x.png in Resources */,
 				CCC339A61BE2F49D00A78FD1 /* duplicate@2x.png in Resources */,
 				CC4587531BE58659000BFB25 /* stop@2x.png in Resources */,
 				CC45875E1BE58C8F000BFB25 /* export.png in Resources */,
 				CC45874F1BE58659000BFB25 /* play.png in Resources */,
 				CCC339BE1BE31F9D00A78FD1 /* previous@2x.png in Resources */,
 				CCC339A71BE2F49D00A78FD1 /* duplicate@3x.png in Resources */,
+				CC4EEB671BE6C505004FDCC2 /* previous-small.png in Resources */,
 				CCC339BF1BE31F9D00A78FD1 /* previous@3x.png in Resources */,
 				CCC339AB1BE30BAC00A78FD1 /* trash.png in Resources */,
 				CC4D07A81BD85D5400A52613 /* LaunchScreen.storyboard in Resources */,

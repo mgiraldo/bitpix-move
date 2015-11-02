@@ -30,6 +30,12 @@ static BOOL _deletedParentAnimation = NO;
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    self.collectionData = [@[] mutableCopy];
+    
+    for (id obj in self.appDelegate.appData.userAnimations) {
+        [self.collectionData addObject:[obj valueForKey:@"name"]];
+    }
+    
     _deletedParentAnimation = NO;
 
     // Uncomment the following line to preserve selection between presentations
@@ -85,18 +91,32 @@ static BOOL _deletedParentAnimation = NO;
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.appDelegate.appData.userAnimations.count;
+    return self.collectionData.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
-    NSDictionary *animation = [self.appDelegate.appData.userAnimations objectAtIndex:indexPath.row];
-    NSString *uuid = [animation objectForKey:@"name"];
+    NSString *uuid = [self.collectionData objectAtIndex:indexPath.row];
     
-    // Configure the cell
-    cell.duration = [NSArray arrayWithArray:[animation objectForKey:@"frames"]].count / _fps;
-    cell.filename = uuid;
+    NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *animation = (NSDictionary *)obj;
+        BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
+        return found;
+    }];
+    
+    // update the cell
+    cell.backgroundColor = [UIColor whiteColor];
+    if (index != NSNotFound) {
+        // Configure the cell
+        cell.duration = [NSArray arrayWithArray:[[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"]].count / _fps;
+        cell.filename = uuid;
+    } else {
+        if (cell.thumbnailView != nil) {
+            [cell.thumbnailView removeFromSuperview];
+            cell.thumbnailView = nil;
+        }
+    }
 
     return cell;
 }
@@ -226,17 +246,20 @@ static BOOL _deletedParentAnimation = NO;
     
     if (_selectedRow == -1) return;
 
-    NSString *uuuid = [self.appDelegate.appData deleteAnimationAtIndex:_selectedRow];
-
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedRow inSection:0];
+    NSInteger originalIndex = _selectedRow;
+    NSString *uuuid = [self.collectionData objectAtIndex:originalIndex];
+    [self.collectionData removeObjectAtIndex:originalIndex];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:originalIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.collectionView deleteItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
-    _selectedRow = -1;
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        [self.appDelegate.appData deleteAnimationAtIndex:originalIndex];
         [self.appDelegate.appData deleteFilesWithUUID:uuuid];
     });
+
+    _selectedRow = -1;
 }
 
 - (void)duplicateAnimation {
@@ -245,33 +268,27 @@ static BOOL _deletedParentAnimation = NO;
 
     if (_selectedRow == -1) return;
 
-    NSInteger newIndex = self.appDelegate.appData.userAnimations.count;
-    NSDictionary *duplicationOutput = [self.appDelegate.appData duplicateAnimationAtIndex:_selectedRow];
-    NSString *olduuid = [duplicationOutput objectForKey:@"olduuid"];
-    NSString *newuuid = [duplicationOutput objectForKey:@"newuuid"];
-    NSNumber *frameCount = [duplicationOutput objectForKey:@"frameCount"];
+    NSInteger originalIndex = _selectedRow;
+    NSInteger newIndex = self.collectionData.count;
+    NSString *uuid = [[NSUUID UUID] UUIDString];
+    [self.collectionData addObject:uuid];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.collectionView insertItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
     
-    _selectedRow = -1;
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self.appDelegate.appData copyFilesFrom:olduuid to:newuuid withCount:frameCount.integerValue];
-        // update the cell
+        NSDictionary *duplicationOutput = [self.appDelegate.appData duplicateAnimationAtIndex:originalIndex withUUID:uuid];
+        NSString *olduuid = [duplicationOutput objectForKey:@"olduuid"];
+        NSNumber *frameCount = [duplicationOutput objectForKey:@"frameCount"];
+        [self.appDelegate.appData copyFilesFrom:olduuid to:uuid withCount:frameCount.integerValue];
         dispatch_async(dispatch_get_main_queue(), ^{
-            // find the index for the new uuuid
-            for (NSUInteger i = 0; i < [self.appDelegate.appData.userAnimations count]; i++) {
-                NSString *ouuid = [self.appDelegate.appData.userAnimations[i] valueForKey:@"name"];
-                if ([ouuid isEqualToString:newuuid]) {
-                    NSIndexPath *iPath = [NSIndexPath indexPathForRow:i inSection:0];
-                    [self.collectionView reloadItemsAtIndexPaths:@[iPath]];
-                    break;
-                }
-            }
+            [self.collectionView reloadData];
         });
     });
+
+    _selectedRow = -1;
 }
 
 - (void)removeAccessoryButtons {
