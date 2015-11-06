@@ -11,6 +11,7 @@
 @class DrawView;
 
 @protocol DrawViewDelegate
+- (void)drawViewTouchesBegan:(DrawView *)drawView;
 - (void)drawViewChanged:(DrawView *)drawView;
 @end
 

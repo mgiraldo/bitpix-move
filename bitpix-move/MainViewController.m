@@ -19,20 +19,37 @@
 static int _currentFrame = -1;
 static BOOL _isPreviewing = NO;
 static BOOL _isClean = YES;
+static BOOL _firstLoad = YES;
+static BOOL _tappedAdd = NO;
+static BOOL _tappedPreview = NO;
+static BOOL _tappedStop = NO;
+static BOOL _isVertical = YES;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    if (self.appDelegate.appData.userAnimations.count > 0) {
+        _firstLoad = NO;
+        _tappedAdd = YES;
+        _tappedPreview = YES;
+        _tappedStop = YES;
+        self.drawLabel.hidden = YES;
+    }
+    
     CGSize size = [[UIScreen mainScreen] bounds].size;
 
     [self updateScreenSize:size];
 
+    if (_firstLoad) {
+        self.addButton.hidden = YES;
+        self.addButtonH.hidden = YES;
+    }
+    
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
     self.previewView.uuid = self.uuid;
-    self.statusView.hidden = YES;
     self.previewView.hidden = YES;
     self.stopPreviewButton.hidden = YES;
     self.stopPreviewButtonH.hidden = YES;
@@ -56,6 +73,7 @@ static BOOL _isClean = YES;
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [self updateScreenSize:size];
+    [self updateUI];
 }
 
 - (void)updateScreenSize:(CGSize)size {
@@ -78,19 +96,31 @@ static BOOL _isClean = YES;
 }
 
 - (void)horizontalUI {
+    _isVertical = NO;
     self.mainActionsView.hidden = YES;
     self.frameActionsView.hidden = YES;
-    self.prevNextView.hidden = YES;
-    self.mainActionsViewH.hidden = NO;
-    self.frameActionsViewH.hidden = NO;
+
+    if (!_firstLoad) {
+        self.mainActionsViewH.hidden = NO;
+        self.frameActionsViewH.hidden = NO;
+    } else {
+        self.mainActionsViewH.hidden = YES;
+        self.frameActionsViewH.hidden = YES;
+    }
 }
 
 - (void)verticalUI {
-    self.mainActionsView.hidden = NO;
-    self.frameActionsView.hidden = NO;
-    self.prevNextView.hidden = NO;
+    _isVertical = YES;
     self.mainActionsViewH.hidden = YES;
     self.frameActionsViewH.hidden = YES;
+
+    if (!_firstLoad) {
+        self.mainActionsView.hidden = NO;
+        self.frameActionsView.hidden = NO;
+    } else {
+        self.mainActionsView.hidden = YES;
+        self.frameActionsView.hidden = YES;
+    }
 }
 
 #pragma mark - Preview stuff
@@ -234,20 +264,35 @@ static BOOL _isClean = YES;
                      completion:^{}];
 }
 
+#pragma mark - DrawView delegate
+
+- (void)drawViewChanged:(DrawView *)drawView {
+    if (_firstLoad) {
+        _firstLoad = NO;
+        CGSize size = [[UIScreen mainScreen] bounds].size;
+        [self updateScreenSize:size];
+    }
+    _isClean = NO;
+    [self updateUndoButtonForDrawView:drawView];
+    [self.framesArray replaceObjectAtIndex:_currentFrame withObject:drawView];
+    [self updateUI];
+    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        @synchronized(drawView) {
+            [self saveToDisk];
+        }
+    });
+}
+
+- (void)drawViewTouchesBegan:(DrawView *)drawView {
+    if (self.drawLabel.hidden) return;
+    self.drawLabel.hidden = YES;
+}
+
 #pragma mark - Frame stuff
 
 - (void)removeFrames {
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.framesArray = [@[] mutableCopy];
-}
-
-- (void)drawViewChanged:(DrawView *)drawView {
-    _isClean = NO;
-    [self updateUndoButtonForDrawView:drawView];
-    [self.framesArray replaceObjectAtIndex:_currentFrame withObject:drawView];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self saveToDisk];
-    });
 }
 
 - (void)addFrame {
@@ -259,7 +304,9 @@ static BOOL _isClean = YES;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self saveToDisk];
+        @synchronized(drawView) {
+            [self saveToDisk];
+        }
     });
     [self updateUI];
 }
@@ -282,7 +329,9 @@ static BOOL _isClean = YES;
     }
 
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self saveToDisk];
+        @synchronized(drawView) {
+            [self saveToDisk];
+        }
     });
     [self updateUI];
 }
@@ -303,108 +352,91 @@ static BOOL _isClean = YES;
     [self updateUI];
 }
 
-- (void)buildThumbnails {
-    NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾"];
-    int emojiCount = (int)emojiArray.count;
-    int index = rand()%emojiCount;
-    NSString *emoji = [emojiArray objectAtIndex:index];
-    self.statusLabel.text = [NSString stringWithFormat:@"Performing GIFness. This may take a while depending on how many animations you have. In the meantime, enjoy some emoji:\n\n%@", emoji];
-    self.statusView.hidden = NO;
-
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self dispatchedBuild];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self removeStatusLabel];
-        });
-    });
-}
-
-- (void)dispatchedBuild {
-    int i;
-    NSDictionary *animation;
-    NSArray *frames;
-    NSMutableArray *drawViewArray;
-
-    NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
-    
-    [UserData emptyUserFolder];
-    
-    for (i=0; i<animationCount; i++) {
-        animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:i];
-        // check if thumbnail exists
-        NSString *uuid = [animation objectForKey:@"name"];
-        [self.appDelegate.appData removeThumbnailsForUUID:uuid];
-        // get the frames
-        frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
-        
-        drawViewArray = [@[] mutableCopy];
-        for (int j=0; j<frames.count; j++) {
-            NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
-            DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-            drawView.uuid = uuid;
-            drawView.lineList = [lines mutableCopy];
-            [drawViewArray addObject:drawView];
-        }
-        DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-        animator.uuid = uuid;
-        [animator createFrames:drawViewArray withSpeed:_fps];
-        [animator createAllGIFs];
-    }
-
-}
-
-- (void)removeStatusLabel {
-    self.statusLabel.text = @"";
-    self.statusView.hidden = YES;
-}
-
 #pragma mark - UI/undo stuff
 
 - (void)updateUI {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [self updateUndoButtonForDrawView:drawView];
+    
+    if (_isVertical) {
+        self.previousButtonH.hidden = YES;
+        self.nextButtonH.hidden = YES;
+        self.addButtonH.hidden = YES;
+        self.myAnimationsButtonH.hidden = YES;
+        self.addAnimationButtonH.hidden = YES;
+        self.deleteButtonH.hidden = YES;
+        self.exportButtonH.hidden = YES;
+        self.previewButtonH.hidden = YES;
+    } else {
+        self.previousButton.hidden = YES;
+        self.nextButton.hidden = YES;
+        self.addButton.hidden = YES;
+        self.myAnimationsButton.hidden = YES;
+        self.addAnimationButton.hidden = YES;
+        self.deleteButton.hidden = YES;
+        self.exportButton.hidden = YES;
+        self.previewButton.hidden = YES;
+    }
 
     if (_currentFrame <= 0) {
         self.previousButton.hidden = YES;
         self.previousButtonH.hidden = YES;
     } else {
-        self.previousButton.hidden = NO;
-        self.previousButtonH.hidden = NO;
+        if (_isVertical) self.previousButton.hidden = NO;
+        if (!_isVertical) self.previousButtonH.hidden = NO;
     }
 
     if (_currentFrame >= self.framesArray.count-1) {
         self.nextButton.hidden = YES;
         self.nextButtonH.hidden = YES;
     } else {
-        self.nextButton.hidden = NO;
-        self.nextButtonH.hidden = NO;
+        if (_isVertical) self.nextButton.hidden = NO;
+        if (!_isVertical) self.nextButtonH.hidden = NO;
     }
     
-    if (self.framesArray.count > _maxFrames) {
+    if (self.framesArray.count >= _maxFrames) {
         self.addButton.hidden = YES;
         self.addButtonH.hidden = YES;
     } else {
-        self.addButton.hidden = NO;
-        self.addButtonH.hidden = NO;
+        if (!_firstLoad) {
+            if (_isVertical) self.addButton.hidden = NO;
+            if (!_isVertical) self.addButtonH.hidden = NO;
+        }
     }
 
+    if (!_tappedStop) {
+        self.myAnimationsButton.hidden = YES;
+        self.myAnimationsButtonH.hidden = YES;
+        self.addAnimationButton.hidden = YES;
+        self.addAnimationButtonH.hidden = YES;
+    } else {
+        if (_isVertical) self.myAnimationsButton.hidden = NO;
+        if (!_isVertical) self.myAnimationsButtonH.hidden = NO;
+        if (_isVertical) self.addAnimationButton.hidden = NO;
+        if (!_isVertical) self.addAnimationButtonH.hidden = NO;
+    }
+    
     if (self.framesArray.count > 1) {
-        self.deleteButton.hidden = NO;
-        self.deleteButtonH.hidden = NO;
+        if (_isVertical) self.deleteButton.hidden = NO;
+        if (!_isVertical) self.deleteButtonH.hidden = NO;
     } else {
         self.deleteButton.hidden = YES;
         self.deleteButtonH.hidden = YES;
     }
     
     if (self.framesArray.count > 1) {
-        self.exportButton.hidden = NO;
-        self.previewButton.hidden = NO;
-        self.exportButtonH.hidden = NO;
-        self.previewButtonH.hidden = NO;
+        if (_tappedAdd && !_isPreviewing) {
+            if (_isVertical) self.previewButton.hidden = NO;
+            if (!_isVertical) self.previewButtonH.hidden = NO;
+        }
+        if (_tappedStop) {
+            if (_isVertical) self.exportButton.hidden = NO;
+            if (!_isVertical) self.exportButtonH.hidden = NO;
+        }
     } else {
         self.exportButton.hidden = YES;
-        self.previewButton.hidden = YES;
         self.exportButtonH.hidden = YES;
+        self.previewButton.hidden = YES;
         self.previewButtonH.hidden = YES;
     }
 
@@ -442,7 +474,9 @@ static BOOL _isClean = YES;
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView undo];
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self saveToDisk];
+        @synchronized(drawView) {
+            [self saveToDisk];
+        }
     });
     [self updateUI];
 }
@@ -487,24 +521,6 @@ static BOOL _isClean = YES;
     [self newAnimation];
 }
 
-- (IBAction)onRebuildTapped:(id)sender {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Rebuild images"
-                                                                   message:@"This will rebuild the GIFs generated by your animations. None of your animations will be modified. This may take a while depending on how many animations you have."
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Rebuild" style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction * action) {
-                                                              [self buildThumbnails];
-                                                          }];
-
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * action) {}];
-    
-    [alert addAction:defaultAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (IBAction)onNextTapped:(id)sender {
     [self nextFrame];
 }
@@ -514,20 +530,38 @@ static BOOL _isClean = YES;
 }
 
 - (IBAction)onAddTapped:(id)sender {
+    _tappedAdd = YES;
 	[self addFrame];
 }
 
 - (IBAction)onDeleteTapped:(id)sender {
-    UIActionSheet *as = [[UIActionSheet alloc]
-                         initWithTitle:nil
-                         delegate:self
-                         cancelButtonTitle:@"Cancel"
-                         destructiveButtonTitle:[NSString stringWithFormat:@"Delete frame"]
-                         otherButtonTitles:nil];
-    [as showInView:self.view.superview];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Delete frame" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self deleteCurrentFrame];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+
+    UIPopoverPresentationController *popover = alert.popoverPresentationController;
+    if (popover) {
+        popover.sourceView = self.sketchView;
+        popover.sourceRect = CGRectMake(self.sketchView.bounds.size.width * .5, self.sketchView.bounds.size.height * .5, 1.0, 1.0);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+    
+    [self presentViewController:alert animated:NO completion:nil];
 }
 
 - (IBAction)onStopPreviewTapped:(id)sender {
+    _tappedStop = YES;
     [self stopPreview];
 }
 
@@ -536,19 +570,12 @@ static BOOL _isClean = YES;
 }
 
 - (IBAction)onPreviewTapped:(id)sender {
+    _tappedPreview = YES;
     [self showPreview];
 }
 
 - (IBAction)onExportTapped:(id)sender {
     [self export];
-}
-
-#pragma mark - Actionsheet stuff
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        [self deleteCurrentFrame];
-    }
 }
 
 @end

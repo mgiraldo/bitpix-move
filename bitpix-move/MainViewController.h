@@ -13,7 +13,7 @@
 #import "UserData.h"
 #import "AppDelegate.h"
 
-@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, UIActionSheetDelegate>
+@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate>
 
 @property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
@@ -29,15 +29,17 @@
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *undoButton;
-@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
-@property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UIView *mainActionsView;
 @property (weak, nonatomic) IBOutlet UIView *mainActionsViewH;
 @property (weak, nonatomic) IBOutlet UIView *frameActionsView;
 @property (weak, nonatomic) IBOutlet UIView *frameActionsViewH;
-@property (weak, nonatomic) IBOutlet UIView *prevNextView;
+@property (weak, nonatomic) IBOutlet UILabel *drawLabel;
+@property (weak, nonatomic) IBOutlet UIButton *myAnimationsButton;
+@property (weak, nonatomic) IBOutlet UIButton *addAnimationButton;
 
 // horizontal ui
+@property (weak, nonatomic) IBOutlet UIButton *myAnimationsButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *addAnimationButtonH;
 @property (weak, nonatomic) IBOutlet UILabel *frameLabelH;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *undoButtonH;
@@ -62,7 +64,6 @@
 - (IBAction)onUndoTapped:(id)sender;
 - (IBAction)onMyAnimationsTapped:(id)sender;
 - (IBAction)onNewTapped:(id)sender;
-- (IBAction)onRebuildTapped:(id)sender;
 
 @end
 

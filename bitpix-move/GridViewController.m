@@ -28,6 +28,8 @@ static BOOL _deletedParentAnimation = NO;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.statusView.hidden = YES;
+
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.collectionData = [@[] mutableCopy];
@@ -36,6 +38,12 @@ static BOOL _deletedParentAnimation = NO;
         [self.collectionData addObject:[obj valueForKey:@"name"]];
     }
     
+    if (self.collectionData.count == 0) {
+        self.refreshView.hidden = YES;
+    } else {
+        self.refreshView.hidden = NO;
+    }
+
     _deletedParentAnimation = NO;
 
     // Uncomment the following line to preserve selection between presentations
@@ -49,6 +57,10 @@ static BOOL _deletedParentAnimation = NO;
     
     // Register cell classes
     [self.collectionView registerClass:[ThumbnailCell class] forCellWithReuseIdentifier:reuseIdentifier];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -81,6 +93,83 @@ static BOOL _deletedParentAnimation = NO;
     } else {
         [self.delegate gridViewControllerDidFinish:self];
     }
+}
+
+- (IBAction)onRefreshTapped:(id)sender {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Refresh thumbnails"
+                                                                   message:@"Tap “Refresh” If the thumbnails you see do not match your animation. None of your animations will be modified. This may take a while depending on how many animations you have."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self refreshThumbnails];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:NO completion:nil];
+}
+
+#pragma mark - Status stuff
+
+- (void)removeStatusLabel {
+    self.statusLabel.text = @"";
+    self.statusView.hidden = YES;
+}
+
+- (void)refreshThumbnails {
+    NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾"];
+    int emojiCount = (int)emojiArray.count;
+    srand ((int)time(NULL));
+    int index = rand()%emojiCount;
+    NSString *emoji = [emojiArray objectAtIndex:index];
+    self.statusLabel.text = [NSString stringWithFormat:@"Performing GIFness. This may take a while depending on how many animations you have. In the meantime, enjoy some emoji:\n\n%@", emoji];
+    self.statusView.hidden = NO;
+    
+    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        [self dispatchedRefresh];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self removeStatusLabel];
+            [self.collectionView reloadData];
+        });
+    });
+}
+
+- (void)dispatchedRefresh {
+    int i;
+    NSDictionary *animation;
+    NSArray *frames;
+    NSMutableArray *drawViewArray;
+    
+    NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
+    
+    [UserData emptyUserFolder];
+    
+    for (i=0; i<animationCount; i++) {
+        animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:i];
+        // check if thumbnail exists
+        NSString *uuid = [animation objectForKey:@"name"];
+        [self.appDelegate.appData removeThumbnailsForUUID:uuid];
+        // get the frames
+        frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
+        
+        drawViewArray = [@[] mutableCopy];
+        for (int j=0; j<frames.count; j++) {
+            NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
+            DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+            drawView.uuid = uuid;
+            drawView.lineList = [lines mutableCopy];
+            [drawViewArray addObject:drawView];
+        }
+        DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+        animator.uuid = uuid;
+        [animator createFrames:drawViewArray withSpeed:_fps];
+        [animator createAllGIFs];
+    }
+    
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -168,7 +257,7 @@ static BOOL _deletedParentAnimation = NO;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 10, 100, 10);
+    return UIEdgeInsetsMake(50, 10, 100, 10);
 }
 
 #pragma mark – Duplicate/delete stuff
@@ -219,25 +308,47 @@ static BOOL _deletedParentAnimation = NO;
 - (void)deleteTapped:(id)sender {
     _selectedAction = kDeleteAction;
 
-    UIActionSheet *as = [[UIActionSheet alloc]
-                         initWithTitle:nil
-                         delegate:self
-                         cancelButtonTitle:@"Cancel"
-                         destructiveButtonTitle:[NSString stringWithFormat:@"Delete animation"]
-                         otherButtonTitles:nil];
-    [as showInView:self.view.superview];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Delete animation" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              // check to see if it was the animation user was working on
+                                                              NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:_selectedRow] objectForKey:@"name"];
+                                                              MainViewController *vc = (MainViewController *)self.delegate;
+                                                              if ([uuid isEqualToString:vc.uuid]) {
+                                                                  _deletedParentAnimation = YES;
+                                                              }
+                                                              [self deleteAnimation];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:NO completion:nil];
 }
 
 - (void)duplicateTapped:(id)sender {
     _selectedAction = kDuplicateAction;
     
-    UIActionSheet *as = [[UIActionSheet alloc]
-                         initWithTitle:nil
-                         delegate:self
-                         cancelButtonTitle:@"Cancel"
-                         destructiveButtonTitle:nil
-                         otherButtonTitles:[NSString stringWithFormat:@"Duplicate animation"], nil];
-    [as showInView:self.view.superview];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Duplicate animation" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self duplicateAnimation];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:NO completion:nil];
 }
 
 - (void)deleteAnimation {
@@ -253,9 +364,17 @@ static BOOL _deletedParentAnimation = NO;
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.collectionView deleteItemsAtIndexPaths:indexes];
     [self.collectionView reloadData];
+
+    if (self.collectionData.count == 0) {
+        self.refreshView.hidden = YES;
+    } else {
+        self.refreshView.hidden = NO;
+    }
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self.appDelegate.appData deleteAnimationAtIndex:originalIndex];
+        @synchronized(indexPath) {
+            [self.appDelegate.appData deleteAnimationAtIndex:originalIndex];
+        }
         [self.appDelegate.appData deleteFilesWithUUID:uuuid];
     });
 
@@ -279,9 +398,14 @@ static BOOL _deletedParentAnimation = NO;
     
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        NSDictionary *duplicationOutput = [self.appDelegate.appData duplicateAnimationAtIndex:originalIndex withUUID:uuid];
-        NSString *olduuid = [duplicationOutput objectForKey:@"olduuid"];
-        NSNumber *frameCount = [duplicationOutput objectForKey:@"frameCount"];
+        __block NSDictionary *duplicationOutput;
+        __block NSString *olduuid;
+        __block NSNumber *frameCount;
+        @synchronized(indexPath) {
+            duplicationOutput = [self.appDelegate.appData duplicateAnimationAtIndex:originalIndex withUUID:uuid];
+            olduuid = [duplicationOutput objectForKey:@"olduuid"];
+            frameCount = [duplicationOutput objectForKey:@"frameCount"];
+        }
         [self.appDelegate.appData copyFilesFrom:olduuid to:uuid withCount:frameCount.integerValue];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
@@ -300,24 +424,6 @@ static BOOL _deletedParentAnimation = NO;
     if (self.duplicateButton != nil) {
         [self.duplicateButton removeFromSuperview];
         self.duplicateButton = nil;
-    }
-}
-
-#pragma mark - Actionsheet stuff
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (_selectedAction == kDeleteAction && buttonIndex == 0) {
-        // check to see if it was the animation user was working on
-        NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:_selectedRow] objectForKey:@"name"];
-        MainViewController *vc = (MainViewController *)self.delegate;
-        if ([uuid isEqualToString:vc.uuid]) {
-            _deletedParentAnimation = YES;
-        }
-        [self deleteAnimation];
-    }
-
-    if (_selectedAction == kDuplicateAction && buttonIndex == 0) {
-        [self duplicateAnimation];
     }
 }
 

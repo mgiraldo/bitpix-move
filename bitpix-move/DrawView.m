@@ -83,6 +83,7 @@
     self.isClean = NO;
 	[self resetLastLine];
 	[self addTouch:touches withEvent:event];
+    [self.delegate drawViewTouchesBegan:self];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
