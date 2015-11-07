@@ -10,10 +10,11 @@
 #import "DrawView.h"
 #import "DrawViewAnimator.h"
 #import "GridViewController.h"
+#import "InfoViewController.h"
 #import "UserData.h"
 #import "AppDelegate.h"
 
-@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate>
+@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, InfoViewControllerDelegate>
 
 @property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
@@ -35,10 +36,12 @@
 @property (weak, nonatomic) IBOutlet UIView *frameActionsViewH;
 @property (weak, nonatomic) IBOutlet UILabel *drawLabel;
 @property (weak, nonatomic) IBOutlet UIButton *myAnimationsButton;
+@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 @property (weak, nonatomic) IBOutlet UIButton *addAnimationButton;
 
 // horizontal ui
 @property (weak, nonatomic) IBOutlet UIButton *myAnimationsButtonH;
+@property (weak, nonatomic) IBOutlet UIButton *settingsButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *addAnimationButtonH;
 @property (weak, nonatomic) IBOutlet UILabel *frameLabelH;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButtonH;

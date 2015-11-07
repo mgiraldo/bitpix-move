@@ -374,6 +374,7 @@ static BOOL _isVertical = YES;
         self.deleteButtonH.hidden = YES;
         self.exportButtonH.hidden = YES;
         self.previewButtonH.hidden = YES;
+        self.settingsButtonH.hidden = YES;
     } else {
         self.previousButton.hidden = YES;
         self.nextButton.hidden = YES;
@@ -383,6 +384,7 @@ static BOOL _isVertical = YES;
         self.deleteButton.hidden = YES;
         self.exportButton.hidden = YES;
         self.previewButton.hidden = YES;
+        self.settingsButton.hidden = YES;
     }
 
     if (_currentFrame <= 0) {
@@ -416,11 +418,15 @@ static BOOL _isVertical = YES;
         self.myAnimationsButtonH.hidden = YES;
         self.addAnimationButton.hidden = YES;
         self.addAnimationButtonH.hidden = YES;
+        self.settingsButton.hidden = YES;
+        self.settingsButtonH.hidden = YES;
     } else {
         if (_isVertical) self.myAnimationsButton.hidden = NO;
         if (!_isVertical) self.myAnimationsButtonH.hidden = NO;
         if (_isVertical) self.addAnimationButton.hidden = NO;
         if (!_isVertical) self.addAnimationButtonH.hidden = NO;
+        if (_isVertical) self.settingsButton.hidden = NO;
+        if (!_isVertical) self.settingsButtonH.hidden = NO;
     }
     
     if (self.framesArray.count > 1) {
@@ -488,14 +494,20 @@ static BOOL _isVertical = YES;
     [self updateUI];
 }
 
-#pragma mark - Grid view delegate
+#pragma mark - Grid/Info view delegate
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //	NSLog(@"prepare for segue: [%@] sender: [%@]", [segue identifier], sender);
     if ([[segue identifier] isEqualToString:@"viewGrid"]) {
         [self clean];
         [[segue destinationViewController] setDelegate:self];
+    } else if ([[segue identifier] isEqualToString:@"viewInfo"]) {
+        [[segue destinationViewController] setDelegate:self];
     }
+}
+
+- (void)infoViewControllerDidFinish:(InfoViewController *)controller {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)gridViewControllerDidFinish:(GridViewController *)controller {
