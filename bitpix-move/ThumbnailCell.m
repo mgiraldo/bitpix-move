@@ -14,22 +14,8 @@
 
 - (void)setFilename:(NSString *)filename {
     _filename = filename;
-
-    NSFileManager *fm = [[NSFileManager alloc] init];
-    NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:filename] error:nil];
     
-    if (filelist == nil) {
-        DebugLog(@"error loading thumb images");
-        return;
-    }
-
-    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:filelist.count];
-    
-    for (NSString *file in filelist) {
-        NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@", filename, file]];
-        UIImage *frame = [UIImage imageWithContentsOfFile:fullPath];
-        [frames addObject:frame];
-    }
+    UIImage *animatedImage = [UIImage animatedImageNamed:[UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s", filename, filename, _fileSuffix]] duration:self.duration];
     
     if (self.thumbnailView == nil) {
         self.thumbnailView = [[ThumbnailView alloc] initWithFrame:self.contentView.frame];
@@ -38,12 +24,9 @@
     
     self.backgroundColor = [UIColor whiteColor];
     self.thumbnailView.backgroundColor = [UIColor whiteColor];
-
-    if (frames.count > 0) {
-        self.thumbnailView.animationImages = frames;
-        self.thumbnailView.animationRepeatCount = 0;
-        self.thumbnailView.animationDuration = self.duration;
-        self.thumbnailView.image = frames[0];
+    
+    if (animatedImage != nil) {
+        self.thumbnailView.image = animatedImage;
         [self.thumbnailView startAnimating];
     }
 }

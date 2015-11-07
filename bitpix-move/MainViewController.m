@@ -258,7 +258,14 @@ static BOOL _isVertical = YES;
                                    UIActivityTypePostToTencentWeibo];
     
     activityViewController.excludedActivityTypes = excludeActivities;
-    
+
+    UIPopoverPresentationController *popover = activityViewController.popoverPresentationController;
+    if (popover) {
+        popover.sourceView = self.sketchView;
+        popover.sourceRect = CGRectMake(self.sketchView.bounds.size.width * .5, self.sketchView.bounds.size.height * .5, 1.0, 1.0);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+
     [self presentViewController:activityViewController
                        animated:YES
                      completion:^{}];

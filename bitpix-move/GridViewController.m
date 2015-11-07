@@ -300,8 +300,6 @@ static BOOL _deletedParentAnimation = NO;
         [self.collectionView addSubview:self.duplicateButton];
         [self.collectionView bringSubviewToFront:self.duplicateButton];
         [self.duplicateButton addTarget:self action:@selector(duplicateTapped:) forControlEvents:UIControlEventTouchUpInside];
-        
-        DebugLog(@"added: %@", cell);
     }
 }
 
@@ -408,6 +406,23 @@ static BOOL _deletedParentAnimation = NO;
         }
         [self.appDelegate.appData copyFilesFrom:olduuid to:uuid withCount:frameCount.integerValue];
         dispatch_async(dispatch_get_main_queue(), ^{
+
+            NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *animation = (NSDictionary *)obj;
+                BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
+                return found;
+            }];
+            
+            if (index != NSNotFound) {
+                NSIndexPath *iPath = [NSIndexPath indexPathForRow:index inSection:0];
+                ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:iPath];
+                if (cell) {
+                    cell.duration = [NSArray arrayWithArray:[[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"]].count / _fps;
+                    cell.filename = uuid;
+                    [cell setNeedsLayout];
+                }
+            }
+
             [self.collectionView reloadData];
         });
     });
