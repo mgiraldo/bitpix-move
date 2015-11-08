@@ -24,6 +24,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 static NSInteger _selectedRow;
 static int _selectedAction;
 static BOOL _deletedParentAnimation = NO;
+static int _currentDuplicates = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,7 +34,7 @@ static BOOL _deletedParentAnimation = NO;
     NSMutableArray *temp = [@[] mutableCopy];
     
     for (id obj in self.appDelegate.appData.userAnimations) {
-        [temp addObject:[obj valueForKey:@"name"]];
+        [temp addObject:@{@"name":[obj valueForKey:@"name"], @"duplicating":@NO}];
     }
     
     self.collectionData = [[[temp reverseObjectEnumerator] allObjects] mutableCopy];
@@ -102,7 +103,7 @@ static BOOL _deletedParentAnimation = NO;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ThumbnailCell *cell = (ThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
-    NSString *uuid = [self.collectionData objectAtIndex:indexPath.row];
+    NSString *uuid = [[self.collectionData objectAtIndex:indexPath.row] valueForKey:@"name"];
     
     NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSDictionary *animation = (NSDictionary *)obj;
@@ -131,6 +132,7 @@ static BOOL _deletedParentAnimation = NO;
 #pragma mark <UICollectionViewDelegate>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (_currentDuplicates > 0) return;
     NSInteger realIndex = self.collectionData.count - (indexPath.row + 1);
     [self.delegate gridViewControllerDidFinish:self withAnimationIndex:realIndex];
 }
@@ -196,6 +198,9 @@ static BOOL _deletedParentAnimation = NO;
     if (indexPath == nil) {
         DebugLog(@"could not find index path");
     } else {
+        BOOL duplicating = [[[self.collectionData objectAtIndex:indexPath.row] valueForKey:@"duplicating"] boolValue];
+        if (duplicating) return;
+
         _selectedRow = indexPath.row;
 
         ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
@@ -275,7 +280,7 @@ static BOOL _deletedParentAnimation = NO;
     if (_selectedRow == -1) return;
 
     NSInteger originalIndex = _selectedRow;
-    NSString *uuid = [self.collectionData objectAtIndex:originalIndex];
+    NSString *uuid = [[self.collectionData objectAtIndex:originalIndex] valueForKey:@"name"];
     [self.collectionData removeObjectAtIndex:originalIndex];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:originalIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
@@ -291,20 +296,29 @@ static BOOL _deletedParentAnimation = NO;
     _selectedRow = -1;
 }
 
+- (void)checkForReturnShow {
+    if (_currentDuplicates <= 0) {
+        self.returnButton.enabled = YES;
+    }
+}
+
 - (void)duplicateAnimation {
     DebugLog(@"duplicated: %ld", (long)_selectedRow);
     [self removeAccessoryButtons];
 
     if (_selectedRow == -1) return;
+    
+    self.returnButton.enabled = NO;
+    _currentDuplicates++;
 
     NSInteger originalIndex = _selectedRow;
     // put it "after" the current one (showing in reverse order so -1)
     NSInteger newIndex = _selectedRow;
-    __block NSString *olduuid = [self.collectionData objectAtIndex:originalIndex];
+    __block NSString *olduuid = [[self.collectionData objectAtIndex:originalIndex] valueForKey:@"name"];
     __block NSString *uuid = [[NSUUID UUID] UUIDString];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
-    [self.collectionData insertObject:uuid atIndex:newIndex];
+    [self.collectionData insertObject:[@{@"name":uuid, @"duplicating":@YES} mutableCopy] atIndex:newIndex];
     [self.collectionView insertItemsAtIndexPaths:indexes];
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
@@ -316,6 +330,8 @@ static BOOL _deletedParentAnimation = NO;
         }
         [self.appDelegate.appData copyFilesFrom:olduuid to:uuid withCount:frameCount.integerValue];
         dispatch_async(dispatch_get_main_queue(), ^{
+            _currentDuplicates--;
+            [self checkForReturnShow];
             NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSDictionary *animation = (NSDictionary *)obj;
                 BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
@@ -324,6 +340,7 @@ static BOOL _deletedParentAnimation = NO;
 
             if (index != NSNotFound) {
                 NSInteger realIndex = self.collectionData.count - (index+1);
+                [[self.collectionData objectAtIndex:realIndex] setObject:@NO forKey:@"duplicating"];
                 NSIndexPath *iPath = [NSIndexPath indexPathForRow:realIndex inSection:0];
                 ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:iPath];
 

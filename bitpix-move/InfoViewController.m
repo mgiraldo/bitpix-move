@@ -75,7 +75,7 @@ static dispatch_queue_t _refreshQueue;
     int index = rand()%emojiCount;
     NSString *emoji = [emojiArray objectAtIndex:index];
     
-    self.statusLabel.text = [NSString stringWithFormat:@"Performing GIFness\nfor animation\n%d of %d.\n\n%@", _currentRefresh+1, (int)animationCount, emoji];
+    self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPerforming GIFness\nfor animation\n%d of %d.\n\n%@", emoji, _currentRefresh+1, (int)animationCount, emoji];
 }
 
 - (void)refreshNext {
@@ -108,10 +108,12 @@ static dispatch_queue_t _refreshQueue;
     
     if (_currentRefresh < animationCount) {
         // dispatch again
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC));
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateRefreshText];
         });
-        dispatch_async(_refreshQueue, ^{
+        dispatch_after(popTime, _refreshQueue, ^{
             [self refreshNext];
         });
     } else {

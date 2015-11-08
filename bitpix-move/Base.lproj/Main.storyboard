@@ -683,6 +683,14 @@
                                     <outletCollection property="gestureRecognizers" destination="kgn-HG-Qok" appends="YES" id="Zcr-t2-cQ0"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpq-oC-ghA">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="xIk-JE-iAc"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GEs-1p-d0Q">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                                 <animations/>
@@ -710,11 +718,14 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="fpq-oC-ghA" firstAttribute="top" secondItem="sgf-Qi-mjb" secondAttribute="topMargin" id="GTc-Sv-f2K"/>
                             <constraint firstItem="GEs-1p-d0Q" firstAttribute="width" secondItem="sgf-Qi-mjb" secondAttribute="width" id="Jwp-6u-sxM"/>
                             <constraint firstAttribute="bottomMargin" secondItem="GEs-1p-d0Q" secondAttribute="bottom" id="MJ8-Gf-Nup"/>
+                            <constraint firstItem="fpq-oC-ghA" firstAttribute="width" secondItem="sgf-Qi-mjb" secondAttribute="width" id="QkH-uS-DjW"/>
                             <constraint firstItem="AdT-EH-el5" firstAttribute="top" secondItem="GEs-1p-d0Q" secondAttribute="top" id="Tgv-vj-6Ba"/>
                             <constraint firstItem="WCC-jN-hJn" firstAttribute="width" secondItem="sgf-Qi-mjb" secondAttribute="width" id="U07-uP-nsG"/>
                             <constraint firstItem="WCC-jN-hJn" firstAttribute="centerY" secondItem="sgf-Qi-mjb" secondAttribute="centerY" id="Xg4-gL-KCX"/>
+                            <constraint firstItem="fpq-oC-ghA" firstAttribute="centerX" secondItem="sgf-Qi-mjb" secondAttribute="centerX" id="YZl-5r-DiG"/>
                             <constraint firstItem="WCC-jN-hJn" firstAttribute="centerX" secondItem="sgf-Qi-mjb" secondAttribute="centerX" id="joq-NK-FoE"/>
                             <constraint firstItem="GEs-1p-d0Q" firstAttribute="centerX" secondItem="sgf-Qi-mjb" secondAttribute="centerX" id="lWL-UG-wSO"/>
                             <constraint firstItem="AdT-EH-el5" firstAttribute="width" secondItem="GEs-1p-d0Q" secondAttribute="width" id="pjC-ec-mYs"/>
