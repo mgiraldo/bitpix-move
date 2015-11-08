@@ -30,11 +30,13 @@ static BOOL _deletedParentAnimation = NO;
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    self.collectionData = [@[] mutableCopy];
+    NSMutableArray *temp = [@[] mutableCopy];
     
     for (id obj in self.appDelegate.appData.userAnimations) {
-        [self.collectionData addObject:[obj valueForKey:@"name"]];
+        [temp addObject:[obj valueForKey:@"name"]];
     }
+    
+    self.collectionData = [[[temp reverseObjectEnumerator] allObjects] mutableCopy];
     
     self.collectionView.scrollsToTop = YES;
     
@@ -111,7 +113,9 @@ static BOOL _deletedParentAnimation = NO;
     cell.backgroundColor = [UIColor whiteColor];
     if (index != NSNotFound) {
         // Configure the cell
-        cell.duration = [NSArray arrayWithArray:[[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"]].count / _fps;
+        NSArray * frames = [[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"];
+        cell.frameCount = frames.count;
+        cell.duration = frames.count / _fps;
         cell.filename = uuid;
     } else {
         if (cell.thumbnailView != nil) {
@@ -119,14 +123,15 @@ static BOOL _deletedParentAnimation = NO;
             cell.thumbnailView = nil;
         }
     }
-
+    
     return cell;
 }
 
 #pragma mark <UICollectionViewDelegate>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self.delegate gridViewControllerDidFinish:self withAnimationIndex:indexPath.row];
+    NSInteger realIndex = self.collectionData.count - (indexPath.row + 1);
+    [self.delegate gridViewControllerDidFinish:self withAnimationIndex:realIndex];
 }
  
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -170,7 +175,7 @@ static BOOL _deletedParentAnimation = NO;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(50, 10, 100, 10);
+    return UIEdgeInsetsMake(20, 5, 100, 5);
 }
 
 #pragma mark – Duplicate/delete stuff
@@ -180,7 +185,7 @@ static BOOL _deletedParentAnimation = NO;
 }
 
 - (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
-    DebugLog(@"long press");
+//    DebugLog(@"long press");
 
     [self removeAccessoryButtons];
 
@@ -269,18 +274,17 @@ static BOOL _deletedParentAnimation = NO;
     if (_selectedRow == -1) return;
 
     NSInteger originalIndex = _selectedRow;
-    NSString *uuuid = [self.collectionData objectAtIndex:originalIndex];
+    NSString *uuid = [self.collectionData objectAtIndex:originalIndex];
     [self.collectionData removeObjectAtIndex:originalIndex];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:originalIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
     [self.collectionView deleteItemsAtIndexPaths:indexes];
-    [self.collectionView reloadData];
 
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(indexPath) {
-            [self.appDelegate.appData deleteAnimationAtIndex:originalIndex];
+        @synchronized(self.appDelegate.appData) {
+            [self.appDelegate.appData deleteAnimationWithUUID:uuid];
         }
-        [self.appDelegate.appData deleteFilesWithUUID:uuuid];
+        [self.appDelegate.appData deleteFilesWithUUID:uuid];
     });
 
     _selectedRow = -1;
@@ -293,44 +297,44 @@ static BOOL _deletedParentAnimation = NO;
     if (_selectedRow == -1) return;
 
     NSInteger originalIndex = _selectedRow;
-    NSInteger newIndex = self.collectionData.count;
-    NSString *uuid = [[NSUUID UUID] UUIDString];
-    [self.collectionData addObject:uuid];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
+    // put it "after" the current one (showing in reverse order so -1)
+    NSInteger newIndex = _selectedRow;
+    __block NSString *olduuid = [self.collectionData objectAtIndex:originalIndex];
+    __block NSString *uuid = [[NSUUID UUID] UUIDString];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
+    [self.collectionData insertObject:uuid atIndex:newIndex];
     [self.collectionView insertItemsAtIndexPaths:indexes];
-    [self.collectionView reloadData];
-    
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
         __block NSDictionary *duplicationOutput;
-        __block NSString *olduuid;
         __block NSNumber *frameCount;
-        @synchronized(indexPath) {
-            duplicationOutput = [self.appDelegate.appData duplicateAnimationAtIndex:originalIndex withUUID:uuid];
-            olduuid = [duplicationOutput objectForKey:@"olduuid"];
+        @synchronized(self.appDelegate.appData) {
+            duplicationOutput = [self.appDelegate.appData duplicateAnimationWithUUID:olduuid withUUID:uuid];
             frameCount = [duplicationOutput objectForKey:@"frameCount"];
         }
         [self.appDelegate.appData copyFilesFrom:olduuid to:uuid withCount:frameCount.integerValue];
         dispatch_async(dispatch_get_main_queue(), ^{
-
             NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSDictionary *animation = (NSDictionary *)obj;
                 BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
                 return found;
             }];
-            
+
             if (index != NSNotFound) {
-                NSIndexPath *iPath = [NSIndexPath indexPathForRow:index inSection:0];
+                NSInteger realIndex = self.collectionData.count - (index+1);
+                NSIndexPath *iPath = [NSIndexPath indexPathForRow:realIndex inSection:0];
                 ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:iPath];
+
                 if (cell) {
-                    cell.duration = [NSArray arrayWithArray:[[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"]].count / _fps;
+                    NSArray *frames = [NSArray arrayWithArray:[[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"]];
+                    NSInteger frameCount = frames.count;
+                    cell.duration = frameCount / _fps;
+                    cell.frameCount = frameCount;
                     cell.filename = uuid;
                     [cell setNeedsLayout];
                 }
             }
-
-            [self.collectionView reloadData];
         });
     });
 

@@ -76,6 +76,18 @@
     NSLog(@"size: %lu", (unsigned long)self.userAnimations.count);
 }
 
+- (void)deleteAnimationWithUUID:(NSString *)uuid {
+    NSUInteger index = [self.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *animation = (NSDictionary *)obj;
+        BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
+        return found;
+    }];
+    
+    if (index != NSNotFound) {
+        [self deleteAnimationAtIndex:index];
+    }
+}
+
 - (NSString *)deleteAnimationAtIndex:(NSInteger)index {
     NSDictionary *animation = [self.userAnimations objectAtIndex:index];
     NSString *uuid = [animation valueForKey:@"name"];
@@ -89,6 +101,21 @@
     [self removeAnimationImageForUUI:uuid];
 }
 
+- (NSDictionary *)duplicateAnimationWithUUID:(NSString *)uuid withUUID:(NSString *)toUUID {
+    NSUInteger index = [self.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *animation = (NSDictionary *)obj;
+        BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
+        return found;
+    }];
+    
+    if (index != NSNotFound) {
+        NSDictionary *result = [self duplicateAnimationAtIndex:index withUUID:toUUID];
+        return result;
+    }
+    
+    return nil;
+}
+
 - (NSDictionary *)duplicateAnimationAtIndex:(NSInteger)index withUUID:(NSString *)uuid {
     NSMutableDictionary *animation = [[self.userAnimations objectAtIndex:index] mutableCopy];
     NSString *olduuid = [animation valueForKey:@"name"];
@@ -97,7 +124,8 @@
     NSNumber *frameCount = [NSNumber numberWithInteger:frames.count];
     [animation setValue:uuid forKey:@"name"];
     [animation setValue:today forKey:@"date"];
-    [self.userAnimations addObject:animation];
+    NSInteger newIndex = (index == self.userAnimations.count-1) ? self.userAnimations.count : index + 1;
+    [self.userAnimations insertObject:animation atIndex:newIndex];
     [self save];
     NSDictionary *result = [NSDictionary dictionaryWithObjects:@[olduuid, uuid, frameCount] forKeys:@[@"olduuid", @"newuuid", @"frameCount"]];
     return result;

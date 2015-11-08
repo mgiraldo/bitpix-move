@@ -14,19 +14,31 @@
 
 - (void)setFilename:(NSString *)filename {
     _filename = filename;
+
+    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:self.frameCount];
     
-    UIImage *animatedImage = [UIImage animatedImageNamed:[UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s", filename, filename, _fileSuffix]] duration:self.duration];
+    for (int i = 0; i<self.frameCount; i++) {
+        NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", filename, filename, _fileSuffix, i]];
+        UIImage *frame = [UIImage imageWithContentsOfFile:fullPath];
+        if (frame != nil) [frames addObject:frame];
+//        DebugLog(@"frames: %@", fullPath);
+    }
     
     if (self.thumbnailView == nil) {
         self.thumbnailView = [[ThumbnailView alloc] initWithFrame:self.contentView.frame];
         [self.contentView addSubview:self.thumbnailView];
     }
     
+//    DebugLog(@"frames: %@", frames);
+    
     self.backgroundColor = [UIColor whiteColor];
     self.thumbnailView.backgroundColor = [UIColor whiteColor];
-    
-    if (animatedImage != nil) {
-        self.thumbnailView.image = animatedImage;
+
+    if (frames.count > 0) {
+        self.thumbnailView.animationImages = frames;
+        self.thumbnailView.animationRepeatCount = 0;
+        self.thumbnailView.animationDuration = self.duration;
+        self.thumbnailView.image = frames[0];
         [self.thumbnailView startAnimating];
     }
 }

@@ -24,6 +24,7 @@ static BOOL _tappedAdd = NO;
 static BOOL _tappedPreview = NO;
 static BOOL _tappedStop = NO;
 static BOOL _isVertical = YES;
+static const NSInteger _frameBuffer = 3;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -45,6 +46,7 @@ static BOOL _isVertical = YES;
     if (_firstLoad) {
         self.addButton.hidden = YES;
         self.addButtonH.hidden = YES;
+        self.drawLabel.text = @"Draw here";
     }
     
     // the next id will be the count
@@ -284,7 +286,7 @@ static BOOL _isVertical = YES;
     [self.framesArray replaceObjectAtIndex:_currentFrame withObject:drawView];
     [self updateUI];
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(drawView) {
+        @synchronized(self.appDelegate.appData) {
             [self saveToDisk];
         }
     });
@@ -303,7 +305,7 @@ static BOOL _isVertical = YES;
 }
 
 - (void)addFrame {
-    _isClean = NO;
+    if (_currentFrame != -1) _isClean = NO;
     _currentFrame++;
     DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
     drawView.uuid = self.uuid;
@@ -311,10 +313,11 @@ static BOOL _isVertical = YES;
     [self.framesArray insertObject:drawView atIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(drawView) {
+        @synchronized(self.appDelegate.appData) {
             [self saveToDisk];
         }
     });
+    [self popFrame];
     [self updateUI];
 }
 
@@ -327,6 +330,8 @@ static BOOL _isVertical = YES;
     // dispose of object in array
     [self.framesArray removeObjectAtIndex:_currentFrame];
 
+    [self unshiftFrame];
+
     if (_currentFrame == 0) {
         // we removed the first frame
         drawView = [self.framesArray objectAtIndex:_currentFrame];
@@ -334,9 +339,14 @@ static BOOL _isVertical = YES;
     } else {
         _currentFrame--;
     }
+    
+    // make the current view dirty for saving purposes
+    drawView = [self.framesArray objectAtIndex:_currentFrame];
+    drawView.isClean = NO;
 
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(drawView) {
+        [self clean];
+        @synchronized(self.appDelegate.appData) {
             [self saveToDisk];
         }
     });
@@ -348,15 +358,32 @@ static BOOL _isVertical = YES;
     if (_currentFrame > self.framesArray.count) _currentFrame = (int)self.framesArray.count - 1;
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [self.sketchView addSubview:drawView];
+    [self popFrame];
     [self updateUI];
 }
 
 - (void)prevFrame {
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView removeFromSuperview];
+    [self unshiftFrame];
     _currentFrame--;
     if (_currentFrame < 0) _currentFrame = 0;
     [self updateUI];
+}
+
+- (void)popFrame {
+    if ([self.sketchView subviews].count > _frameBuffer) {
+        // remove first subview
+        [[[self.sketchView subviews] objectAtIndex:0] removeFromSuperview];
+    }
+}
+
+- (void)unshiftFrame {
+    if ([self.sketchView subviews].count < _frameBuffer && _currentFrame >= _frameBuffer) {
+        // add the subview behind
+        DrawView *drawViewB = [self.framesArray objectAtIndex:_currentFrame-_frameBuffer];
+        [self.sketchView insertSubview:drawViewB atIndex:0];
+    }
 }
 
 #pragma mark - UI/undo stuff
@@ -438,7 +465,7 @@ static BOOL _isVertical = YES;
     }
     
     if (self.framesArray.count > 1) {
-        if (_tappedAdd && !_isPreviewing) {
+        if (_tappedAdd && !_isPreviewing && self.drawLabel.hidden) {
             if (_isVertical) self.previewButton.hidden = NO;
             if (!_isVertical) self.previewButtonH.hidden = NO;
         }
@@ -487,7 +514,7 @@ static BOOL _isVertical = YES;
     DrawView *drawView = [self.framesArray objectAtIndex:_currentFrame];
     [drawView undo];
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(drawView) {
+        @synchronized(self.appDelegate.appData) {
             [self saveToDisk];
         }
     });
@@ -502,6 +529,7 @@ static BOOL _isVertical = YES;
         [self clean];
         [[segue destinationViewController] setDelegate:self];
     } else if ([[segue identifier] isEqualToString:@"viewInfo"]) {
+        [self clean];
         [[segue destinationViewController] setDelegate:self];
     }
 }
@@ -550,6 +578,10 @@ static BOOL _isVertical = YES;
 
 - (IBAction)onAddTapped:(id)sender {
     _tappedAdd = YES;
+    if (!_tappedPreview) {
+        self.drawLabel.text = @"Draw again";
+        self.drawLabel.hidden = NO;
+    }
 	[self addFrame];
 }
 

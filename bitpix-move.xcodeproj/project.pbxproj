@@ -182,6 +182,8 @@
 				CC1D32681BDD9D6D002E9294 /* UIImageXtras.m */,
 				CC4D079B1BD85D5400A52613 /* AppDelegate.h */,
 				CC4D079C1BD85D5400A52613 /* AppDelegate.m */,
+				CCF9A4901BEE549700B5B670 /* InfoViewController.h */,
+				CCF9A4911BEE549700B5B670 /* InfoViewController.m */,
 				CC4D079E1BD85D5400A52613 /* MainViewController.h */,
 				CC4D079F1BD85D5400A52613 /* MainViewController.m */,
 				CCF3F9771BDC5E6E0019059B /* GridViewController.h */,
@@ -198,8 +200,6 @@
 				CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */,
 				CCF3F97D1BDC61880019059B /* Visual assets */,
 				CC4D07981BD85D5400A52613 /* Supporting Files */,
-				CCF9A4901BEE549700B5B670 /* InfoViewController.h */,
-				CCF9A4911BEE549700B5B670 /* InfoViewController.m */,
 			);
 			path = "bitpix-move";
 			sourceTree = "<group>";

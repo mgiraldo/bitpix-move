@@ -21,8 +21,10 @@
 - (void)resetDataFile;
 - (void)removeThumbnailsForUUID:(NSString *)uuid;
 - (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray;
+- (void)deleteAnimationWithUUID:(NSString *)uuid;
 - (NSString *)deleteAnimationAtIndex:(NSInteger)index;
 - (void)deleteFilesWithUUID:(NSString *)uuid;
+- (NSDictionary *)duplicateAnimationWithUUID:(NSString *)uuid withUUID:(NSString *)toUUID;
 - (NSDictionary *)duplicateAnimationAtIndex:(NSInteger)index withUUID:(NSString *)uuid;
 - (void)copyFilesFrom:(NSString *)fromUUID to:(NSString *)toUUID withCount:(NSInteger)count;
 - (void)save;
