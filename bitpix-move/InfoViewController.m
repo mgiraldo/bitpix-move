@@ -17,8 +17,13 @@
 
 @implementation InfoViewController
 
+static int _currentRefresh = -1;
+static dispatch_queue_t _refreshQueue;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _refreshQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.refreshqueue", NULL);
 
     self.statusView.hidden = YES;
     
@@ -51,57 +56,75 @@
 }
 
 - (void)refreshThumbnails {
-    NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾"];
-    int emojiCount = (int)emojiArray.count;
+    _currentRefresh = 0;
+
     srand ((int)time(NULL));
-    int index = rand()%emojiCount;
-    NSString *emoji = [emojiArray objectAtIndex:index];
-    self.statusLabel.text = [NSString stringWithFormat:@"Performing GIFness. This may take a while depending on how many animations you have. In the meantime, enjoy some emoji:\n\n%@", emoji];
-    self.statusView.hidden = NO;
-    
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self dispatchedRefresh];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self removeStatusLabel];
-        });
+
+    [self updateRefreshText];
+
+    dispatch_async(_refreshQueue, ^{
+        [self refreshNext];
     });
 }
 
-- (void)dispatchedRefresh {
-    int i;
+- (void)updateRefreshText {
+    NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
+    self.statusView.hidden = NO;
+    NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾", @"🎃", @"⏳", @"😎", @"🐌", @"🐢"];
+    int emojiCount = (int)emojiArray.count;
+    int index = rand()%emojiCount;
+    NSString *emoji = [emojiArray objectAtIndex:index];
+    
+    self.statusLabel.text = [NSString stringWithFormat:@"Performing GIFness\nfor animation\n%d of %d.\n\n%@", _currentRefresh+1, (int)animationCount, emoji];
+}
+
+- (void)refreshNext {
+    NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
     NSDictionary *animation;
     NSArray *frames;
     NSMutableArray *drawViewArray;
+
+    animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:_currentRefresh];
+    // check if thumbnail exists
+    NSString *uuid = [animation objectForKey:@"name"];
+    [self.appDelegate.appData removeThumbnailsForUUID:uuid];
+    // get the frames
+    frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
     
-    NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
-    
-    [UserData emptyUserFolder];
-    
-    for (i=0; i<animationCount; i++) {
-        animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:i];
-        // check if thumbnail exists
-        NSString *uuid = [animation objectForKey:@"name"];
-        [self.appDelegate.appData removeThumbnailsForUUID:uuid];
-        // get the frames
-        frames = [NSArray arrayWithArray:[animation objectForKey:@"frames"]];
-        
-        drawViewArray = [@[] mutableCopy];
-        for (int j=0; j<frames.count; j++) {
-            NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
-            DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-            drawView.uuid = uuid;
-            drawView.lineList = [lines mutableCopy];
-            [drawViewArray addObject:drawView];
-        }
-        DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
-        animator.uuid = uuid;
-        [animator createFrames:drawViewArray withSpeed:_fps];
-        [animator createAllGIFs];
+    drawViewArray = [@[] mutableCopy];
+    for (int j=0; j<frames.count; j++) {
+        NSArray *lines = [NSArray arrayWithArray:[frames objectAtIndex:j]];
+        DrawView *drawView = [[DrawView alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+        drawView.uuid = uuid;
+        drawView.lineList = [lines mutableCopy];
+        [drawViewArray addObject:drawView];
     }
+    DrawViewAnimator *animator = [[DrawViewAnimator alloc] initWithFrame:CGRectMake(0, 0, _animationSize, _animationSize)];
+    animator.uuid = uuid;
+    [animator createFrames:drawViewArray withSpeed:_fps];
+    [animator createAllGIFs];
+
+    _currentRefresh++;
     
+    if (_currentRefresh < animationCount) {
+        // dispatch again
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateRefreshText];
+        });
+        dispatch_async(_refreshQueue, ^{
+            [self refreshNext];
+        });
+    } else {
+        // stop
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self removeStatusLabel];
+        });
+    }
 }
 
 - (IBAction)onRefreshTapped:(id)sender {
+    if (self.appDelegate.appData.userAnimations.count == 0) return;
+
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Refresh thumbnails"
                                                                    message:@"Tap “Refresh” If the thumbnails you see do not match your animation. None of your animations will be modified. This may take a while depending on how many animations you have."
                                                             preferredStyle:UIAlertControllerStyleAlert];

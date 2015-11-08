@@ -56,6 +56,7 @@ static BOOL _deletedParentAnimation = NO;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [self.collectionView reloadData];
 }
 
