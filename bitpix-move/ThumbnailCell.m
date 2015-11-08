@@ -17,7 +17,7 @@
     if (self) {
         UILabel * loadingLabel = [[UILabel alloc] initWithFrame:self.contentView.frame];
         loadingLabel.text = @"⏳ Loading ⌛️";
-        loadingLabel.textColor = [UIColor blackColor];
+        loadingLabel.textColor = [UIColor grayColor];
         loadingLabel.textAlignment = NSTextAlignmentCenter;
         loadingLabel.font = [UIFont systemFontOfSize:10.0f];
         [self.contentView addSubview:loadingLabel];
