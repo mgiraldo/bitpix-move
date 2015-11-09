@@ -14,6 +14,7 @@
 
 @property (nonatomic) float speed;
 @property (nonatomic) NSString  *uuid;
+@property (nonatomic) NSMutableArray *framesArray;
 @property (nonatomic) NSMutableArray *imageArray;
 @property (nonatomic) NSMutableArray *thumbArray;
 
@@ -21,6 +22,7 @@
 - (void)resetWithNewUUID:(NSString *)uuid;
 - (void)animate;
 - (void)stop;
+- (NSString *)createSVGString;
 - (void)createAllGIFs;
 - (void)createLargeGIF;
 - (void)createThumbnailGIFs;

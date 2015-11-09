@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "AppDelegate.h"
 
 @class InfoViewController;
@@ -15,14 +16,16 @@
 - (void)infoViewControllerDidFinish:(InfoViewController *)controller;
 @end
 
-@interface InfoViewController : UIViewController
+@interface InfoViewController : UIViewController <MFMailComposeViewControllerDelegate>
 
 @property (nonatomic) AppDelegate *appDelegate;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UIButton *backupButton;
 @property (nonatomic, weak) id <InfoViewControllerDelegate> delegate;
 
 - (IBAction)onRefreshTapped:(id)sender;
 - (IBAction)onReturnTapped:(id)sender;
+- (IBAction)onBackupTapped:(id)sender;
 @end

@@ -30,6 +30,30 @@
 	self.lastLine = [[NSMutableArray alloc] initWithCapacity:1];
 }
 
+- (NSString *)linesToSVGString {
+    NSMutableString *svg = [@"" mutableCopy];
+    ///////////////
+    NSUInteger l = self.lineList.count;
+    NSArray *lines;
+    int i, j;
+    NSArray *fromArray;
+    NSMutableArray *path;
+    [svg appendString:[NSString stringWithFormat:@"<rect id=\"Background\" stroke=\"none\" fill=\"#FFFFFF\" x=\"0\" y=\"0\" width=\"%d\" height=\"%d\"></rect>", _animationSize, _animationSize]];
+    for (i=0; i<l; i++) {
+        lines = [NSArray arrayWithArray:[self.lineList objectAtIndex:i]];
+        path = [@[] mutableCopy];
+        fromArray = [lines objectAtIndex:0];
+        [path addObject:[NSString stringWithFormat:@"M%f,%f", [[fromArray objectAtIndex:0] floatValue], [[fromArray objectAtIndex:1] floatValue]]];
+        for (j=1; j<lines.count; j++) {
+            fromArray = [lines objectAtIndex:j];
+            [path addObject:[NSString stringWithFormat:@"L%f,%f", [[fromArray objectAtIndex:0] floatValue], [[fromArray objectAtIndex:1] floatValue]]];
+        }
+        [svg appendString:[NSString stringWithFormat:@"<path d=\"%@\" id=\"Path-%d\" sketch:type=\"MSShapeGroup\"></path>", [path componentsJoinedByString:@" "], i]];
+    }
+    ///////////////
+    return svg;
+}
+
 - (void)drawLines {
 //	NSLog(@"draw");
 	NSUInteger l = self.lineList.count;

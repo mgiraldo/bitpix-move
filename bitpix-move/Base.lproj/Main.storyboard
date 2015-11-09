@@ -521,7 +521,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jrP-CQ-Y1A">
-                                <rect key="frame" x="80" y="40" width="160" height="40"/>
+                                <rect key="frame" x="80" y="30" width="160" height="40"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="T9k-SQ-ltF"/>
@@ -533,11 +533,34 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Re-generates the thumbnails for your animations in the grid view. Use if you're seeing outdated thumbnails." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3W-X1-R5w">
-                                <rect key="frame" x="40" y="80" width="240" height="60"/>
+                                <rect key="frame" x="40" y="70" width="240" height="60"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="J4t-xi-eSo"/>
                                     <constraint firstAttribute="width" constant="240" id="nAg-bn-5Xb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jCI-Qc-BOA">
+                                <rect key="frame" x="80" y="150" width="160" height="40"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ChT-T1-i7V"/>
+                                    <constraint firstAttribute="width" constant="160" id="Yx6-ys-bVQ"/>
+                                </constraints>
+                                <state key="normal" title="Backup animations"/>
+                                <connections>
+                                    <action selector="onBackupTapped:" destination="Iew-2U-iKY" eventType="touchUpInside" id="dzl-s3-T1p"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Makes a zip file of all your data that you can send to an email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-V7-Noc">
+                                <rect key="frame" x="40" y="190" width="240" height="40"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="6Tg-JZ-bTK"/>
+                                    <constraint firstAttribute="width" constant="240" id="7Au-rM-c7H"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -610,10 +633,11 @@
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jrP-CQ-Y1A" firstAttribute="top" secondItem="iIF-Gu-hqn" secondAttribute="bottom" constant="20" id="1vU-KV-Fm4"/>
+                            <constraint firstItem="jrP-CQ-Y1A" firstAttribute="top" secondItem="iIF-Gu-hqn" secondAttribute="bottom" constant="10" id="1vU-KV-Fm4"/>
                             <constraint firstItem="U2C-Er-Ouv" firstAttribute="top" secondItem="BPI-il-ax5" secondAttribute="bottom" constant="20" id="1wz-J2-Ddr"/>
                             <constraint firstItem="BPI-il-ax5" firstAttribute="top" secondItem="DbJ-7b-W4g" secondAttribute="bottom" constant="20" id="2RU-Wt-xWh"/>
                             <constraint firstItem="K58-L0-TBm" firstAttribute="centerY" secondItem="Z5v-xl-4Jz" secondAttribute="centerY" id="7uc-B7-PKt"/>
+                            <constraint firstItem="jCI-Qc-BOA" firstAttribute="top" secondItem="A3W-X1-R5w" secondAttribute="bottom" constant="20" id="CKH-Nl-Squ"/>
                             <constraint firstItem="U2C-Er-Ouv" firstAttribute="width" secondItem="Z5v-xl-4Jz" secondAttribute="width" id="D9U-JB-sm1"/>
                             <constraint firstItem="K58-L0-TBm" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="GRT-II-rug"/>
                             <constraint firstItem="BPI-il-ax5" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="Inh-La-CIz"/>
@@ -621,10 +645,13 @@
                             <constraint firstItem="K58-L0-TBm" firstAttribute="width" secondItem="Z5v-xl-4Jz" secondAttribute="width" id="N8f-BR-7NB"/>
                             <constraint firstItem="DbJ-7b-W4g" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="S2b-ih-SAO"/>
                             <constraint firstItem="IjD-pJ-Fli" firstAttribute="top" secondItem="U2C-Er-Ouv" secondAttribute="top" id="UkH-zN-AGq"/>
+                            <constraint firstItem="jCI-Qc-BOA" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="WIm-ds-caE"/>
                             <constraint firstItem="jrP-CQ-Y1A" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="Xmw-2a-oQ0"/>
                             <constraint firstItem="IjD-pJ-Fli" firstAttribute="centerX" secondItem="U2C-Er-Ouv" secondAttribute="centerX" id="anZ-pz-9WC"/>
                             <constraint firstItem="A3W-X1-R5w" firstAttribute="top" secondItem="jrP-CQ-Y1A" secondAttribute="bottom" id="go6-lg-mGy"/>
                             <constraint firstItem="BPI-il-ax5" firstAttribute="width" secondItem="Z5v-xl-4Jz" secondAttribute="width" id="hQy-2g-3z1"/>
+                            <constraint firstItem="dpk-V7-Noc" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="j3L-8c-Ded"/>
+                            <constraint firstItem="dpk-V7-Noc" firstAttribute="top" secondItem="jCI-Qc-BOA" secondAttribute="bottom" id="n2Z-ih-WLr"/>
                             <constraint firstItem="K58-L0-TBm" firstAttribute="height" secondItem="Z5v-xl-4Jz" secondAttribute="height" id="nnS-50-pZ9"/>
                             <constraint firstItem="U2C-Er-Ouv" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="rJh-u7-djA"/>
                             <constraint firstItem="IjD-pJ-Fli" firstAttribute="width" secondItem="U2C-Er-Ouv" secondAttribute="width" id="sPs-uR-Tkn"/>
@@ -632,6 +659,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backupButton" destination="jCI-Qc-BOA" id="xuY-tq-ceS"/>
                         <outlet property="statusLabel" destination="JxR-OF-Ilm" id="x23-OD-YLb"/>
                         <outlet property="statusView" destination="K58-L0-TBm" id="ISH-0G-3AM"/>
                         <outlet property="versionLabel" destination="BPI-il-ax5" id="VMI-w2-m82"/>

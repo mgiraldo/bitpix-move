@@ -28,5 +28,6 @@
 - (void)undo;
 - (BOOL)hasLines;
 - (void)drawLines;
+- (NSString *)linesToSVGString;
 
 @end

@@ -10,6 +10,7 @@
 #import "DrawView.h"
 #import "DrawViewAnimator.h"
 #import "Config.h"
+#import "Objective-Zip.h"
 
 @interface InfoViewController ()
 
@@ -38,17 +39,88 @@ static dispatch_queue_t _refreshQueue;
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Backup stuff
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)createBackup {
+    [self removeBackup];
+    OZZipFile *zipFile = [[OZZipFile alloc] initWithFileName:[UserData dataFilePath:@"MovePixBackup.zip"] mode:OZZipFileModeCreate legacy32BitMode:YES];
+    
+    OZZipWriteStream *stream = [zipFile writeFileInZipWithName:@"MovePixBackup/animations.plist" compressionLevel:OZZipCompressionLevelBest];
+    
+    NSData *animationData = [NSData dataWithContentsOfFile:[UserData dataFilePath:@"Data.plist"]];
+ 
+    [stream writeData:animationData];
+    
+    [stream finishedWriting];
+    
+    [zipFile close];
 }
-*/
 
-#pragma mark - Status stuff
+- (void)saveBackup {
+    self.statusView.hidden = NO;
+    NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾", @"🎃", @"⏳", @"😎", @"🐌", @"🐢"];
+    int emojiCount = (int)emojiArray.count;
+    int index = rand()%emojiCount;
+    NSString *emoji = [emojiArray objectAtIndex:index];
+    self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPlease wait…\n\nYour backup is being generated\n\n%@", emoji, emoji];
+    dispatch_async(_refreshQueue, ^{
+        [self createBackup];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            NSString *filename = @"MovePixBackup.zip";
+            
+            NSString *path = [UserData dataFilePath:filename];
+            NSData *fileData = [NSData dataWithContentsOfFile:path];
+            
+            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+            picker.mailComposeDelegate = self;
+            [picker setSubject:@"MovePix Animation Backup"];
+            
+            [picker addAttachmentData:fileData mimeType:@"application/zip" fileName:filename];
+            
+            // Fill out the email body text
+            NSString *emailBody = @"Attached is a ZIP file for all your animations.\n\nMade with MovePix\nhttp://bitpix.co/move";
+            [picker setMessageBody:emailBody isHTML:NO];
+            
+            [self presentViewController:picker
+                               animated:YES
+                             completion:^{}];
+        });
+    });
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+//    switch (result)
+//    {
+//        case MFMailComposeResultCancelled:
+//            NSLog(@"Result: canceled");
+//            break;
+//        case MFMailComposeResultSaved:
+//            NSLog(@"Result: saved");
+//            break;
+//        case MFMailComposeResultSent:
+//            NSLog(@"Result: sent");
+//            break;
+//        case MFMailComposeResultFailed:
+//            NSLog(@"Result: failed");
+//            break;
+//        default:
+//            NSLog(@"Result: not sent");
+//            break;
+//    }
+
+    [self dismissViewControllerAnimated:YES completion:^{
+        self.statusView.hidden = YES;
+        [self removeBackup];
+    }];
+}
+
+- (void)removeBackup {
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    [fm removeItemAtPath:[UserData dataFilePath:@"MovePixBackup.zip"] error:nil];
+}
+
+#pragma mark - Refresh stuff
 
 - (void)removeStatusLabel {
     self.statusLabel.text = @"";
@@ -75,7 +147,7 @@ static dispatch_queue_t _refreshQueue;
     int index = rand()%emojiCount;
     NSString *emoji = [emojiArray objectAtIndex:index];
     
-    self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPerforming GIFness\nfor animation\n%d of %d.\n\n%@", emoji, _currentRefresh+1, (int)animationCount, emoji];
+    self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPerforming GIFness\nfor animation\n%d of %d\n\n%@", emoji, _currentRefresh+1, (int)animationCount, emoji];
 }
 
 - (void)refreshNext {
@@ -124,11 +196,13 @@ static dispatch_queue_t _refreshQueue;
     }
 }
 
+#pragma mark - Interaction events
+
 - (IBAction)onRefreshTapped:(id)sender {
     if (self.appDelegate.appData.userAnimations.count == 0) return;
 
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Refresh thumbnails"
-                                                                   message:@"Tap “Refresh” If the thumbnails you see do not match your animation. None of your animations will be modified. This may take a while depending on how many animations you have."
+                                                                   message:@"Tap “Refresh” if the thumbnails you see do not match your animation. None of your animations will be modified. This may take a while depending on how many animations you have."
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh" style:UIAlertActionStyleDestructive
@@ -139,13 +213,33 @@ static dispatch_queue_t _refreshQueue;
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {}];
     
-    [alert addAction:defaultAction];
     [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
     [self presentViewController:alert animated:NO completion:nil];
 }
 
 - (IBAction)onReturnTapped:(id)sender {
     [self.delegate infoViewControllerDidFinish:self];
+}
+
+- (IBAction)onBackupTapped:(id)sender {
+    if (self.appDelegate.appData.userAnimations.count == 0) return;
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Backup animations"
+                                                                   message:@"Tap “Backup” to create a zip file with your data and save it somewhere. This may take a while depending on how many animations you have."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Backup" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self saveBackup];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:NO completion:nil];
 }
 
 @end

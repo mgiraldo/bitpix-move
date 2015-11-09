@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "UIImageXtras.h"
 #import "Config.h"
+#import "SVGExportActivityItemProvider.h"
 
 @interface MainViewController ()
 
@@ -240,23 +241,27 @@ static const NSInteger _frameBuffer = 3;
 - (void)export {
     [self clean];
 
-//    NSString *textToShare = @"created with MovePix";
-    
-    NSArray *objectsToShare;
-    
+    NSString *svg = [self.previewView createSVGString];
+
     NSString *filename = [NSString stringWithFormat:@"%@.gif", self.uuid];
     NSString *path = [UserData dataFilePath:filename];
     NSData *fileData = [NSData dataWithContentsOfFile:path];
     
-    objectsToShare = @[fileData];
+    SVGExportActivityItemProvider *provider = [[SVGExportActivityItemProvider alloc] initWithPlaceholderItem:fileData];
+    
+    provider.svgString = svg;
+    provider.gifData = fileData;
+    
+    SVGEmailActivityIcon *svgEmailIcon = [[SVGEmailActivityIcon alloc] init];
     
     UIActivityViewController *activityViewController =
-    [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
-                                      applicationActivities:nil];
+    [[UIActivityViewController alloc] initWithActivityItems:@[provider]
+                                      applicationActivities:@[svgEmailIcon]];
+    
+    
     
     NSArray *excludeActivities = @[UIActivityTypePrint,
                                    UIActivityTypeAddToReadingList,
-                                   UIActivityTypePostToFlickr,
                                    UIActivityTypePostToTencentWeibo];
     
     activityViewController.excludedActivityTypes = excludeActivities;
@@ -267,6 +272,18 @@ static const NSInteger _frameBuffer = 3;
         popover.sourceRect = CGRectMake(self.sketchView.bounds.size.width * .5, self.sketchView.bounds.size.height * .5, 1.0, 1.0);
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     }
+    
+//    [activityViewController setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+//        NSString *ServiceMsg = nil;
+//        if ( [activityType isEqualToString:UIActivityTypeMail] )           ServiceMsg = @"Mail sended!";
+//        if ( [activityType isEqualToString:UIActivityTypePostToTwitter] )  ServiceMsg = @"Post on twitter, ok!";
+//        if ( [activityType isEqualToString:UIActivityTypePostToFacebook] ) ServiceMsg = @"Post on facebook, ok!";
+//        if ( [activityType isEqualToString:UIActivityTypeMessage] )        ServiceMsg = @"SMS sended!";
+//        if ( completed ) {
+//            UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:ServiceMsg message:@"" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
+//            [Alert show];
+//        }
+//    }];
 
     [self presentViewController:activityViewController
                        animated:YES
@@ -598,14 +615,14 @@ static const NSInteger _frameBuffer = 3;
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {}];
     
-    [alert addAction:defaultAction];
     [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
 
     UIPopoverPresentationController *popover = alert.popoverPresentationController;
     if (popover) {
         popover.sourceView = self.sketchView;
         popover.sourceRect = CGRectMake(self.sketchView.bounds.size.width * .5, self.sketchView.bounds.size.height * .5, 1.0, 1.0);
-        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
     }
     
     [self presentViewController:alert animated:NO completion:nil];

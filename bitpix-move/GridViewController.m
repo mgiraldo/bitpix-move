@@ -248,8 +248,8 @@ static int _currentDuplicates = 0;
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {}];
     
-    [alert addAction:defaultAction];
     [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
     [self presentViewController:alert animated:NO completion:nil];
 }
 
@@ -268,8 +268,8 @@ static int _currentDuplicates = 0;
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {}];
     
-    [alert addAction:defaultAction];
     [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
     [self presentViewController:alert animated:NO completion:nil];
 }
 
