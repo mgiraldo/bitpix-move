@@ -48,7 +48,7 @@
             fromArray = [lines objectAtIndex:j];
             [path addObject:[NSString stringWithFormat:@"L%f,%f", [[fromArray objectAtIndex:0] floatValue], [[fromArray objectAtIndex:1] floatValue]]];
         }
-        [svg appendString:[NSString stringWithFormat:@"<path d=\"%@\" id=\"Path-%d\" sketch:type=\"MSShapeGroup\"></path>", [path componentsJoinedByString:@" "], i]];
+        [svg appendString:[NSString stringWithFormat:@"<path d=\"%@\" id=\"Path-%d\"></path>", [path componentsJoinedByString:@" "], i]];
     }
     ///////////////
     return svg;
