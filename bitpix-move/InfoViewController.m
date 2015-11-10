@@ -45,7 +45,7 @@ static dispatch_queue_t _refreshQueue;
     [self removeBackup];
     OZZipFile *zipFile = [[OZZipFile alloc] initWithFileName:[UserData dataFilePath:@"MovePixBackup.zip"] mode:OZZipFileModeCreate legacy32BitMode:YES];
     
-    OZZipWriteStream *stream = [zipFile writeFileInZipWithName:@"MovePixBackup/animations.plist" compressionLevel:OZZipCompressionLevelBest];
+    OZZipWriteStream *stream = [zipFile writeFileInZipWithName:@"animations.plist" compressionLevel:OZZipCompressionLevelBest];
     
     NSData *animationData = [NSData dataWithContentsOfFile:[UserData dataFilePath:@"Data.plist"]];
  

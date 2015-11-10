@@ -23,6 +23,8 @@ static const int BUFFER_SIZE = 1024;
 	// Override point for customization after application launch.
     self.appData = [[UserData alloc] initWithDefaultData];
     self.backgroundSaveQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgqueue", NULL);
+    self.restoreURL = [NSURL URLWithString:[UserData dataFilePath:@"Inbox/animations.zip"]];
+    [self restoreBackup];
 	return YES;
 }
 
@@ -34,10 +36,12 @@ static const int BUFFER_SIZE = 1024;
     vc.statusLabel.text = @"⌛️\n\nPlease wait while your backup is restored…\n\n⏳";
     dispatch_async(self.backgroundSaveQueue, ^{
         @try {
-            DebugLog(@"path: %@ exists: %d", dataFilePath, [[NSFileManager defaultManager] fileExistsAtPath:dataFilePath]);
-            
+//            NSDictionary *data = [[NSDictionary alloc] initWithContentsOfFile:self.restoreURL.path];
+//            [data writeToFile:dataFilePath atomically:YES];
+            DebugLog(@"path: %@ exists: %d url: %@", dataFilePath, [[NSFileManager defaultManager] fileExistsAtPath:dataFilePath], self.restoreURL.path);
+//
             OZZipFile *unzipFile= [[OZZipFile alloc] initWithFileName:self.restoreURL.path
-                                                                 mode:OZZipFileModeUnzip];
+                                                                 mode:OZZipFileModeUnzip legacy32BitMode:YES];
             [unzipFile goToFirstFileInZip];
             
             OZZipReadStream *read= [unzipFile readCurrentFileInZip];
@@ -51,7 +55,7 @@ static const int BUFFER_SIZE = 1024;
                 [buffer setLength:BUFFER_SIZE];
                 
                 // Read bytes and check for end of file
-                int bytesRead= [read readDataWithBuffer:data];
+                int bytesRead= (int)[read readDataWithBuffer:data];
                 if (bytesRead <= 0)
                     break;
                 
@@ -84,7 +88,7 @@ static const int BUFFER_SIZE = 1024;
             }
             
             DebugLog(@"data: %@", animationDictionary);
-            [self cleanInbox];
+//            [self cleanInbox];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil

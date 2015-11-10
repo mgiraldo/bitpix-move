@@ -10,14 +10,28 @@
 			<key>CFBundleTypeIconFiles</key>
 			<array>
 				<string>bitpix-move-76</string>
-                <string>bitpix-move-120</string>
+				<string>bitpix-move-120</string>
 				<string>bitpix-move-152</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>PKZip</string>
+			<string>Zip file</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.pkware.zip-archive</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>bitpix-move-76</string>
+                <string>bitpix-move-120</string>
+                <string>bitpix-move-152</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>XML file</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.xml</string>
 			</array>
 		</dict>
 	</array>
