@@ -436,6 +436,28 @@
                                     <constraint firstItem="AcF-c1-SQV" firstAttribute="leading" secondItem="M4I-aU-g1w" secondAttribute="leading" constant="20" id="xXR-A5-rg6"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f8f-mk-MXQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YUO-Bw-m7N">
+                                        <rect key="frame" x="30" y="184" width="260" height="200"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="XCX-KP-B2h"/>
+                                            <constraint firstAttribute="width" constant="260" id="xeC-XA-H1T"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="YUO-Bw-m7N" firstAttribute="centerY" secondItem="f8f-mk-MXQ" secondAttribute="centerY" id="9mS-NF-Okx"/>
+                                    <constraint firstItem="YUO-Bw-m7N" firstAttribute="centerX" secondItem="f8f-mk-MXQ" secondAttribute="centerX" id="Hde-7X-iD9"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -446,6 +468,7 @@
                             <constraint firstItem="bJD-98-ROr" firstAttribute="centerY" secondItem="bnd-cn-txH" secondAttribute="centerY" id="62l-Cm-LZj"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="top" secondItem="O9X-HZ-Yr2" secondAttribute="bottom" constant="10" id="7Kl-NK-3Vn"/>
                             <constraint firstItem="M4I-aU-g1w" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="8Sc-0j-cCz"/>
+                            <constraint firstItem="f8f-mk-MXQ" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="9Gl-LH-9DT"/>
                             <constraint firstItem="yQ8-8Y-c79" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="top" id="AHm-ys-8QY"/>
                             <constraint firstItem="bJD-98-ROr" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="D8V-tm-PU1"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="FgJ-UV-4xR"/>
@@ -453,10 +476,13 @@
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="Hdh-YI-BGa"/>
                             <constraint firstItem="M4I-aU-g1w" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="JeN-Ue-uuf"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerY" secondItem="bnd-cn-txH" secondAttribute="centerY" id="WY2-Cn-P3g"/>
+                            <constraint firstItem="f8f-mk-MXQ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZEK-dg-d0a"/>
                             <constraint firstItem="b7B-eV-688" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aXX-j9-KuN"/>
                             <constraint firstItem="fIl-Nm-JwI" firstAttribute="height" secondItem="bnd-cn-txH" secondAttribute="height" id="ft0-g2-FyO"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="gAC-Uz-Wqc"/>
+                            <constraint firstItem="f8f-mk-MXQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gsc-7P-QSc"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="leading" secondItem="fIl-Nm-JwI" secondAttribute="trailing" constant="10" id="hu1-DC-okA"/>
+                            <constraint firstItem="f8f-mk-MXQ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="iyl-TJ-Qkw"/>
                             <constraint firstItem="O9X-HZ-Yr2" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="ncy-zc-ydf"/>
                             <constraint firstItem="b7B-eV-688" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="olN-kL-LKn"/>
                             <constraint firstItem="fIl-Nm-JwI" firstAttribute="centerY" secondItem="bnd-cn-txH" secondAttribute="centerY" id="oly-Fb-w4g"/>
@@ -496,6 +522,8 @@
                         <outlet property="settingsButton" destination="4sa-5H-90I" id="Wcg-Ow-9jD"/>
                         <outlet property="settingsButtonH" destination="eKw-n9-vEb" id="UTD-6I-Jrz"/>
                         <outlet property="sketchView" destination="bnd-cn-txH" id="qjU-cA-bgT"/>
+                        <outlet property="statusLabel" destination="YUO-Bw-m7N" id="wYs-LM-8zB"/>
+                        <outlet property="statusView" destination="f8f-mk-MXQ" id="TSC-b0-hvu"/>
                         <outlet property="stopPreviewButton" destination="Gc7-BE-d1B" id="xET-7k-RrZ"/>
                         <outlet property="stopPreviewButtonH" destination="3MI-Td-PHB" id="U7D-wf-YF3"/>
                         <outlet property="undoButton" destination="if2-WW-VGb" id="J44-F2-xrW"/>
@@ -555,13 +583,14 @@
                                     <action selector="onBackupTapped:" destination="Iew-2U-iKY" eventType="touchUpInside" id="dzl-s3-T1p"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Makes a zip file of all your data that you can send to an email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-V7-Noc">
-                                <rect key="frame" x="40" y="190" width="240" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-V7-Noc">
+                                <rect key="frame" x="50" y="190" width="220" height="80"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="6Tg-JZ-bTK"/>
-                                    <constraint firstAttribute="width" constant="240" id="7Au-rM-c7H"/>
+                                    <constraint firstAttribute="height" constant="80" id="6Tg-JZ-bTK"/>
+                                    <constraint firstAttribute="width" constant="220" id="7Au-rM-c7H"/>
                                 </constraints>
+                                <string key="text">Makes a zip file of all your data that you can send to an email address. To restore a backup, select it in the app you keep it (Dropbox, Mail, etc.) and choose Open In… MovePix.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>

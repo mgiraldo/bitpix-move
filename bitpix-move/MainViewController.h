@@ -57,6 +57,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalCenterConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceConstraint;
 
+@property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+
+
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;
 - (IBAction)onPreviousTapped:(id)sender;

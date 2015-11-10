@@ -30,6 +30,8 @@ static const NSInteger _frameBuffer = 3;
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
+    self.statusView.hidden = YES;
+    
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     if (self.appDelegate.appData.userAnimations.count > 0) {

@@ -14,7 +14,7 @@
 @property (nonatomic) UserData *appData;
 @property (nonatomic) UIWindow *window;
 @property (nonatomic) dispatch_queue_t backgroundSaveQueue;
-
+@property (nonatomic) NSURL *restoreURL;
 
 @end
 
