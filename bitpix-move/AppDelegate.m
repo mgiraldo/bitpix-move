@@ -75,7 +75,8 @@ static const int BUFFER_SIZE = 1024;
             [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
         }
         @finally {
-            dispatch_async(self.backgroundSaveQueue, ^{
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC));
+            dispatch_after(popTime, self.backgroundSaveQueue, ^{
                 NSError *error;
                 NSData *data = [NSData dataWithContentsOfFile:dataFilePath];
                 if (error) {
