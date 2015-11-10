@@ -62,6 +62,8 @@ static const int BUFFER_SIZE = 1024;
             
             [file closeFile];
             [read finishedReading];
+            
+            DebugLog(@"path: %@ file: %@", dataFilePath, file);
         }
         @catch (NSException *exception) {
             UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Backup not restored"
@@ -75,31 +77,28 @@ static const int BUFFER_SIZE = 1024;
             [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
         }
         @finally {
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC));
-            dispatch_after(popTime, self.backgroundSaveQueue, ^{
-                NSError *error;
-                NSData *data = [NSData dataWithContentsOfFile:dataFilePath];
-                if (error) {
-                    DebugLog(@"error: %@", error);
-                }
+            NSError *error;
+            NSDictionary *animationDictionary = [[NSDictionary alloc] initWithContentsOfFile:dataFilePath];
+            if (error) {
+                DebugLog(@"error: %@", error);
+            }
+            
+            DebugLog(@"data: %@", animationDictionary);
+            [self cleanInbox];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                               message:@"Import is complete!"
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
                 
-                DebugLog(@"data: %@", data);
-                [self cleanInbox];
+                UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
+                                                                 handler:^(UIAlertAction * action) {}];
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                   message:@"Import is complete!"
-                                                                            preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
-                                                                     handler:^(UIAlertAction * action) {}];
-                    
-                    [alert addAction:okAction];
-                    [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
-                    MainViewController *vc = (MainViewController *)self.window.rootViewController;
-                    vc.statusView.hidden = YES;
-                    vc.statusLabel.text = @"";
-                });
+                [alert addAction:okAction];
+                [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
+                MainViewController *vc = (MainViewController *)self.window.rootViewController;
+                vc.statusView.hidden = YES;
+                vc.statusLabel.text = @"";
             });
         }
     });
