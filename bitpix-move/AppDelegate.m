@@ -21,8 +21,6 @@
 	// Override point for customization after application launch.
     self.appData = [[UserData alloc] initWithDefaultData];
     self.backgroundSaveQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgqueue", NULL);
-    self.restoreURL = [NSURL fileURLWithPath:[UserData dataFilePath:@"Inbox/MovePixBackup.zip"]];
-    [self performSelector:@selector(restoreBackup) withObject:nil afterDelay:0.0];
 	return YES;
 }
 
