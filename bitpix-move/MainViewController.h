@@ -16,6 +16,17 @@
 
 @interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, InfoViewControllerDelegate>
 
+@property (atomic) BOOL isRestoring;
+@property (atomic) int currentFrame;
+@property (atomic) BOOL isPreviewing;
+@property (atomic) BOOL isClean;
+@property (atomic) BOOL firstLoad;
+@property (atomic) BOOL tappedAdd;
+@property (atomic) BOOL tappedPreview;
+@property (atomic) BOOL tappedStop;
+@property (atomic) BOOL isVertical;
+@property (atomic) NSInteger frameBuffer;
+
 @property (nonatomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (nonatomic) NSString  *uuid;

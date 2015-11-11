@@ -28,6 +28,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
     self.refreshQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.refreshqueue", NULL);
 
     self.statusView.hidden = YES;
+    self.statusProgress.hidden = YES;
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -145,10 +146,16 @@ static const NSUInteger BUFFER_SIZE = 1024;
     [self presentViewController:alert animated:NO completion:nil];
 }
 
+- (void)updateProgress:(long long)value total:(long long)total {
+    float progress = (float)value/(float)total;
+    self.statusProgress.progress = progress;
+}
+
 - (void)restoreBackup {
     NSString *dataFilePath = [UserData dataFilePath:@"temp.plist"];
     [[NSFileManager defaultManager] createFileAtPath:dataFilePath contents:nil attributes:nil];
     self.statusView.hidden = NO;
+    self.statusProgress.hidden = NO;
     self.statusLabel.text = @"⌛️\n\nPlease wait while your backup is restored…\n\n⏳";
     dispatch_async(self.refreshQueue, ^{
         @try {
@@ -157,6 +164,9 @@ static const NSUInteger BUFFER_SIZE = 1024;
             [unzipFile goToFirstFileInZip];
             
             OZZipReadStream *read= [unzipFile readCurrentFileInZip];
+            OZFileInZipInfo *info= [unzipFile getCurrentFileInZipInfo];
+            __block long long progress = 0;
+            __block long long total = info.length;
             NSMutableData *buffer = [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
             NSMutableData *data= [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
             NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:dataFilePath];
@@ -174,11 +184,16 @@ static const NSUInteger BUFFER_SIZE = 1024;
                 [buffer setLength:bytesRead];
                 [file writeData:data];
                 
+                progress += bytesRead;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self updateProgress:progress total:total];
+                });
+                
             } while (YES);
             
             [file closeFile];
             [read finishedReading];
-            //            DebugLog(@"path: %@ file: %@", dataFilePath, file);
         }
         @catch (NSException *exception) {
             UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Backup not restored"
@@ -207,6 +222,9 @@ static const NSUInteger BUFFER_SIZE = 1024;
             
             BOOL skip = NO;
             
+            int progress = 0;
+            int total = animations.count;
+            
             for (int i=0; i<animations.count; i++) {
                 NSDictionary *animation = [animations objectAtIndex:i];
                 if ([animation valueForKey:@"name"]==nil || [animation valueForKey:@"date"]==nil || [animation valueForKey:@"frames"]==nil) {
@@ -221,7 +239,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
                     DebugLog(@"error: animation %d has no date", i);
                     skip = YES;
                 }
-                if (![[animation valueForKey:@"frames"] isKindOfClass:[NSArray class]]) {
+                if (![[animation valueForKey:@"frames"] isKindOfClass:[NSArray class]] || [[animation valueForKey:@"frames"] count] > _maxFrames) {
                     DebugLog(@"error: animation %d has no frames", i);
                     skip = YES;
                 }
@@ -257,16 +275,24 @@ static const NSUInteger BUFFER_SIZE = 1024;
                 if (!skip) {
                     [newAnimations addObject:[animation mutableCopy]];
                 }
+                progress++;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self updateProgress:progress total:total];
+                });
             }
             
             if (newAnimations.count > 0) {
                 self.appDelegate.appData.userAnimations = newAnimations;
-                [self.appDelegate.appData save];
+                dispatch_async(self.refreshQueue, ^{
+                    [self.appDelegate.appData save];
+                });
             }
             
             [self cleanInbox];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+            
+            dispatch_after(popTime, dispatch_get_main_queue(), ^{
                 [self refreshThumbnails];
             });
         }
@@ -333,6 +359,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
 - (void)removeStatusLabel {
     self.statusLabel.text = @"";
     self.statusView.hidden = YES;
+    self.statusProgress.hidden = YES;
     
     if (self.isRestoring) {
         self.isRestoring = NO;
@@ -357,6 +384,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
 - (void)updateRefreshText {
     NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
     self.statusView.hidden = NO;
+    self.statusProgress.hidden = YES;
     NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾", @"🎃", @"⏳", @"😎", @"🐌", @"🐢"];
     int emojiCount = (int)emojiArray.count;
     int index = rand()%emojiCount;

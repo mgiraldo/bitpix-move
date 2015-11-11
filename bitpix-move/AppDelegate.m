@@ -26,10 +26,9 @@
 
 - (void)restoreBackup {
     UIStoryboard *sb = self.window.rootViewController.storyboard;
-    if (![self.window.rootViewController isKindOfClass:[MainViewController class]]) {
-        self.window.rootViewController = (MainViewController *)[sb instantiateInitialViewController];
-    }
-    [self.window.rootViewController performSegueWithIdentifier:@"restoreBackup" sender:self.window.rootViewController];
+    MainViewController *vc = (MainViewController *)[sb instantiateInitialViewController];
+    vc.isRestoring = YES;
+    self.window.rootViewController = vc;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

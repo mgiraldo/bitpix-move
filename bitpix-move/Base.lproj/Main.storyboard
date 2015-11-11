@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
@@ -651,12 +652,20 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Afi-I2-liw">
+                                        <rect key="frame" x="120" y="394" width="80" height="2"/>
+                                        <animations/>
+                                        <color key="trackTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    </progressView>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="Afi-I2-liw" firstAttribute="width" secondItem="K58-L0-TBm" secondAttribute="width" multiplier="0.25" id="7D3-Rc-5mF"/>
                                     <constraint firstItem="JxR-OF-Ilm" firstAttribute="centerX" secondItem="K58-L0-TBm" secondAttribute="centerX" id="EG7-zD-zTp"/>
+                                    <constraint firstItem="Afi-I2-liw" firstAttribute="centerX" secondItem="K58-L0-TBm" secondAttribute="centerX" id="gri-O3-dik"/>
                                     <constraint firstItem="JxR-OF-Ilm" firstAttribute="centerY" secondItem="K58-L0-TBm" secondAttribute="centerY" id="x0x-Lf-AJR"/>
+                                    <constraint firstItem="Afi-I2-liw" firstAttribute="top" secondItem="JxR-OF-Ilm" secondAttribute="bottom" constant="10" id="yey-jF-ayX"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -691,6 +700,7 @@
                     <connections>
                         <outlet property="backupButton" destination="jCI-Qc-BOA" id="xuY-tq-ceS"/>
                         <outlet property="statusLabel" destination="JxR-OF-Ilm" id="x23-OD-YLb"/>
+                        <outlet property="statusProgress" destination="Afi-I2-liw" id="GUK-bt-xhU"/>
                         <outlet property="statusView" destination="K58-L0-TBm" id="ISH-0G-3AM"/>
                         <outlet property="versionLabel" destination="BPI-il-ax5" id="VMI-w2-m82"/>
                     </connections>
