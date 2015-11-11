@@ -17,162 +17,27 @@
 
 @implementation AppDelegate
 
-static const int BUFFER_SIZE = 1024;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
     self.appData = [[UserData alloc] initWithDefaultData];
     self.backgroundSaveQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgqueue", NULL);
-    self.restoreURL = [NSURL URLWithString:[UserData dataFilePath:@"Inbox/animations.zip"]];
-    [self restoreBackup];
+    self.restoreURL = [NSURL fileURLWithPath:[UserData dataFilePath:@"Inbox/MovePixBackup.zip"]];
+    [self performSelector:@selector(restoreBackup) withObject:nil afterDelay:0.0];
 	return YES;
 }
 
 - (void)restoreBackup {
-    NSString *dataFilePath = [UserData dataFilePath:@"temp.plist"];
-    [[NSFileManager defaultManager] createFileAtPath:dataFilePath contents:nil attributes:nil];
-    MainViewController *vc = (MainViewController *)self.window.rootViewController;
-    vc.statusView.hidden = NO;
-    vc.statusLabel.text = @"⌛️\n\nPlease wait while your backup is restored…\n\n⏳";
-    dispatch_async(self.backgroundSaveQueue, ^{
-        @try {
-//            NSDictionary *data = [[NSDictionary alloc] initWithContentsOfFile:self.restoreURL.path];
-//            [data writeToFile:dataFilePath atomically:YES];
-            DebugLog(@"path: %@ exists: %d url: %@", dataFilePath, [[NSFileManager defaultManager] fileExistsAtPath:dataFilePath], self.restoreURL.path);
-//
-            OZZipFile *unzipFile= [[OZZipFile alloc] initWithFileName:self.restoreURL.path
-                                                                 mode:OZZipFileModeUnzip legacy32BitMode:YES];
-            [unzipFile goToFirstFileInZip];
-            
-            OZZipReadStream *read= [unzipFile readCurrentFileInZip];
-            NSMutableData *buffer = [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
-            NSMutableData *data= [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
-            NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:dataFilePath];
-            
-            do {
-                
-                // Reset buffer length
-                [buffer setLength:BUFFER_SIZE];
-                
-                // Read bytes and check for end of file
-                int bytesRead= (int)[read readDataWithBuffer:data];
-                if (bytesRead <= 0)
-                    break;
-                
-                [buffer setLength:bytesRead];
-                [file writeData:buffer];
-                
-            } while (YES);
-            
-            [file closeFile];
-            [read finishedReading];
-            
-            DebugLog(@"path: %@ file: %@", dataFilePath, file);
-        }
-        @catch (NSException *exception) {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Backup not restored"
-                                                                           message:@"There was an error importing your backup. It may be malformed or otherwise unreadable by MovePix. None of your existing animations were deleted"
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:okAction];
-            [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
-        }
-        @finally {
-            NSError *error;
-            NSDictionary *animationDictionary = [[NSDictionary alloc] initWithContentsOfFile:dataFilePath];
-            if (error) {
-                DebugLog(@"error: %@", error);
-            }
-            
-            DebugLog(@"data: %@", animationDictionary);
-//            [self cleanInbox];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-                                                                               message:@"Import is complete!"
-                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
-                                                                 handler:^(UIAlertAction * action) {}];
-                
-                [alert addAction:okAction];
-                [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
-                MainViewController *vc = (MainViewController *)self.window.rootViewController;
-                vc.statusView.hidden = YES;
-                vc.statusLabel.text = @"";
-            });
-        }
-    });
-}
-
-- (void)cleanInbox {
-    NSFileManager *fm = [[NSFileManager alloc] init];
-    NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:@"Inbox"] error:nil];
-    NSString *fullPath;
-    
-    if (filelist == nil) {
-        return;
+    UIStoryboard *sb = self.window.rootViewController.storyboard;
+    if (![self.window.rootViewController isKindOfClass:[MainViewController class]]) {
+        self.window.rootViewController = (MainViewController *)[sb instantiateInitialViewController];
     }
-    
-    
-    for (NSString *file in filelist) {
-        NSError *error;
-        fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"Inbox/%@", file]];
-        DebugLog(@"removed: %@", fullPath);
-        [fm removeItemAtPath:fullPath error:&error];
-        if (error) {
-            DebugLog(@"error: %@", error);
-        }
-    }
-    
-    [fm removeItemAtPath:[UserData dataFilePath:@"temp.plist"] error:nil];
-}
-
-- (void)confirmRestore {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Are you sure?"
-                                                                   message:@"Please confirm once again that you want to REPLACE ALL ANIMATIONS in the app with those found in the backup. Tap “Confirm” to proceed."
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction * action) {
-                                                              [self restoreBackup];
-                                                          }];
-    
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction * action) {
-                                                             [self cleanInbox];
-                                                         }];
-    
-    [alert addAction:cancelAction];
-    [alert addAction:defaultAction];
-    [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
+    [self.window.rootViewController performSegueWithIdentifier:@"restoreBackup" sender:self.window.rootViewController];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // NOTE: deprecated in iOS 9.0! added for lower iOS support
     self.restoreURL = url;
-    
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Restore animations"
-                                                                   message:@"This will REPLACE ALL ANIMATIONS currently in the app with those found in the backup. Tap “Restore” to proceed."
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Restore" style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction * action) {
-                                                              [self confirmRestore];
-                                                          }];
-    
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction * action) {
-                                                             [self cleanInbox];
-                                                         }];
-    
-    [alert addAction:cancelAction];
-    [alert addAction:defaultAction];
-    [self.window.rootViewController presentViewController:alert animated:NO completion:nil];
-
+    [self performSelector:@selector(restoreBackup) withObject:nil afterDelay:0.0];
     return YES;
 }
 

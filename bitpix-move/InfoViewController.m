@@ -18,13 +18,14 @@
 
 @implementation InfoViewController
 
-static int _currentRefresh = -1;
-static dispatch_queue_t _refreshQueue;
+static const NSUInteger BUFFER_SIZE = 1024;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _refreshQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.refreshqueue", NULL);
+    self.currentRefresh = -1;
+    
+    self.refreshQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.refreshqueue", NULL);
 
     self.statusView.hidden = YES;
     
@@ -32,6 +33,10 @@ static dispatch_queue_t _refreshQueue;
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     self.versionLabel.text = [NSString stringWithFormat:@"MovePix v.%@ (%@)", appVersion, buildVersion];
+    
+    if (self.isRestoring) {
+        [self performSelector:@selector(startRestoreBackup) withObject:nil afterDelay:0.0];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,7 +68,7 @@ static dispatch_queue_t _refreshQueue;
     int index = rand()%emojiCount;
     NSString *emoji = [emojiArray objectAtIndex:index];
     self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPlease wait…\n\nYour backup is being generated\n\n%@", emoji, emoji];
-    dispatch_async(_refreshQueue, ^{
+    dispatch_async(self.refreshQueue, ^{
         [self createBackup];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -117,7 +122,210 @@ static dispatch_queue_t _refreshQueue;
 
 - (void)removeBackup {
     NSFileManager *fm = [[NSFileManager alloc] init];
-    [fm removeItemAtPath:[UserData dataFilePath:@"MovePixBackup.zip"] error:nil];
+    [fm removeItemAtPath:[UserData dataFilePath:@"MovePixBackup/MovePixBackup.zip"] error:nil];
+}
+
+- (void)startRestoreBackup {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Restore animations"
+                                                                   message:@"This will REPLACE ALL ANIMATIONS currently in the app with those found in the backup. Tap “Restore” to proceed."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Restore" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self confirmRestore];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {
+                                                             [self cleanInbox];
+                                                         }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:NO completion:nil];
+}
+
+- (void)restoreBackup {
+    NSString *dataFilePath = [UserData dataFilePath:@"temp.plist"];
+    [[NSFileManager defaultManager] createFileAtPath:dataFilePath contents:nil attributes:nil];
+    self.statusView.hidden = NO;
+    self.statusLabel.text = @"⌛️\n\nPlease wait while your backup is restored…\n\n⏳";
+    dispatch_async(self.refreshQueue, ^{
+        @try {
+            OZZipFile *unzipFile= [[OZZipFile alloc] initWithFileName:self.appDelegate.restoreURL.path
+                                                                 mode:OZZipFileModeUnzip legacy32BitMode:YES];
+            [unzipFile goToFirstFileInZip];
+            
+            OZZipReadStream *read= [unzipFile readCurrentFileInZip];
+            NSMutableData *buffer = [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
+            NSMutableData *data= [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
+            NSFileHandle *file = [NSFileHandle fileHandleForWritingAtPath:dataFilePath];
+            
+            do {
+                
+                // Reset buffer length
+                [buffer setLength:BUFFER_SIZE];
+                
+                // Read bytes and check for end of file
+                int bytesRead= (int)[read readDataWithBuffer:data];
+                if (bytesRead <= 0)
+                    break;
+                
+                [buffer setLength:bytesRead];
+                [file writeData:data];
+                
+            } while (YES);
+            
+            [file closeFile];
+            [read finishedReading];
+            //            DebugLog(@"path: %@ file: %@", dataFilePath, file);
+        }
+        @catch (NSException *exception) {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Backup not restored"
+                                                                           message:@"There was an error importing your backup. It may be malformed or otherwise unreadable by MovePix. None of your existing animations were deleted"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:NO completion:nil];
+        }
+        @finally {
+            NSError *error;
+            NSDictionary *animationDictionary = [[NSDictionary alloc] initWithContentsOfFile:dataFilePath];
+            if (error) {
+                DebugLog(@"error: %@", error);
+            }
+            
+            if (!([animationDictionary valueForKey:@"userAnimations"] != nil && [[animationDictionary valueForKey:@"userAnimations"] isKindOfClass:[NSArray class]])) {
+                DebugLog(@"error: zip file has no animations");
+            }
+            
+            NSArray *animations = [animationDictionary valueForKey:@"userAnimations"];
+            NSMutableArray *newAnimations = [@[] mutableCopy];
+            
+            BOOL skip = NO;
+            
+            for (int i=0; i<animations.count; i++) {
+                NSDictionary *animation = [animations objectAtIndex:i];
+                if ([animation valueForKey:@"name"]==nil || [animation valueForKey:@"date"]==nil || [animation valueForKey:@"frames"]==nil) {
+                    DebugLog(@"error: animation %d is invalid", i);
+                    skip = YES;
+                }
+                if (![[animation valueForKey:@"name"] isKindOfClass:[NSString class]]) {
+                    DebugLog(@"error: animation %d has no name", i);
+                    skip = YES;
+                }
+                if (![[animation valueForKey:@"date"] isKindOfClass:[NSDate class]]) {
+                    DebugLog(@"error: animation %d has no date", i);
+                    skip = YES;
+                }
+                if (![[animation valueForKey:@"frames"] isKindOfClass:[NSArray class]]) {
+                    DebugLog(@"error: animation %d has no frames", i);
+                    skip = YES;
+                }
+                if (skip) continue;
+                NSArray *frames = [animation valueForKey:@"frames"];
+                for (int j=0; j<frames.count; j++) {
+                    if (![[frames objectAtIndex:j] isKindOfClass:[NSArray class]]) {
+                        DebugLog(@"error: wrong frame %d in animation %d", j, i);
+                        skip = YES;
+                    }
+                    if (!skip) {
+                        NSArray *lines = frames[j];
+                        for (int k=0; k<lines.count; k++) {
+                            if (![[lines objectAtIndex:k] isKindOfClass:[NSArray class]]) {
+                                DebugLog(@"error: wrong lines %d in frame %d in animation %d", k, j, i);
+                                skip = YES;
+                            }
+                            if (!skip) {
+                                NSArray *line = lines[k];
+                                for (int l=0; l<line.count; l++) {
+                                    if (![[line objectAtIndex:l] isKindOfClass:[NSArray class]] || [[line objectAtIndex:l] count] != 2) {
+                                        DebugLog(@"error: wrong line %d lines %d in frame %d in animation %d", l, k, j, i);
+                                        skip = YES;
+                                    } else if (![[[line objectAtIndex:l] objectAtIndex:0] isKindOfClass:[NSNumber class]] || ![[[line objectAtIndex:l] objectAtIndex:1] isKindOfClass:[NSNumber class]]) {
+                                        DebugLog(@"error: wrong line %d lines %d in frame %d in animation %d", l, k, j, i);
+                                        skip = YES;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!skip) {
+                    [newAnimations addObject:[animation mutableCopy]];
+                }
+            }
+            
+            if (newAnimations.count > 0) {
+                self.appDelegate.appData.userAnimations = newAnimations;
+                [self.appDelegate.appData save];
+            }
+            
+            [self cleanInbox];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshThumbnails];
+            });
+        }
+    });
+}
+
+- (void)restoreComplete {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:@"Import is complete!"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
+                                                     handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:NO completion:nil];
+}
+
+- (void)cleanInbox {
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSArray *filelist= [fm contentsOfDirectoryAtPath:[UserData dataFilePath:@"Inbox"] error:nil];
+    NSString *fullPath;
+    
+    if (filelist == nil) {
+        return;
+    }
+    
+    
+    for (NSString *file in filelist) {
+        NSError *error;
+        fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"Inbox/%@", file]];
+        DebugLog(@"removed: %@", fullPath);
+        [fm removeItemAtPath:fullPath error:&error];
+        if (error) {
+            DebugLog(@"error: %@", error);
+        }
+    }
+    
+    [fm removeItemAtPath:[UserData dataFilePath:@"temp.plist"] error:nil];
+}
+
+- (void)confirmRestore {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Are you sure?"
+                                                                   message:@"Please confirm once again that you want to REPLACE ALL ANIMATIONS in the app with those found in the backup. Tap “Confirm” to proceed."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self restoreBackup];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {
+                                                             [self cleanInbox];
+                                                         }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:NO completion:nil];
 }
 
 #pragma mark - Refresh stuff
@@ -125,16 +333,23 @@ static dispatch_queue_t _refreshQueue;
 - (void)removeStatusLabel {
     self.statusLabel.text = @"";
     self.statusView.hidden = YES;
+    
+    if (self.isRestoring) {
+        self.isRestoring = NO;
+        [self restoreComplete];
+    }
 }
 
 - (void)refreshThumbnails {
-    _currentRefresh = 0;
+    self.currentRefresh = 0;
 
     srand ((int)time(NULL));
+    
+    [UserData emptyUserFolder];
 
     [self updateRefreshText];
 
-    dispatch_async(_refreshQueue, ^{
+    dispatch_async(self.refreshQueue, ^{
         [self refreshNext];
     });
 }
@@ -147,7 +362,7 @@ static dispatch_queue_t _refreshQueue;
     int index = rand()%emojiCount;
     NSString *emoji = [emojiArray objectAtIndex:index];
     
-    self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPerforming GIFness\nfor animation\n%d of %d\n\n%@", emoji, _currentRefresh+1, (int)animationCount, emoji];
+    self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPerforming GIFness\nfor animation\n%d of %d\n\n%@", emoji, self.currentRefresh+1, (int)animationCount, emoji];
 }
 
 - (void)refreshNext {
@@ -156,7 +371,7 @@ static dispatch_queue_t _refreshQueue;
     NSArray *frames;
     NSMutableArray *drawViewArray;
 
-    animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:_currentRefresh];
+    animation = (NSDictionary *)[self.appDelegate.appData.userAnimations objectAtIndex:self.currentRefresh];
     // check if thumbnail exists
     NSString *uuid = [animation objectForKey:@"name"];
     [self.appDelegate.appData removeThumbnailsForUUID:uuid];
@@ -176,16 +391,16 @@ static dispatch_queue_t _refreshQueue;
     [animator createFrames:drawViewArray withSpeed:_fps];
     [animator createAllGIFs];
 
-    _currentRefresh++;
+    self.currentRefresh++;
     
-    if (_currentRefresh < animationCount) {
+    if (self.currentRefresh < animationCount) {
         // dispatch again
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC));
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateRefreshText];
         });
-        dispatch_after(popTime, _refreshQueue, ^{
+        dispatch_after(popTime, self.refreshQueue, ^{
             [self refreshNext];
         });
     } else {

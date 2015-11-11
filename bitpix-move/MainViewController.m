@@ -550,6 +550,10 @@ static const NSInteger _frameBuffer = 3;
     } else if ([[segue identifier] isEqualToString:@"viewInfo"]) {
         [self clean];
         [[segue destinationViewController] setDelegate:self];
+    } else if ([[segue identifier] isEqualToString:@"restoreBackup"]) {
+        InfoViewController *vc = [segue destinationViewController];
+        vc.isRestoring = YES;
+        [[segue destinationViewController] setDelegate:self];
     }
 }
 
@@ -597,7 +601,7 @@ static const NSInteger _frameBuffer = 3;
 
 - (IBAction)onAddTapped:(id)sender {
     _tappedAdd = YES;
-    if (!_tappedPreview) {
+    if (!_tappedPreview && ![self.drawLabel.text isEqualToString:@"Draw again"]) {
         self.drawLabel.text = @"Draw again";
         self.drawLabel.hidden = NO;
     }
