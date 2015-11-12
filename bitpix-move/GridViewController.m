@@ -21,10 +21,6 @@
 @implementation GridViewController
 
 static NSString * const reuseIdentifier = @"AnimationCell";
-static NSInteger _selectedRow;
-static int _selectedAction;
-static BOOL _deletedParentAnimation = NO;
-static int _currentDuplicates = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,7 +37,8 @@ static int _currentDuplicates = 0;
     
     self.collectionView.scrollsToTop = YES;
     
-    _deletedParentAnimation = NO;
+    self.deletedParentAnimation = NO;
+    self.currentDuplicates = 0;
 
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -82,7 +79,7 @@ static int _currentDuplicates = 0;
 */
 
 - (IBAction)onReturnTapped:(id)sender {
-    if (_deletedParentAnimation) {
+    if (self.deletedParentAnimation) {
         [self.delegate gridViewControllerDidFinish:self withAnimationIndex:-1];
     } else {
         [self.delegate gridViewControllerDidFinish:self];
@@ -132,7 +129,7 @@ static int _currentDuplicates = 0;
 #pragma mark <UICollectionViewDelegate>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentDuplicates > 0) return;
+    if (self.currentDuplicates > 0) return;
     NSInteger realIndex = self.collectionData.count - (indexPath.row + 1);
     [self.delegate gridViewControllerDidFinish:self withAnimationIndex:realIndex];
 }
@@ -201,7 +198,7 @@ static int _currentDuplicates = 0;
         BOOL duplicating = [[[self.collectionData objectAtIndex:indexPath.row] valueForKey:@"duplicating"] boolValue];
         if (duplicating) return;
 
-        _selectedRow = indexPath.row;
+        self.selectedRow = indexPath.row;
 
         ThumbnailCell *cell = (ThumbnailCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
 
@@ -228,7 +225,7 @@ static int _currentDuplicates = 0;
 }
 
 - (void)deleteTapped:(id)sender {
-    _selectedAction = kDeleteAction;
+    self.selectedAction = kDeleteAction;
 
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:nil
@@ -237,10 +234,10 @@ static int _currentDuplicates = 0;
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Delete animation" style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction * action) {
                                                               // check to see if it was the animation user was working on
-                                                              NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:_selectedRow] objectForKey:@"name"];
+                                                              NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:self.selectedRow] objectForKey:@"name"];
                                                               MainViewController *vc = (MainViewController *)self.delegate;
                                                               if ([uuid isEqualToString:vc.uuid]) {
-                                                                  _deletedParentAnimation = YES;
+                                                                  self.deletedParentAnimation = YES;
                                                               }
                                                               [self deleteAnimation];
                                                           }];
@@ -254,7 +251,7 @@ static int _currentDuplicates = 0;
 }
 
 - (void)duplicateTapped:(id)sender {
-    _selectedAction = kDuplicateAction;
+    self.selectedAction = kDuplicateAction;
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:nil
@@ -274,12 +271,12 @@ static int _currentDuplicates = 0;
 }
 
 - (void)deleteAnimation {
-    DebugLog(@"deleted: %ld", (long)_selectedRow);
+    DebugLog(@"deleted: %ld", (long)self.selectedRow);
     [self removeAccessoryButtons];
     
-    if (_selectedRow == -1) return;
+    if (self.selectedRow == -1) return;
 
-    NSInteger originalIndex = _selectedRow;
+    NSInteger originalIndex = self.selectedRow;
     NSString *uuid = [[self.collectionData objectAtIndex:originalIndex] valueForKey:@"name"];
     [self.collectionData removeObjectAtIndex:originalIndex];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:originalIndex inSection:0];
@@ -293,27 +290,27 @@ static int _currentDuplicates = 0;
         [self.appDelegate.appData deleteFilesWithUUID:uuid];
     });
 
-    _selectedRow = -1;
+    self.selectedRow = -1;
 }
 
 - (void)checkForReturnShow {
-    if (_currentDuplicates <= 0) {
+    if (self.currentDuplicates <= 0) {
         self.returnButton.enabled = YES;
     }
 }
 
 - (void)duplicateAnimation {
-    DebugLog(@"duplicated: %ld", (long)_selectedRow);
+    DebugLog(@"duplicated: %ld", (long)self.selectedRow);
     [self removeAccessoryButtons];
 
-    if (_selectedRow == -1) return;
+    if (self.selectedRow == -1) return;
     
     self.returnButton.enabled = NO;
-    _currentDuplicates++;
+    self.currentDuplicates++;
 
-    NSInteger originalIndex = _selectedRow;
+    NSInteger originalIndex = self.selectedRow;
     // put it "after" the current one (showing in reverse order so -1)
-    NSInteger newIndex = _selectedRow;
+    NSInteger newIndex = self.selectedRow;
     __block NSString *olduuid = [[self.collectionData objectAtIndex:originalIndex] valueForKey:@"name"];
     __block NSString *uuid = [[NSUUID UUID] UUIDString];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newIndex inSection:0];
@@ -331,7 +328,7 @@ static int _currentDuplicates = 0;
         }
         [self.appDelegate.appData copyFilesFrom:olduuid to:uuid withCount:frameCount.integerValue];
         dispatch_async(dispatch_get_main_queue(), ^{
-            _currentDuplicates--;
+            self.currentDuplicates--;
             [self checkForReturnShow];
             NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSDictionary *animation = (NSDictionary *)obj;
@@ -368,7 +365,7 @@ static int _currentDuplicates = 0;
         });
     });
 
-    _selectedRow = -1;
+    self.selectedRow = -1;
 }
 
 - (void)removeAccessoryButtons {

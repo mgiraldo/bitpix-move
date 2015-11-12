@@ -19,7 +19,12 @@
 
 @interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
-@property (nonatomic) AppDelegate *appDelegate;
+@property (atomic) NSInteger selectedRow;
+@property (atomic) int selectedAction;
+@property (atomic) BOOL deletedParentAnimation;
+@property (atomic) int currentDuplicates;
+
+@property (atomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *collectionData;
 @property (nonatomic) UIButton *deleteButton;
 @property (nonatomic) UIButton *duplicateButton;

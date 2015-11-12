@@ -10,8 +10,8 @@
 
 @interface UserData : NSObject <NSCoding>
 
-@property (nonatomic) NSMutableDictionary *data;
-@property (nonatomic) NSMutableArray *userAnimations;
+@property (atomic) NSMutableDictionary *data;
+@property (atomic) NSMutableArray *userAnimations;
 
 - (id)initWithDefaultData;
 + (NSString *)dataFilePath:(NSString *)filename;

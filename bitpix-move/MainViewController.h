@@ -27,7 +27,7 @@
 @property (atomic) BOOL isVertical;
 @property (atomic) NSInteger frameBuffer;
 
-@property (nonatomic) AppDelegate *appDelegate;
+@property (atomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
 @property (nonatomic) NSString  *uuid;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
