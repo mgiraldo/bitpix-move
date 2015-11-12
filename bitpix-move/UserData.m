@@ -85,25 +85,7 @@
             // frame syntax: x1,y1 x2,y2 x3,y3|x1,y1 x2,y2 x3,y3 x4,y4|...
             // need to explode this
             for (NSDictionary *animation in animations) {
-                NSMutableArray *frames = [@[] mutableCopy];
-                for (NSString *frameString in [animation objectForKey:@"frames"]) {
-                    NSMutableArray *lines = [@[] mutableCopy];
-                    if (![frameString isEqualToString:@""]) {
-                        NSArray *linesArray = [frameString componentsSeparatedByString:@"|"];
-                        for (NSString *lineString in linesArray) {
-                            NSMutableArray *points = [@[] mutableCopy];
-                            NSArray *pointsArray = [lineString componentsSeparatedByString:@" "];
-                            for (NSString *xyString in pointsArray) {
-                                NSArray *xy = [xyString componentsSeparatedByString:@","];
-                                NSNumber *x = [NSNumber numberWithFloat:[[xy objectAtIndex:0] floatValue]];
-                                NSNumber *y = [NSNumber numberWithFloat:[[xy objectAtIndex:1] floatValue]];
-                                [points addObject:@[x,y]];
-                            }
-                            [lines addObject:points];
-                        }
-                    }
-                    [frames addObject:lines];
-                }
+                NSMutableArray *frames = [[UserData explodeAnimationFrames:[animation objectForKey:@"frames"]] mutableCopy];
                 [self.userAnimations addObject:[@{@"name":[animation objectForKey:@"name"], @"date":[animation objectForKey:@"date"], @"frames":frames} mutableCopy]];
             }
         } else {
@@ -114,6 +96,29 @@
     }
 
     NSLog(@"size: %lu", (unsigned long)self.userAnimations.count);
+}
+
++ (NSArray *)explodeAnimationFrames:(NSArray *)frames {
+    NSMutableArray *frameStringArray = [@[] mutableCopy];
+    for (NSString *frameString in frames) {
+        NSMutableArray *lines = [@[] mutableCopy];
+        if (![frameString isEqualToString:@""]) {
+            NSArray *linesArray = [frameString componentsSeparatedByString:@"|"];
+            for (NSString *lineString in linesArray) {
+                NSMutableArray *points = [@[] mutableCopy];
+                NSArray *pointsArray = [lineString componentsSeparatedByString:@" "];
+                for (NSString *xyString in pointsArray) {
+                    NSArray *xy = [xyString componentsSeparatedByString:@","];
+                    NSNumber *x = [NSNumber numberWithFloat:[[xy objectAtIndex:0] floatValue]];
+                    NSNumber *y = [NSNumber numberWithFloat:[[xy objectAtIndex:1] floatValue]];
+                    [points addObject:@[x,y]];
+                }
+                [lines addObject:points];
+            }
+        }
+        [frameStringArray addObject:lines];
+    }
+    return [NSArray arrayWithArray:frameStringArray];
 }
 
 - (void)deleteAnimationWithUUID:(NSString *)uuid {

@@ -16,6 +16,7 @@
 - (id)initWithDefaultData;
 + (NSString *)dataFilePath:(NSString *)filename;
 + (void)emptyUserFolder;
++ (NSArray *)explodeAnimationFrames:(NSArray *)frames;
 - (void)load;
 - (void)reload;
 - (void)resetDataFile;

@@ -244,7 +244,19 @@ static const NSUInteger BUFFER_SIZE = 1024;
                     skip = YES;
                 }
                 if (skip) continue;
-                NSArray *frames = [animation valueForKey:@"frames"];
+                NSMutableArray *frames;
+                ///
+                if ([frames[0] isKindOfClass:[NSString class]]) {
+                    // v 1.0 (34) and newer syntax
+                    // frame syntax: x1,y1 x2,y2 x3,y3|x1,y1 x2,y2 x3,y3 x4,y4|...
+                    // need to explode this
+                    frames = [[UserData explodeAnimationFrames:[animation objectForKey:@"frames"]] mutableCopy];
+                } else {
+                    // v 1.0 (33) and older syntax
+                    // frame is an array of lines with array of points
+                    frames = [[animation valueForKey:@"frames"] mutableCopy];
+                }
+                ///
                 for (int j=0; j<frames.count; j++) {
                     if (![[frames objectAtIndex:j] isKindOfClass:[NSArray class]]) {
                         DebugLog(@"error: wrong frame %d in animation %d", j, i);
