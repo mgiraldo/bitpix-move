@@ -61,16 +61,56 @@
     }
     
     self.userAnimations = [@[] mutableCopy];
+    
+    BOOL _wasLegacy = NO;
+    
+    // legacy stuff
     if ([[self.data objectForKey:@"userAnimations"] isKindOfClass:[NSDictionary class]]) {
-        // legacy stuff
+        _wasLegacy = YES;
+        // TODO: this is probably safe to delete
         NSDictionary *animations = [NSDictionary dictionaryWithDictionary:[self.data objectForKey:@"userAnimations"]];
         for (NSString *key in animations) {
             NSMutableDictionary *animation = [[NSDictionary dictionaryWithDictionary:[animations objectForKey:key]] mutableCopy];
             [animation setObject:key forKey:@"name"];
             [self.userAnimations addObject:animation];
         }
-    } else {
-        self.userAnimations = [[NSArray arrayWithArray:[self.data objectForKey:@"userAnimations"]] mutableCopy];
+    }
+
+    if (!_wasLegacy && [[self.data objectForKey:@"userAnimations"] count] > 0) {
+        NSArray *animations = [NSArray arrayWithArray:[self.data objectForKey:@"userAnimations"]];
+        NSDictionary *testAnimation = animations[0];
+        NSArray *testFrames = [testAnimation objectForKey:@"frames"];
+        if ([testFrames[0] isKindOfClass:[NSString class]]) {
+            // v 1.0 (34) and newer syntax
+            // frame syntax: x1,y1 x2,y2 x3,y3|x1,y1 x2,y2 x3,y3 x4,y4|...
+            // need to explode this
+            for (NSDictionary *animation in animations) {
+                NSMutableArray *frames = [@[] mutableCopy];
+                for (NSString *frameString in [animation objectForKey:@"frames"]) {
+                    NSMutableArray *lines = [@[] mutableCopy];
+                    if (![frameString isEqualToString:@""]) {
+                        NSArray *linesArray = [frameString componentsSeparatedByString:@"|"];
+                        for (NSString *lineString in linesArray) {
+                            NSMutableArray *points = [@[] mutableCopy];
+                            NSArray *pointsArray = [lineString componentsSeparatedByString:@" "];
+                            for (NSString *xyString in pointsArray) {
+                                NSArray *xy = [xyString componentsSeparatedByString:@","];
+                                NSNumber *x = [NSNumber numberWithFloat:[[xy objectAtIndex:0] floatValue]];
+                                NSNumber *y = [NSNumber numberWithFloat:[[xy objectAtIndex:1] floatValue]];
+                                [points addObject:@[x,y]];
+                            }
+                            [lines addObject:points];
+                        }
+                    }
+                    [frames addObject:lines];
+                }
+                [self.userAnimations addObject:[@{@"name":[animation objectForKey:@"name"], @"date":[animation objectForKey:@"date"], @"frames":frames} mutableCopy]];
+            }
+        } else {
+            // v 1.0 (33) and older syntax
+            // frame is an array of lines with array of points
+            self.userAnimations = [animations mutableCopy];
+        }
     }
 
     NSLog(@"size: %lu", (unsigned long)self.userAnimations.count);
@@ -211,7 +251,27 @@
 
 - (void)save {
 //    DebugLog(@"saved appdata plist: %@", [UserData dataFilePath:@"Data.plist"]);
-    [self.data setObject:self.userAnimations forKey:@"userAnimations"];
+    NSMutableArray *stringUserAnimations = [@[] mutableCopy];
+    for (NSDictionary *animation in self.userAnimations) {
+        NSMutableDictionary *stringAnimation = [@{} mutableCopy];
+        [stringAnimation setObject:[animation objectForKey:@"name"] forKey:@"name"];
+        [stringAnimation setObject:[animation objectForKey:@"date"] forKey:@"date"];
+        NSMutableArray *frameStringArray = [@[] mutableCopy];
+        for (NSArray *frame in [animation objectForKey:@"frames"]) {
+            NSMutableArray *lineStringArray = [@[] mutableCopy];
+            for (NSArray *line in frame) {
+                NSMutableArray *pointStringArray = [@[] mutableCopy];
+                for (NSArray *points in line) {
+                    [pointStringArray addObject:[NSString stringWithFormat:@"%g,%g", [[points objectAtIndex:0] floatValue], [[points objectAtIndex:1] floatValue]]];
+                }
+                [lineStringArray addObject:[pointStringArray componentsJoinedByString:@" "]];
+            }
+            [frameStringArray addObject:[lineStringArray componentsJoinedByString:@"|"]];
+        }
+        [stringAnimation setObject:frameStringArray forKey:@"frames"];
+        [stringUserAnimations addObject:stringAnimation];
+    }
+    [self.data setObject:stringUserAnimations forKey:@"userAnimations"];
     //escribir el plist
     [self.data writeToFile:[UserData dataFilePath:@"Data.plist"] atomically:YES];
 }
