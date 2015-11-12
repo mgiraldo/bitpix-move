@@ -85,7 +85,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
             [picker addAttachmentData:fileData mimeType:@"application/zip" fileName:filename];
             
             // Fill out the email body text
-            NSString *emailBody = @"Attached is a ZIP file for all your animations.\n\nMade with MovePix\nhttp://bitpix.co/move";
+            NSString *emailBody = @"Attached is a ZIP file for all your animations. To restore it, tap this backup and select Open In… MovePix.\n\nMade with MovePix\nhttp://bitpix.co/move";
             [picker setMessageBody:emailBody isHTML:NO];
             
             [self presentViewController:picker
@@ -292,7 +292,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
             
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
             
-            dispatch_after(popTime, dispatch_get_main_queue(), ^{
+            dispatch_after(popTime, self.refreshQueue, ^{
                 [self refreshThumbnails];
             });
         }
@@ -384,13 +384,13 @@ static const NSUInteger BUFFER_SIZE = 1024;
 - (void)updateRefreshText {
     NSInteger animationCount = self.appDelegate.appData.userAnimations.count;
     self.statusView.hidden = NO;
-    self.statusProgress.hidden = YES;
     NSArray *emojiArray = @[@"👯", @"💁", @"👻", @"🙃", @"😶", @"🤖", @"👾", @"🎃", @"⏳", @"😎", @"🐌", @"🐢"];
     int emojiCount = (int)emojiArray.count;
     int index = rand()%emojiCount;
     NSString *emoji = [emojiArray objectAtIndex:index];
     
     self.statusLabel.text = [NSString stringWithFormat:@"%@\n\nPerforming GIFness\nfor animation\n%d of %d\n\n%@", emoji, self.currentRefresh+1, (int)animationCount, emoji];
+    [self updateProgress:self.currentRefresh total:animationCount];
 }
 
 - (void)refreshNext {

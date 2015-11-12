@@ -61,7 +61,10 @@
 	self.sketchView.backgroundColor = [UIColor whiteColor];
 	[self newAnimation];
     [self updateUI];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     if (self.isRestoring) {
         self.isRestoring = NO;
         [self performSelector:@selector(restoreBackup) withObject:nil afterDelay:0.0];
