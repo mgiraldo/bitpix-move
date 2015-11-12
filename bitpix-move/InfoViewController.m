@@ -223,7 +223,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
             BOOL skip = NO;
             
             int progress = 0;
-            int total = animations.count;
+            int total = (int)animations.count;
             
             for (int i=0; i<animations.count; i++) {
                 NSDictionary *animation = [animations objectAtIndex:i];

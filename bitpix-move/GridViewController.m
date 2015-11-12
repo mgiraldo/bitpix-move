@@ -34,7 +34,7 @@ static int _currentDuplicates = 0;
     NSMutableArray *temp = [@[] mutableCopy];
     
     for (id obj in self.appDelegate.appData.userAnimations) {
-        [temp addObject:@{@"name":[obj valueForKey:@"name"], @"duplicating":@NO}];
+        [temp addObject:[@{@"name":[obj valueForKey:@"name"], @"duplicating":@NO} mutableCopy]];
     }
     
     self.collectionData = [[[temp reverseObjectEnumerator] allObjects] mutableCopy];
@@ -318,6 +318,7 @@ static int _currentDuplicates = 0;
     __block NSString *uuid = [[NSUUID UUID] UUIDString];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newIndex inSection:0];
     NSArray *indexes = [NSArray arrayWithObject:indexPath];
+    [[self.collectionData objectAtIndex:originalIndex] setValue:@YES forKey:@"duplicating"];
     [self.collectionData insertObject:[@{@"name":uuid, @"duplicating":@YES} mutableCopy] atIndex:newIndex];
     [self.collectionView insertItemsAtIndexPaths:indexes];
     
@@ -337,6 +338,17 @@ static int _currentDuplicates = 0;
                 BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
                 return found;
             }];
+
+            NSUInteger indexParent = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *animation = (NSDictionary *)obj;
+                BOOL found = [[animation objectForKey:@"name"] isEqualToString:olduuid];
+                return found;
+            }];
+            
+            if (indexParent != NSNotFound) {
+                NSInteger parentIndex = self.collectionData.count - (indexParent+1);
+                [[self.collectionData objectAtIndex:parentIndex] setObject:@NO forKey:@"duplicating"];
+            }
 
             if (index != NSNotFound) {
                 NSInteger realIndex = self.collectionData.count - (index+1);
