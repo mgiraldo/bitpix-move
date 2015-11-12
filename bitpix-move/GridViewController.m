@@ -234,7 +234,8 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Delete animation" style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction * action) {
                                                               // check to see if it was the animation user was working on
-                                                              NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:self.selectedRow] objectForKey:@"name"];
+                                                              NSInteger realIndex = self.collectionData.count - (self.selectedRow+1);
+                                                              NSString *uuid = [[self.appDelegate.appData.userAnimations objectAtIndex:realIndex] objectForKey:@"name"];
                                                               MainViewController *vc = (MainViewController *)self.delegate;
                                                               if ([uuid isEqualToString:vc.uuid]) {
                                                                   self.deletedParentAnimation = YES;
