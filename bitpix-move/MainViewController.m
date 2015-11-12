@@ -241,7 +241,11 @@
         [self.appDelegate.appData.userAnimations replaceObjectAtIndex:index withObject:animationInfo];
     }
     
-    [self.appDelegate.appData save];
+    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        @synchronized(self.appDelegate.appData) {
+            [self.appDelegate.appData save];
+        }
+    });
 }
 
 - (void)clean {
@@ -316,11 +320,7 @@
     [self updateUndoButtonForDrawView:drawView];
     [self.framesArray replaceObjectAtIndex:self.currentFrame withObject:drawView];
     [self updateUI];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+    [self saveToDisk];
 }
 
 - (void)drawViewTouchesBegan:(DrawView *)drawView {
@@ -343,11 +343,7 @@
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:self.currentFrame];
     [self.sketchView addSubview:drawView];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+    [self saveToDisk];
     [self popFrame];
     [self updateUI];
 }
@@ -375,12 +371,7 @@
     drawView = [self.framesArray objectAtIndex:self.currentFrame];
     drawView.isClean = NO;
 
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self clean];
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+    [self saveToDisk];
     [self updateUI];
 }
 
@@ -544,11 +535,7 @@
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
     [drawView undo];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+    [self saveToDisk];
     [self updateUI];
 }
 

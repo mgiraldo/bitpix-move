@@ -20,20 +20,6 @@
 				<string>com.pkware.zip-archive</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeIconFiles</key>
-			<array>
-				<string>bitpix-move-76</string>
-				<string>bitpix-move-120</string>
-				<string>bitpix-move-152</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>XML file</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.xml</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -50,7 +36,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>33</string>
+	<string>34</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
