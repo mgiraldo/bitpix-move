@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *statusProgress;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 @property (weak, nonatomic) IBOutlet UIButton *backupButton;
 @property (nonatomic, weak) id <InfoViewControllerDelegate> delegate;
 @property (nonatomic) dispatch_queue_t refreshQueue;

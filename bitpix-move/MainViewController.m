@@ -140,6 +140,21 @@
     }
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //	NSLog(@"prepare for segue: [%@] sender: [%@]", [segue identifier], sender);
+    if ([[segue identifier] isEqualToString:@"viewGrid"]) {
+        [self clean];
+        [[segue destinationViewController] setDelegate:self];
+    } else if ([[segue identifier] isEqualToString:@"viewInfo"]) {
+        [self clean];
+        [[segue destinationViewController] setDelegate:self];
+    } else if ([[segue identifier] isEqualToString:@"restoreBackup"]) {
+        InfoViewController *vc = [segue destinationViewController];
+        vc.isRestoring = YES;
+        [[segue destinationViewController] setDelegate:self];
+    }
+}
+
 #pragma mark - Preview stuff
 
 - (void)showPreview {
@@ -216,39 +231,45 @@
     // do not save if only one frame that is clean
     if (self.framesArray.count == 1 && [drawView isClean]) return;
 
-    // update disk version of animation
-    NSDate *today = [NSDate date];
-    
-    NSMutableArray *frames = [@[] mutableCopy];
-    for (int i = 0; i < self.framesArray.count; i++) {
-        DrawView *drawView = [self.framesArray objectAtIndex:i];
-        [frames addObject:drawView.lineList];
-    }
-    
-    NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.uuid, today, frames, nil] forKeys:[NSArray arrayWithObjects:@"name", @"date", @"frames", nil]];
-    
-    NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDictionary *animation = (NSDictionary *)obj;
-        BOOL found = [[animation objectForKey:@"name"] isEqualToString:self.uuid];
-        return found;
-    }];
-    
-    if (index == NSNotFound) {
-        // a new animation
-        [self.appDelegate.appData.userAnimations addObject:animationInfo];
-    } else {
-        // old animation
-        [self.appDelegate.appData.userAnimations replaceObjectAtIndex:index withObject:animationInfo];
-    }
-    
-    [self.appDelegate.appData save];
+    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+        @synchronized(self.appDelegate.appData) {
+            // update disk version of animation
+            NSDate *today = [NSDate date];
+            
+            NSMutableArray *frames = [@[] mutableCopy];
+            for (int i = 0; i < self.framesArray.count; i++) {
+                DrawView *drawView = [self.framesArray objectAtIndex:i];
+                [frames addObject:drawView.lineList];
+            }
+            
+            NSDictionary *animationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:self.uuid, today, frames, nil] forKeys:[NSArray arrayWithObjects:@"name", @"date", @"frames", nil]];
+            
+            NSUInteger index = [self.appDelegate.appData.userAnimations indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *animation = (NSDictionary *)obj;
+                BOOL found = [[animation objectForKey:@"name"] isEqualToString:self.uuid];
+                return found;
+            }];
+            
+            if (index == NSNotFound) {
+                // a new animation
+                [self.appDelegate.appData.userAnimations addObject:animationInfo];
+            } else {
+                // old animation
+                [self.appDelegate.appData.userAnimations replaceObjectAtIndex:index withObject:animationInfo];
+            }
+            
+            [self.appDelegate.appData save];
+        }
+    });
 }
 
 - (void)clean {
     if (!self.isClean) {
         self.isClean = YES;
-        [self.previewView createFrames:self.framesArray withSpeed:_fps];
-        [self.previewView createAllGIFs];
+        dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
+            [self.previewView createFrames:self.framesArray withSpeed:_fps];
+            [self.previewView createAllGIFs];
+        });
     }
 }
 
@@ -316,11 +337,6 @@
     [self updateUndoButtonForDrawView:drawView];
     [self.framesArray replaceObjectAtIndex:self.currentFrame withObject:drawView];
     [self updateUI];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
 }
 
 - (void)drawViewTouchesBegan:(DrawView *)drawView {
@@ -343,11 +359,7 @@
     drawView.delegate = self;
     [self.framesArray insertObject:drawView atIndex:self.currentFrame];
     [self.sketchView addSubview:drawView];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+    [self saveToDisk];
     [self popFrame];
     [self updateUI];
 }
@@ -375,16 +387,16 @@
     drawView = [self.framesArray objectAtIndex:self.currentFrame];
     drawView.isClean = NO;
 
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        [self clean];
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+    [self clean];
+    [self saveToDisk];
     [self updateUI];
 }
 
 - (void)nextFrame {
+//    if (!self.currentView.isClean) {
+//        self.currentView.isClean = YES;
+//        [self saveToDisk];
+//    }
     self.currentFrame++;
     if (self.currentFrame > self.framesArray.count) self.currentFrame = (int)self.framesArray.count - 1;
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
@@ -394,6 +406,10 @@
 }
 
 - (void)prevFrame {
+//    if (!self.currentView.isClean) {
+//        self.currentView.isClean = YES;
+//        [self saveToDisk];
+//    }
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
     [drawView removeFromSuperview];
     [self unshiftFrame];
@@ -421,6 +437,7 @@
 
 - (void)updateUI {
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
+    self.currentView = drawView;
     [self updateUndoButtonForDrawView:drawView];
     
     if (self.isVertical) {
@@ -544,30 +561,11 @@
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
     [drawView undo];
-    dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-        @synchronized(self.appDelegate.appData) {
-            [self saveToDisk];
-        }
-    });
+//    [self saveToDisk];
     [self updateUI];
 }
 
 #pragma mark - Grid/Info view delegate
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    //	NSLog(@"prepare for segue: [%@] sender: [%@]", [segue identifier], sender);
-    if ([[segue identifier] isEqualToString:@"viewGrid"]) {
-        [self clean];
-        [[segue destinationViewController] setDelegate:self];
-    } else if ([[segue identifier] isEqualToString:@"viewInfo"]) {
-        [self clean];
-        [[segue destinationViewController] setDelegate:self];
-    } else if ([[segue identifier] isEqualToString:@"restoreBackup"]) {
-        InfoViewController *vc = [segue destinationViewController];
-        vc.isRestoring = YES;
-        [[segue destinationViewController] setDelegate:self];
-    }
-}
 
 - (void)infoViewControllerDidFinish:(InfoViewController *)controller {
     [self dismissViewControllerAnimated:YES completion:nil];

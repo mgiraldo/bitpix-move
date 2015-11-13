@@ -23,6 +23,11 @@ static const NSUInteger BUFFER_SIZE = 1024;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.backupButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.backupButton.layer.borderWidth = 1.0;
+    self.refreshButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.refreshButton.layer.borderWidth = 1.0;
+    
     self.currentRefresh = -1;
     
     self.refreshQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.refreshqueue", NULL);
@@ -313,7 +318,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
 
 - (void)restoreComplete {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:@"Import is complete!"
+                                                                   message:@"Restore is complete!"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel

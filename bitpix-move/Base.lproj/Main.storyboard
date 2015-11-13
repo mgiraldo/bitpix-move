@@ -586,10 +586,10 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-V7-Noc">
-                                <rect key="frame" x="50" y="190" width="220" height="80"/>
+                                <rect key="frame" x="50" y="190" width="220" height="90"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="6Tg-JZ-bTK"/>
+                                    <constraint firstAttribute="height" constant="90" id="6Tg-JZ-bTK"/>
                                     <constraint firstAttribute="width" constant="220" id="7Au-rM-c7H"/>
                                 </constraints>
                                 <string key="text">Makes a zip file of all your data that you can send to an email address. To restore a backup, select it in the app you keep it (Dropbox, Mail, etc.) and choose Open In… MovePix.</string>
@@ -699,6 +699,7 @@
                     </view>
                     <connections>
                         <outlet property="backupButton" destination="jCI-Qc-BOA" id="xuY-tq-ceS"/>
+                        <outlet property="refreshButton" destination="jrP-CQ-Y1A" id="rvG-mU-oEB"/>
                         <outlet property="statusLabel" destination="JxR-OF-Ilm" id="x23-OD-YLb"/>
                         <outlet property="statusProgress" destination="Afi-I2-liw" id="GUK-bt-xhU"/>
                         <outlet property="statusView" destination="K58-L0-TBm" id="ISH-0G-3AM"/>
