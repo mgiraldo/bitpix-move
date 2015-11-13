@@ -255,7 +255,7 @@
 }
 
 - (void)save {
-//    DebugLog(@"saved appdata plist: %@", [UserData dataFilePath:@"Data.plist"]);
+    DebugLog(@"saved appdata plist");
     NSMutableArray *stringUserAnimations = [@[] mutableCopy];
     for (NSDictionary *animation in self.userAnimations) {
         NSMutableDictionary *stringAnimation = [@{} mutableCopy];

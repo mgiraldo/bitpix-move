@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC0D9E6E1BF6A3910048B18C /* backup-help.png in Resources */ = {isa = PBXBuildFile; fileRef = CC0D9E6C1BF6A3910048B18C /* backup-help.png */; };
+		CC0D9E6F1BF6A3910048B18C /* backup-help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC0D9E6D1BF6A3910048B18C /* backup-help@2x.png */; };
 		CC139DE41BDC34F800BF0A5B /* bitpix-move-76.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */; };
 		CC139DE51BDC34F800BF0A5B /* bitpix-move-120.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */; };
 		CC139DE61BDC34F800BF0A5B /* bitpix-move-152.png in Resources */ = {isa = PBXBuildFile; fileRef = CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */; };
@@ -101,6 +103,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC0D9E6C1BF6A3910048B18C /* backup-help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backup-help.png"; sourceTree = "<group>"; };
+		CC0D9E6D1BF6A3910048B18C /* backup-help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backup-help@2x.png"; sourceTree = "<group>"; };
 		CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-76.png"; sourceTree = "<group>"; };
 		CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-120.png"; sourceTree = "<group>"; };
 		CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-152.png"; sourceTree = "<group>"; };
@@ -412,6 +416,8 @@
 		CCF3F97D1BDC61880019059B /* Visual assets */ = {
 			isa = PBXGroup;
 			children = (
+				CC0D9E6C1BF6A3910048B18C /* backup-help.png */,
+				CC0D9E6D1BF6A3910048B18C /* backup-help@2x.png */,
 				CC4D442D1BF01B10000B0209 /* svg-mail-icon.png */,
 				CC4D442E1BF01B11000B0209 /* svg-mail-icon@2x.png */,
 				CC4D442F1BF01B11000B0209 /* svg-mail-icon@3x.png */,
@@ -566,11 +572,13 @@
 				CCC339AC1BE30BAC00A78FD1 /* trash@2x.png in Resources */,
 				CCC339BC1BE31F9D00A78FD1 /* next@3x.png in Resources */,
 				CCC339B11BE30D6A00A78FD1 /* new.png in Resources */,
+				CC0D9E6E1BF6A3910048B18C /* backup-help.png in Resources */,
 				CCC339BA1BE31F9D00A78FD1 /* next.png in Resources */,
 				CC4D44301BF01B11000B0209 /* svg-mail-icon.png in Resources */,
 				CC4D07A31BD85D5400A52613 /* Main.storyboard in Resources */,
 				CCF3F9811BDC61EC0019059B /* Data.plist in Resources */,
 				CC139DE41BDC34F800BF0A5B /* bitpix-move-76.png in Resources */,
+				CC0D9E6F1BF6A3910048B18C /* backup-help@2x.png in Resources */,
 				CC4587601BE58C8F000BFB25 /* export@3x.png in Resources */,
 				CC4D44281BF00C7C000B0209 /* svg-icon@3x.png in Resources */,
 				CC4587581BE58908000BFB25 /* undo.png in Resources */,

@@ -87,10 +87,15 @@ static const NSUInteger BUFFER_SIZE = 1024;
             picker.mailComposeDelegate = self;
             [picker setSubject:@"MovePix Animation Backup"];
             
+            NSString *helpFilename = @"backup-help.png";
+            NSString *helpPath = [[NSBundle mainBundle] pathForResource:@"backup-help@2x" ofType:@"png"];
+            NSData *helpData = [NSData dataWithContentsOfFile:helpPath];
+            [picker addAttachmentData:helpData mimeType:@"image/png" fileName:helpFilename];
+
             [picker addAttachmentData:fileData mimeType:@"application/zip" fileName:filename];
             
             // Fill out the email body text
-            NSString *emailBody = @"Attached is a ZIP file for all your animations. To restore it, tap this backup and select Open In… MovePix.\n\nMade with MovePix\nhttp://bitpix.co/move";
+            NSString *emailBody = @"Attached is a ZIP file for all your animations. To restore it, tap this backup and select Open In… MovePix.\n\nMade with MovePix\nhttp://movepix.co";
             [picker setMessageBody:emailBody isHTML:NO];
             
             [self presentViewController:picker

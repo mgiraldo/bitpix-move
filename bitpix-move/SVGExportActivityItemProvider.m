@@ -87,7 +87,7 @@
     // Email Subject
     NSString *emailTitle = @"MovePix Animation SVG";
     // Email Content
-    NSString *messageBody = @"Made with MovePix\nhttp://bitpix.co/move";
+    NSString *messageBody = @"This SVG is organized as a group of frames, each frame in its own nested group of lines and background (last frame top). You can open this file in vector-editing software such as Sketch or Adobe Illustrator.\n\nMade with MovePix\nhttp://movepix.co";
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;

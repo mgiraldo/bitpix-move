@@ -266,10 +266,8 @@
 - (void)clean {
     if (!self.isClean) {
         self.isClean = YES;
-        dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
-            [self.previewView createFrames:self.framesArray withSpeed:_fps];
-            [self.previewView createAllGIFs];
-        });
+        [self.previewView createFrames:self.framesArray withSpeed:_fps];
+        [self.previewView createAllGIFs];
     }
 }
 
@@ -393,10 +391,10 @@
 }
 
 - (void)nextFrame {
-//    if (!self.currentView.isClean) {
-//        self.currentView.isClean = YES;
-//        [self saveToDisk];
-//    }
+    if (!self.currentView.isClean) {
+        self.currentView.isClean = YES;
+        [self saveToDisk];
+    }
     self.currentFrame++;
     if (self.currentFrame > self.framesArray.count) self.currentFrame = (int)self.framesArray.count - 1;
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
@@ -406,10 +404,10 @@
 }
 
 - (void)prevFrame {
-//    if (!self.currentView.isClean) {
-//        self.currentView.isClean = YES;
-//        [self saveToDisk];
-//    }
+    if (!self.currentView.isClean) {
+        self.currentView.isClean = YES;
+        [self saveToDisk];
+    }
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
     [drawView removeFromSuperview];
     [self unshiftFrame];
