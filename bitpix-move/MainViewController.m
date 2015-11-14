@@ -143,9 +143,11 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //	NSLog(@"prepare for segue: [%@] sender: [%@]", [segue identifier], sender);
     if ([[segue identifier] isEqualToString:@"viewGrid"]) {
+        [self saveToDisk];
         [self clean];
         [[segue destinationViewController] setDelegate:self];
     } else if ([[segue identifier] isEqualToString:@"viewInfo"]) {
+        [self saveToDisk];
         [self clean];
         [[segue destinationViewController] setDelegate:self];
     } else if ([[segue identifier] isEqualToString:@"restoreBackup"]) {
@@ -166,6 +168,7 @@
     self.stopPreviewButtonH.hidden = NO;
     self.previewView.hidden = NO;
 
+    [self saveToDisk];
     [self clean];
     [self.previewView animate];
 }
@@ -230,6 +233,12 @@
     DrawView *drawView = [self.framesArray objectAtIndex:0];
     // do not save if only one frame that is clean
     if (self.framesArray.count == 1 && [drawView isClean]) return;
+
+    if (!self.currentView.isClean) {
+        self.currentView.isClean = YES;
+    } else {
+        return;
+    }
 
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
         @synchronized(self.appDelegate.appData) {
