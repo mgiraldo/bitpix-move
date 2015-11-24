@@ -756,6 +756,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -770,6 +771,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
