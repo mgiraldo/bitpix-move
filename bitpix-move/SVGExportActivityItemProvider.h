@@ -13,9 +13,16 @@
 
 @property (nonatomic) NSData *gifData;
 @property (nonatomic) NSString *svgString;
+@property (nonatomic) NSURL *videoURL;
 
 @end
 
+
+@interface VideoSaveActivityIcon : UIActivity
+
+@property (nonatomic) NSURL *videoURL;
+
+@end
 
 @interface SVGCopyActivityIcon : UIActivity
 

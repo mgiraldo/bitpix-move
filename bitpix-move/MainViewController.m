@@ -10,8 +10,13 @@
 #import "UIImageXtras.h"
 #import "Config.h"
 #import "SVGExportActivityItemProvider.h"
+#import "CEMovieMaker.h"
+#import "DMActivityInstagram.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface MainViewController ()
+
+@property (nonatomic) CEMovieMaker *movieMaker;
 
 @end
 
@@ -184,6 +189,52 @@
     [self updateUI];
 }
 
+#pragma mark - Video stuff
+
+- (void)createVideo {
+    NSDictionary *settings = [CEMovieMaker videoSettingsWithCodec:AVVideoCodecH264 withWidth:_videoSize andHeight:_videoSize];
+    
+    NSMutableArray *frames = [@[] mutableCopy];
+    
+    int numberOfLoops = 1;
+    
+    int frameCount = (int)self.previewView.imageArray.count;
+    
+    float duration = (float)frameCount / (float)self.previewView.speed;
+    
+    if (duration < _minVideoLength) {
+        numberOfLoops = ceil((float)_minVideoLength / duration);
+        duration = (float)(numberOfLoops * frameCount) / (float)self.previewView.speed;
+    }
+    
+    for (int i=0; i<frameCount * numberOfLoops; i++) {
+        UIImage *resized = [self.previewView.imageArray[i%frameCount] scaleToSize:CGSizeMake(_videoSize, _videoSize)];
+        [frames addObject:resized];
+    }
+    
+    self.movieMaker = [[CEMovieMaker alloc] initWithSettings:settings andName:@"export.mov"];
+    
+    self.movieMaker.frameTime = CMTimeMake(duration, 1);
+    
+    [self.movieMaker createMovieFromImages:[frames copy] withCompletion:^(NSURL *fileURL) {
+        [self showActivityView];
+    }];
+}
+
+- (void)viewMovieAtUrl:(NSURL *)fileURL {
+    MPMoviePlayerViewController *playerController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
+    [playerController.view setFrame:self.view.bounds];
+    [self presentMoviePlayerViewControllerAnimated:playerController];
+    [playerController.moviePlayer prepareToPlay];
+    playerController.moviePlayer.repeatMode = MPMovieRepeatModeOne;
+    [playerController.moviePlayer play];
+    [self.view addSubview:playerController.view];
+}
+
+- (void)videoCreatedWithURL:(NSURL *)fileURL {
+    
+}
+
 #pragma mark - Load/new/save stuff
 
 - (void)newAnimation {
@@ -282,23 +333,46 @@
 
 - (void)export {
     [self clean];
+    
+    // create video and wait until it fires the activity view
+    // TODO: have some sort of UI indicator
+    [self createVideo];
+}
 
+- (void)showActivityView {
     NSString *svg = [self.previewView createSVGString];
 
     NSString *filename = [NSString stringWithFormat:@"%@.gif", self.uuid];
     NSString *path = [UserData dataFilePath:filename];
     NSData *fileData = [NSData dataWithContentsOfFile:path];
+    NSString *videoPath = [UserData dataFilePath:@"export.mov"];
+    NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
     
     SVGExportActivityItemProvider *provider = [[SVGExportActivityItemProvider alloc] initWithPlaceholderItem:fileData];
     
     provider.svgString = svg;
     provider.gifData = fileData;
+    provider.videoURL = videoURL;
     
     SVGEmailActivityIcon *svgEmailIcon = [[SVGEmailActivityIcon alloc] init];
     
+    VideoSaveActivityIcon *videoIcon = [[VideoSaveActivityIcon alloc] init];
+    videoIcon.videoURL = videoURL;
+    
+    NSArray *activities;
+    
+    NSURL *instagramURL = [NSURL URLWithString:@"instagram://app"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+        DMActivityInstagram *instagramIcon = [[DMActivityInstagram alloc] init];
+        activities = @[instagramIcon, svgEmailIcon, videoIcon];
+    } else {
+        activities = @[svgEmailIcon, videoIcon];
+    }
+    
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[provider]
-                                      applicationActivities:@[svgEmailIcon]];
+                                      applicationActivities:activities];
     
     
     
@@ -315,18 +389,6 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     }
     
-//    [activityViewController setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-//        NSString *ServiceMsg = nil;
-//        if ( [activityType isEqualToString:UIActivityTypeMail] )           ServiceMsg = @"Mail sended!";
-//        if ( [activityType isEqualToString:UIActivityTypePostToTwitter] )  ServiceMsg = @"Post on twitter, ok!";
-//        if ( [activityType isEqualToString:UIActivityTypePostToFacebook] ) ServiceMsg = @"Post on facebook, ok!";
-//        if ( [activityType isEqualToString:UIActivityTypeMessage] )        ServiceMsg = @"SMS sended!";
-//        if ( completed ) {
-//            UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:ServiceMsg message:@"" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
-//            [Alert show];
-//        }
-//    }];
-
     [self presentViewController:activityViewController
                        animated:YES
                      completion:^{}];

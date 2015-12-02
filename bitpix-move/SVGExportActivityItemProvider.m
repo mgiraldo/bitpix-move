@@ -8,11 +8,13 @@
 
 #import "SVGExportActivityItemProvider.h"
 #import "Config.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation SVGExportActivityItemProvider
 
 - (id)item {
     NSString *activityType = self.activityType;
+    NSLog(@"activity: %@", activityType);
     if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
         return self.gifData;
     } else if ([activityType isEqualToString:UIActivityTypeMail]) {
@@ -23,6 +25,10 @@
         return self.gifData;
     } else if ([activityType isEqualToString:UIActivityTypePostToFlickr]) {
         return self.gifData;
+    } else if ([activityType isEqualToString:@"UIActivityTypePostToInstagram"]) {
+        return self.videoURL;
+    } else if ([activityType isEqualToString:@"net.whatsapp.WhatsApp.ShareExtension"]) {
+        return self.videoURL;
     } else if ([activityType isEqualToString:@"com.pingpongestudio.movePix"]) {
         return self.svgString;
     } else {
@@ -33,6 +39,37 @@
 
 @end
 
+
+@implementation VideoSaveActivityIcon
+
+- (NSString *)activityType {
+    return @"com.pingpongestudio.movePix.video";
+}
+
+- (NSString *)activityTitle {
+        return @"Save as video";
+}
+
+- (UIImage *)activityImage {
+    return [UIImage imageNamed:@"video-icon.png"];
+}
+
+- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
+    return YES;
+}
+
+- (UIViewController *)activityViewController {
+    return nil;
+}
+
+- (void)prepareWithActivityItems:(NSArray *)activityItems {
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeVideoAtPathToSavedPhotosAlbum:self.videoURL completionBlock:^(NSURL *assetURL, NSError *error) {
+        //
+    }];
+}
+
+@end
 
 @implementation SVGCopyActivityIcon
 

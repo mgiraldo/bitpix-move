@@ -75,6 +75,15 @@
 		CC4EEB671BE6C505004FDCC2 /* previous-small.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB611BE6C505004FDCC2 /* previous-small.png */; };
 		CC4EEB681BE6C505004FDCC2 /* previous-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB621BE6C505004FDCC2 /* previous-small@2x.png */; };
 		CC4EEB691BE6C505004FDCC2 /* previous-small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB631BE6C505004FDCC2 /* previous-small@3x.png */; };
+		CC96A21E1C0D2BE500DADB79 /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CC96A21D1C0D2BE500DADB79 /* CEMovieMaker.m */; };
+		CC96A2221C0D784300DADB79 /* video-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A21F1C0D784300DADB79 /* video-icon.png */; };
+		CC96A2231C0D784300DADB79 /* video-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A2201C0D784300DADB79 /* video-icon@2x.png */; };
+		CC96A2241C0D784300DADB79 /* video-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A2211C0D784300DADB79 /* video-icon@3x.png */; };
+		CC96A22C1C0E9AA100DADB79 /* DMActivityInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC96A2271C0E9AA100DADB79 /* DMActivityInstagram.m */; };
+		CC96A22D1C0E9AA100DADB79 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A2281C0E9AA100DADB79 /* instagram.png */; };
+		CC96A22E1C0E9AA100DADB79 /* instagram@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A2291C0E9AA100DADB79 /* instagram@2x.png */; };
+		CC96A22F1C0E9AA100DADB79 /* instagram~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A22A1C0E9AA100DADB79 /* instagram~ipad.png */; };
+		CC96A2301C0E9AA100DADB79 /* instagram~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A22B1C0E9AA100DADB79 /* instagram~ipad@2x.png */; };
 		CCC339A51BE2F49D00A78FD1 /* duplicate.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC339A21BE2F49D00A78FD1 /* duplicate.png */; };
 		CCC339A61BE2F49D00A78FD1 /* duplicate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC339A31BE2F49D00A78FD1 /* duplicate@2x.png */; };
 		CCC339A71BE2F49D00A78FD1 /* duplicate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC339A41BE2F49D00A78FD1 /* duplicate@3x.png */; };
@@ -213,6 +222,17 @@
 		CC4EEB611BE6C505004FDCC2 /* previous-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-small.png"; sourceTree = "<group>"; };
 		CC4EEB621BE6C505004FDCC2 /* previous-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-small@2x.png"; sourceTree = "<group>"; };
 		CC4EEB631BE6C505004FDCC2 /* previous-small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-small@3x.png"; sourceTree = "<group>"; };
+		CC96A21C1C0D2BE500DADB79 /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
+		CC96A21D1C0D2BE500DADB79 /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
+		CC96A21F1C0D784300DADB79 /* video-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-icon.png"; sourceTree = "<group>"; };
+		CC96A2201C0D784300DADB79 /* video-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-icon@2x.png"; sourceTree = "<group>"; };
+		CC96A2211C0D784300DADB79 /* video-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-icon@3x.png"; sourceTree = "<group>"; };
+		CC96A2261C0E9AA100DADB79 /* DMActivityInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMActivityInstagram.h; sourceTree = "<group>"; };
+		CC96A2271C0E9AA100DADB79 /* DMActivityInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMActivityInstagram.m; sourceTree = "<group>"; };
+		CC96A2281C0E9AA100DADB79 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram.png; sourceTree = "<group>"; };
+		CC96A2291C0E9AA100DADB79 /* instagram@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@2x.png"; sourceTree = "<group>"; };
+		CC96A22A1C0E9AA100DADB79 /* instagram~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram~ipad.png"; sourceTree = "<group>"; };
+		CC96A22B1C0E9AA100DADB79 /* instagram~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram~ipad@2x.png"; sourceTree = "<group>"; };
 		CCC339A21BE2F49D00A78FD1 /* duplicate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = duplicate.png; sourceTree = "<group>"; };
 		CCC339A31BE2F49D00A78FD1 /* duplicate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "duplicate@2x.png"; sourceTree = "<group>"; };
 		CCC339A41BE2F49D00A78FD1 /* duplicate@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "duplicate@3x.png"; sourceTree = "<group>"; };
@@ -260,6 +280,8 @@
 		CC4D078C1BD85D5400A52613 = {
 			isa = PBXGroup;
 			children = (
+				CC96A2251C0E9AA100DADB79 /* DMActivityInstagram */,
+				CC96A21B1C0D2BE500DADB79 /* CEMovieMaker */,
 				CC4D43CC1BEFE679000B0209 /* Objective-Zip */,
 				CC4D07971BD85D5400A52613 /* MovePix */,
 				CC4D07961BD85D5400A52613 /* Products */,
@@ -413,9 +435,34 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
+		CC96A21B1C0D2BE500DADB79 /* CEMovieMaker */ = {
+			isa = PBXGroup;
+			children = (
+				CC96A21C1C0D2BE500DADB79 /* CEMovieMaker.h */,
+				CC96A21D1C0D2BE500DADB79 /* CEMovieMaker.m */,
+			);
+			path = CEMovieMaker;
+			sourceTree = "<group>";
+		};
+		CC96A2251C0E9AA100DADB79 /* DMActivityInstagram */ = {
+			isa = PBXGroup;
+			children = (
+				CC96A2261C0E9AA100DADB79 /* DMActivityInstagram.h */,
+				CC96A2271C0E9AA100DADB79 /* DMActivityInstagram.m */,
+				CC96A2281C0E9AA100DADB79 /* instagram.png */,
+				CC96A2291C0E9AA100DADB79 /* instagram@2x.png */,
+				CC96A22A1C0E9AA100DADB79 /* instagram~ipad.png */,
+				CC96A22B1C0E9AA100DADB79 /* instagram~ipad@2x.png */,
+			);
+			path = DMActivityInstagram;
+			sourceTree = "<group>";
+		};
 		CCF3F97D1BDC61880019059B /* Visual assets */ = {
 			isa = PBXGroup;
 			children = (
+				CC96A21F1C0D784300DADB79 /* video-icon.png */,
+				CC96A2201C0D784300DADB79 /* video-icon@2x.png */,
+				CC96A2211C0D784300DADB79 /* video-icon@3x.png */,
 				CC0D9E6C1BF6A3910048B18C /* backup-help.png */,
 				CC0D9E6D1BF6A3910048B18C /* backup-help@2x.png */,
 				CC4D442D1BF01B10000B0209 /* svg-mail-icon.png */,
@@ -541,7 +588,10 @@
 				CC1E1C131BE1D10100F5790F /* delete@3x.png in Resources */,
 				CC4EEB691BE6C505004FDCC2 /* previous-small@3x.png in Resources */,
 				CC4EEB641BE6C505004FDCC2 /* next-small.png in Resources */,
+				CC96A22E1C0E9AA100DADB79 /* instagram@2x.png in Resources */,
+				CC96A2241C0D784300DADB79 /* video-icon@3x.png in Resources */,
 				CC4587521BE58659000BFB25 /* stop.png in Resources */,
+				CC96A2231C0D784300DADB79 /* video-icon@2x.png in Resources */,
 				CC139DE51BDC34F800BF0A5B /* bitpix-move-120.png in Resources */,
 				CC4587461BE580F2000BFB25 /* list.png in Resources */,
 				CC4587481BE580F2000BFB25 /* list@3x.png in Resources */,
@@ -571,16 +621,19 @@
 				CC4D07A51BD85D5400A52613 /* Assets.xcassets in Resources */,
 				CCC339AC1BE30BAC00A78FD1 /* trash@2x.png in Resources */,
 				CCC339BC1BE31F9D00A78FD1 /* next@3x.png in Resources */,
+				CC96A22F1C0E9AA100DADB79 /* instagram~ipad.png in Resources */,
 				CCC339B11BE30D6A00A78FD1 /* new.png in Resources */,
 				CC0D9E6E1BF6A3910048B18C /* backup-help.png in Resources */,
 				CCC339BA1BE31F9D00A78FD1 /* next.png in Resources */,
 				CC4D44301BF01B11000B0209 /* svg-mail-icon.png in Resources */,
 				CC4D07A31BD85D5400A52613 /* Main.storyboard in Resources */,
 				CCF3F9811BDC61EC0019059B /* Data.plist in Resources */,
+				CC96A2301C0E9AA100DADB79 /* instagram~ipad@2x.png in Resources */,
 				CC139DE41BDC34F800BF0A5B /* bitpix-move-76.png in Resources */,
 				CC0D9E6F1BF6A3910048B18C /* backup-help@2x.png in Resources */,
 				CC4587601BE58C8F000BFB25 /* export@3x.png in Resources */,
 				CC4D44281BF00C7C000B0209 /* svg-icon@3x.png in Resources */,
+				CC96A22D1C0E9AA100DADB79 /* instagram.png in Resources */,
 				CC4587581BE58908000BFB25 /* undo.png in Resources */,
 				CC4D44311BF01B11000B0209 /* svg-mail-icon@2x.png in Resources */,
 				CCC339A51BE2F49D00A78FD1 /* duplicate.png in Resources */,
@@ -591,6 +644,7 @@
 				CCC339AD1BE30BAC00A78FD1 /* trash@3x.png in Resources */,
 				CC45875F1BE58C8F000BFB25 /* export@2x.png in Resources */,
 				CCC339BB1BE31F9D00A78FD1 /* next@2x.png in Resources */,
+				CC96A2221C0D784300DADB79 /* video-icon.png in Resources */,
 				CC4587511BE58659000BFB25 /* play@3x.png in Resources */,
 				CC4587591BE58908000BFB25 /* undo@2x.png in Resources */,
 			);
@@ -620,6 +674,7 @@
 				CCFB14FE1BDDAF2800D513D3 /* ThumbnailView.m in Sources */,
 				CC4D441E1BEFE8B4000B0209 /* uncompr.c in Sources */,
 				CC4D440C1BEFE8B4000B0209 /* OZFileInZipInfo.m in Sources */,
+				CC96A21E1C0D2BE500DADB79 /* CEMovieMaker.m in Sources */,
 				CC4D441A1BEFE8B4000B0209 /* inffast.c in Sources */,
 				CC4D44191BEFE8B4000B0209 /* infback.c in Sources */,
 				CC1D32691BDD9D6D002E9294 /* UIImageXtras.m in Sources */,
@@ -627,6 +682,7 @@
 				CC4D44121BEFE8B4000B0209 /* compress.c in Sources */,
 				CC4D44101BEFE8B4000B0209 /* OZZipWriteStream.m in Sources */,
 				CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */,
+				CC96A22C1C0E9AA100DADB79 /* DMActivityInstagram.m in Sources */,
 				CC4D441C1BEFE8B4000B0209 /* inftrees.c in Sources */,
 				CC4D440F1BEFE8B4000B0209 /* OZZipReadStream.m in Sources */,
 				CC4D44131BEFE8B4000B0209 /* crc32.c in Sources */,

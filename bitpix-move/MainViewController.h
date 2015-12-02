@@ -16,6 +16,7 @@
 
 @interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, InfoViewControllerDelegate>
 
+@property (atomic) BOOL isSavingVideo;
 @property (atomic) BOOL isRestoring;
 @property (atomic) int currentFrame;
 @property (atomic) BOOL isPreviewing;
