@@ -385,7 +385,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M4I-aU-g1w">
-                                <rect key="frame" x="10" y="439" width="300" height="40"/>
+                                <rect key="frame" x="10" y="518" width="300" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcF-c1-SQV">
                                         <rect key="frame" x="20" y="0.0" width="100" height="40"/>
@@ -477,6 +477,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="134" id="H2y-7M-mH6"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerX" secondItem="bnd-cn-txH" secondAttribute="centerX" id="Hdh-YI-BGa"/>
                             <constraint firstItem="M4I-aU-g1w" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="JeN-Ue-uuf"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="M4I-aU-g1w" secondAttribute="bottom" constant="10" id="TRA-wl-S5J"/>
                             <constraint firstItem="ucA-SB-Xb5" firstAttribute="centerY" secondItem="bnd-cn-txH" secondAttribute="centerY" id="WY2-Cn-P3g"/>
                             <constraint firstItem="f8f-mk-MXQ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZEK-dg-d0a"/>
                             <constraint firstItem="b7B-eV-688" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aXX-j9-KuN"/>
@@ -488,7 +489,6 @@
                             <constraint firstItem="O9X-HZ-Yr2" firstAttribute="width" secondItem="bnd-cn-txH" secondAttribute="width" id="ncy-zc-ydf"/>
                             <constraint firstItem="b7B-eV-688" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="olN-kL-LKn"/>
                             <constraint firstItem="fIl-Nm-JwI" firstAttribute="centerY" secondItem="bnd-cn-txH" secondAttribute="centerY" id="oly-Fb-w4g"/>
-                            <constraint firstItem="M4I-aU-g1w" firstAttribute="top" secondItem="bnd-cn-txH" secondAttribute="bottom" constant="5" id="qu5-5x-wh3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="b7B-eV-688" secondAttribute="trailing" constant="-10" id="seA-iW-w3i"/>
                             <constraint firstItem="bnd-cn-txH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wUw-Or-OO2"/>
                             <constraint firstItem="yQ8-8Y-c79" firstAttribute="leading" secondItem="bnd-cn-txH" secondAttribute="trailing" constant="10" id="yJk-T6-WlA"/>
@@ -726,7 +726,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WCC-jN-hJn">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="5" id="Y4R-c1-25i">
                                     <size key="itemSize" width="100" height="100"/>
@@ -756,7 +756,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpq-oC-ghA">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
                                 <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.15191271551724139" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="xIk-JE-iAc"/>
                                 </constraints>

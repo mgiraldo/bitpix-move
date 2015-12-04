@@ -30,7 +30,7 @@
 }
 
 - (NSString *)activityTitle {
-    return @"Open in Instagram";
+    return @"Share on Instagram";
 }
 
 - (UIImage *)activityImage {

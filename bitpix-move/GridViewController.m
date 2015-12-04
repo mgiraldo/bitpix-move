@@ -40,9 +40,6 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     self.deletedParentAnimation = NO;
     self.currentDuplicates = 0;
 
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
     UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     recognizer.minimumPressDuration = 0.5;
     recognizer.delaysTouchesBegan = YES;
@@ -175,7 +172,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 5, 100, 5);
+    return UIEdgeInsetsMake(30, 5, 100, 5);
 }
 
 #pragma mark – Duplicate/delete stuff

@@ -57,6 +57,12 @@
         self.drawLabel.text = @"Draw here";
     }
     
+    // gradient background
+//    CAGradientLayer *gradient = [CAGradientLayer layer];
+//    gradient.frame = self.view.bounds;
+//    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:.15f green:.15f blue:.15f alpha:1.0f] CGColor], (id)[[UIColor blackColor] CGColor], (id)[[UIColor blackColor] CGColor], (id)[[UIColor colorWithRed:.15f green:.15f blue:.15f alpha:1.0f] CGColor], nil];
+//    [self.view.layer insertSublayer:gradient atIndex:0];
+    
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
     self.previewView.uuid = self.uuid;
@@ -333,13 +339,15 @@
 
 - (void)export {
     [self clean];
-    
+
+    [self showStatusView:@"Exporting animation…"];
     // create video and wait until it fires the activity view
-    // TODO: have some sort of UI indicator
     [self createVideo];
 }
 
 - (void)showActivityView {
+    [self hideStatusView];
+
     NSString *svg = [self.previewView createSVGString];
 
     NSString *filename = [NSString stringWithFormat:@"%@.gif", self.uuid];
@@ -658,6 +666,24 @@
     } else {
         [self newAnimation];
     }
+}
+
+#pragma mark - Status view stuff
+
+- (void)showStatusView:(NSString *)text {
+    self.statusView.hidden = NO;
+    srand ((int)time(NULL));
+    NSArray *emojiArray = @[@"📹", @"🎥", @"👯", @"🐌", @"🐢", @"🚀"];
+    int emojiCount = (int)emojiArray.count;
+    int index = rand()%emojiCount;
+    NSString *emoji = [emojiArray objectAtIndex:index];
+    
+    self.statusLabel.text = [NSString stringWithFormat:@"%@%@%@\n\n%@\n\n%@%@%@", emoji, emoji, emoji, text, emoji, emoji, emoji];
+}
+
+- (void)hideStatusView {
+    self.statusLabel.text = @"";
+    self.statusView.hidden = YES;
 }
 
 #pragma mark - Button actions

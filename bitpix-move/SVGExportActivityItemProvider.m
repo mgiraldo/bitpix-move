@@ -14,9 +14,9 @@
 
 - (id)item {
     NSString *activityType = self.activityType;
-    NSLog(@"activity: %@", activityType);
+    DebugLog(@"activity: %@", activityType);
     if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
-        return self.gifData;
+        return self.videoURL;
     } else if ([activityType isEqualToString:UIActivityTypeMail]) {
         return self.gifData;
     } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
@@ -25,16 +25,21 @@
         return self.gifData;
     } else if ([activityType isEqualToString:UIActivityTypePostToFlickr]) {
         return self.gifData;
+    } else if ([activityType isEqualToString:UIActivityTypeSaveToCameraRoll]) {
+        return self.gifData;
     } else if ([activityType isEqualToString:@"UIActivityTypePostToInstagram"]) {
         return self.videoURL;
     } else if ([activityType isEqualToString:@"net.whatsapp.WhatsApp.ShareExtension"]) {
+        return self.videoURL;
+    } else if ([activityType isEqualToString:@"com.viber.app-share-extension"]) {
+        return self.videoURL;
+    } else if ([activityType isEqualToString:@"ph.telegra.Telegraph.Share"]) {
         return self.videoURL;
     } else if ([activityType isEqualToString:@"com.pingpongestudio.movePix"]) {
         return self.svgString;
     } else {
         return self.gifData;
     }
-    return self.gifData;
 }
 
 @end
