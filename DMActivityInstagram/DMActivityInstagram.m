@@ -50,7 +50,7 @@
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library writeVideoAtPathToSavedPhotosAlbum:url completionBlock:^(NSURL *assetURL, NSError *error) {
         NSString *escapedString = [assetURL.absoluteString urlEncodeUsingEncoding:NSUTF8StringEncoding];
-        NSString *escapedCaption  = [@"Made with MovePix" urlEncodeUsingEncoding:NSUTF8StringEncoding];
+        NSString *escapedCaption  = [@"#MovePix" urlEncodeUsingEncoding:NSUTF8StringEncoding];
         NSURL *instagramURL = [NSURL URLWithString:[NSString stringWithFormat:@"instagram://library?AssetPath=%@&InstagramCaption=%@",escapedString,escapedCaption]];
         if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
             [[UIApplication sharedApplication] openURL:instagramURL];
