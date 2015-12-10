@@ -69,6 +69,7 @@
 // IB contraints
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalCenterConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *arrowButtonsConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;

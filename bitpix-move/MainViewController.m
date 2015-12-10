@@ -114,6 +114,7 @@
             self.verticalCenterConstraint.active = NO;
             self.bottomDistanceConstraint.active = YES;
             self.bottomDistanceConstraint.constant = 60.0f;
+            self.arrowButtonsConstraint.constant = 10.0f;
             [self verticalUI];
         } else {
             self.verticalCenterConstraint.active = YES;
