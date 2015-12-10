@@ -246,7 +246,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
             int total = (int)animations.count;
             
             for (int i=0; i<animations.count; i++) {
-                NSDictionary *animation = [animations objectAtIndex:i];
+                NSMutableDictionary *animation = [[animations objectAtIndex:i] mutableCopy];
                 if ([animation valueForKey:@"name"]==nil || [animation valueForKey:@"date"]==nil || [animation valueForKey:@"frames"]==nil) {
                     DebugLog(@"error: animation %d is invalid", i);
                     skip = YES;
@@ -266,7 +266,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
                 if (skip) continue;
                 NSMutableArray *frames;
                 ///
-                if ([frames[0] isKindOfClass:[NSString class]]) {
+                if ([[animation valueForKey:@"frames"][0] isKindOfClass:[NSString class]]) {
                     // v 1.0 (34) and newer syntax
                     // frame syntax: x1,y1 x2,y2 x3,y3|x1,y1 x2,y2 x3,y3 x4,y4|...
                     // need to explode this
@@ -305,6 +305,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
                     }
                 }
                 if (!skip) {
+                    [animation setObject:frames forKey:@"frames"];
                     [newAnimations addObject:[animation mutableCopy]];
                 }
                 progress++;
