@@ -21,6 +21,8 @@
         loadingLabel.textAlignment = NSTextAlignmentCenter;
         loadingLabel.font = [UIFont systemFontOfSize:10.0f];
         [self.contentView addSubview:loadingLabel];
+        self.layer.borderColor = [UIColor blackColor].CGColor;
+        self.layer.borderWidth = 1.0;
     }
     return self;
 }

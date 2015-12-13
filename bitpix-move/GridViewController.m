@@ -25,6 +25,8 @@ static NSString * const reuseIdentifier = @"AnimationCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self updateTheme];
+    
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSMutableArray *temp = [@[] mutableCopy];
@@ -81,6 +83,27 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     } else {
         [self.delegate gridViewControllerDidFinish:self];
     }
+}
+
+- (void)updateTheme {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isBlack = [[defaults valueForKey:@"blackTheme"] boolValue];
+    UIColor *tintColor;
+    UIColor *bgColor;
+    
+    if (isBlack) {
+        tintColor = [UIColor whiteColor];
+        bgColor = [UIColor blackColor];
+    } else {
+        tintColor = [UIColor blackColor];
+        bgColor = [UIColor whiteColor];
+    }
+    
+    [self.view setBackgroundColor:bgColor];
+    [self.view setTintColor:tintColor];
+    self.returnButton.backgroundColor = bgColor;
+    self.returnButton.tintColor = tintColor;
+    self.borderView.backgroundColor = tintColor;
 }
 
 #pragma mark <UICollectionViewDataSource>

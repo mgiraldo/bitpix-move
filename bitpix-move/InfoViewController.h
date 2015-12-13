@@ -25,7 +25,10 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *statusProgress;
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 @property (weak, nonatomic) IBOutlet UIButton *backupButton;
+@property (weak, nonatomic) IBOutlet UIView *borderView;
+@property (weak, nonatomic) IBOutlet UIButton *returnButton;
 @property (nonatomic, weak) id <InfoViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UISwitch *themeSwitch;
 @property (nonatomic) dispatch_queue_t refreshQueue;
 @property (atomic) int currentRefresh;
 @property (nonatomic) BOOL isRestoring;
@@ -33,4 +36,5 @@
 - (IBAction)onRefreshTapped:(id)sender;
 - (IBAction)onReturnTapped:(id)sender;
 - (IBAction)onBackupTapped:(id)sender;
+- (IBAction)onThemeChanged:(UISwitch *)sender;
 @end

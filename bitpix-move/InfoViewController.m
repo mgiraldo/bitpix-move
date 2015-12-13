@@ -23,10 +23,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.backupButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.backupButton.layer.borderWidth = 1.0;
-    self.refreshButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.refreshButton.layer.borderWidth = 1.0;
+    [self updateTheme];
     
     self.currentRefresh = -1;
     
@@ -472,6 +469,46 @@ static const NSUInteger BUFFER_SIZE = 1024;
     }
 }
 
+- (void)updateTheme {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isBlack = [[defaults valueForKey:@"blackTheme"] boolValue];
+    UIColor *tintColor;
+    UIColor *bgColor;
+    
+    [self.themeSwitch setOn:isBlack];
+
+    if (isBlack) {
+        tintColor = [UIColor whiteColor];
+        bgColor = [UIColor blackColor];
+    } else {
+        tintColor = [UIColor blackColor];
+        bgColor = [UIColor whiteColor];
+    }
+    
+    [[self.view subviews] enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[UILabel class]]) {
+            NSString *text = [(UILabel *)obj text];
+            if (![text isEqualToString:@"Background"] && ![text isEqualToString:@"Black"] && ![text isEqualToString:@"White"]) return;
+            [(UILabel *)obj setTextColor:tintColor];
+        }
+    }];
+    
+    [self.view setBackgroundColor:bgColor];
+    [self.view setTintColor:tintColor];
+    
+    self.backupButton.layer.borderColor = tintColor.CGColor;
+    self.backupButton.backgroundColor = bgColor;
+    self.backupButton.tintColor = tintColor;
+    self.backupButton.layer.borderWidth = 1.0;
+    self.refreshButton.layer.borderColor = tintColor.CGColor;
+    self.refreshButton.layer.borderWidth = 1.0;
+    self.refreshButton.backgroundColor = bgColor;
+    self.refreshButton.tintColor = tintColor;
+    self.returnButton.backgroundColor = bgColor;
+    self.returnButton.tintColor = tintColor;
+    self.borderView.backgroundColor = tintColor;
+}
+
 #pragma mark - Interaction events
 
 - (IBAction)onRefreshTapped:(id)sender {
@@ -516,6 +553,13 @@ static const NSUInteger BUFFER_SIZE = 1024;
     [alert addAction:cancelAction];
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:NO completion:nil];
+}
+
+- (IBAction)onThemeChanged:(UISwitch *)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSNumber numberWithBool:sender.isOn] forKey:@"blackTheme"];
+    [defaults synchronize];
+    [self updateTheme];
 }
 
 @end

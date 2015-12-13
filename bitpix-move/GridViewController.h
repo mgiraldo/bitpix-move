@@ -28,6 +28,7 @@
 @property (nonatomic) NSMutableArray *collectionData;
 @property (nonatomic) UIButton *deleteButton;
 @property (nonatomic) UIButton *duplicateButton;
+@property (weak, nonatomic) IBOutlet UIView *borderView;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *returnButton;
 @property (nonatomic, weak) id <GridViewControllerDelegate> delegate;

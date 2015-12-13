@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+    [self updateTheme];
     self.currentFrame = -1;
     self.isPreviewing = NO;
     self.isClean = YES;
@@ -167,6 +168,50 @@
         vc.isRestoring = YES;
         [[segue destinationViewController] setDelegate:self];
     }
+}
+
+- (void)updateTheme {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isBlack = [[defaults valueForKey:@"blackTheme"] boolValue];
+    UIColor *tintColor;
+    UIColor *bgColor;
+    NSString *letter;
+    
+    if (isBlack) {
+        tintColor = [UIColor whiteColor];
+        bgColor = [UIColor blackColor];
+        letter = @"";
+    } else {
+        tintColor = [UIColor blackColor];
+        bgColor = [UIColor whiteColor];
+        letter = @"_w";
+    }
+    
+    [self.view setBackgroundColor:bgColor];
+    [self.view setTintColor:tintColor];
+    
+    self.frameLabel.textColor = tintColor;
+    self.frameLabelH.textColor = tintColor;
+    [self.nextButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next%@.png", letter]] forState:UIControlStateNormal];
+    [self.nextButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next-small%@.png", letter]] forState:UIControlStateNormal];
+    [self.addButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@.png", letter]] forState:UIControlStateNormal];
+    [self.addButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@.png", letter]] forState:UIControlStateNormal];
+    [self.previousButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"previous%@.png", letter]] forState:UIControlStateNormal];
+    [self.previousButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"previous-small%@.png", letter]] forState:UIControlStateNormal];
+    [self.exportButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export%@.png", letter]] forState:UIControlStateNormal];
+    [self.exportButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export%@.png", letter]] forState:UIControlStateNormal];
+    [self.stopPreviewButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stop%@.png", letter]] forState:UIControlStateNormal];
+    [self.stopPreviewButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stop%@.png", letter]] forState:UIControlStateNormal];
+    [self.previewButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play%@.png", letter]] forState:UIControlStateNormal];
+    [self.previewButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play%@.png", letter]] forState:UIControlStateNormal];
+    [self.deleteButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"trash%@.png", letter]] forState:UIControlStateNormal];
+    [self.deleteButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"trash%@.png", letter]] forState:UIControlStateNormal];
+    [self.undoButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"undo%@.png", letter]] forState:UIControlStateNormal];
+    [self.undoButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"undo%@.png", letter]] forState:UIControlStateNormal];
+    [self.myAnimationsButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"list%@.png", letter]] forState:UIControlStateNormal];
+    [self.myAnimationsButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"list%@.png", letter]] forState:UIControlStateNormal];
+    [self.settingsButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"settings%@.png", letter]] forState:UIControlStateNormal];
+    [self.settingsButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"settings%@.png", letter]] forState:UIControlStateNormal];
 }
 
 #pragma mark - Preview stuff
@@ -646,6 +691,7 @@
 #pragma mark - Grid/Info view delegate
 
 - (void)infoViewControllerDidFinish:(InfoViewController *)controller {
+    [self updateTheme];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
