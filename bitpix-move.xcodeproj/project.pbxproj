@@ -17,6 +17,7 @@
 		CC1E1C111BE1D10100F5790F /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1E1C0E1BE1D10100F5790F /* delete.png */; };
 		CC1E1C121BE1D10100F5790F /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1E1C0F1BE1D10100F5790F /* delete@2x.png */; };
 		CC1E1C131BE1D10100F5790F /* delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1E1C101BE1D10100F5790F /* delete@3x.png */; };
+		CC1E76BB1C23AF0E00FC7F96 /* bitpix-move-167.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1E76BA1C23AF0D00FC7F96 /* bitpix-move-167.png */; };
 		CC41AC911C114DA1004D2963 /* launch-logo.pdf in Resources */ = {isa = PBXBuildFile; fileRef = CC41AC901C114DA1004D2963 /* launch-logo.pdf */; };
 		CC4587461BE580F2000BFB25 /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4587431BE580F2000BFB25 /* list.png */; };
 		CC4587471BE580F2000BFB25 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4587441BE580F2000BFB25 /* list@2x.png */; };
@@ -161,6 +162,7 @@
 		CC1E1C0E1BE1D10100F5790F /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		CC1E1C0F1BE1D10100F5790F /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
 		CC1E1C101BE1D10100F5790F /* delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@3x.png"; sourceTree = "<group>"; };
+		CC1E76BA1C23AF0D00FC7F96 /* bitpix-move-167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-167.png"; sourceTree = "<group>"; };
 		CC41AC901C114DA1004D2963 /* launch-logo.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "launch-logo.pdf"; sourceTree = "<group>"; };
 		CC4587431BE580F2000BFB25 /* list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list.png; sourceTree = "<group>"; };
 		CC4587441BE580F2000BFB25 /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list@2x.png"; sourceTree = "<group>"; };
@@ -630,6 +632,7 @@
 				CC139DE11BDC34F800BF0A5B /* bitpix-move-76.png */,
 				CC139DE21BDC34F800BF0A5B /* bitpix-move-120.png */,
 				CC139DE31BDC34F800BF0A5B /* bitpix-move-152.png */,
+				CC1E76BA1C23AF0D00FC7F96 /* bitpix-move-167.png */,
 				CCC339A21BE2F49D00A78FD1 /* duplicate.png */,
 				CCC339A31BE2F49D00A78FD1 /* duplicate@2x.png */,
 				CCC339A41BE2F49D00A78FD1 /* duplicate@3x.png */,
@@ -719,6 +722,7 @@
 				CC96A22E1C0E9AA100DADB79 /* instagram@2x.png in Resources */,
 				CCF84DE81C1C8D250083CF93 /* export_w@2x.png in Resources */,
 				CCF84DEE1C1C8D250083CF93 /* new_w@2x.png in Resources */,
+				CC1E76BB1C23AF0E00FC7F96 /* bitpix-move-167.png in Resources */,
 				CC96A2241C0D784300DADB79 /* video-icon@3x.png in Resources */,
 				CC4587521BE58659000BFB25 /* stop.png in Resources */,
 				CCF84DFA1C1C8D250083CF93 /* previous_w@2x.png in Resources */,
@@ -968,7 +972,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -983,7 +987,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
