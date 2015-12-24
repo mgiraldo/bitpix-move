@@ -129,6 +129,7 @@
     self.isVertical = NO;
     self.mainActionsView.hidden = YES;
     self.frameActionsView.hidden = YES;
+    self.mainArrowView.hidden = YES;
 
     if (!self.firstLoad) {
         self.mainActionsViewH.hidden = NO;
@@ -143,6 +144,7 @@
     self.isVertical = YES;
     self.mainActionsViewH.hidden = YES;
     self.frameActionsViewH.hidden = YES;
+    self.mainArrowView.hidden = NO;
 
     if (!self.firstLoad) {
         self.mainActionsView.hidden = NO;
@@ -482,11 +484,12 @@
     DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
     drawView.uuid = self.uuid;
     drawView.delegate = self;
+    drawView.isClean = self.isClean;
     [self.framesArray insertObject:drawView atIndex:self.currentFrame];
     [self.sketchView addSubview:drawView];
-    [self saveToDisk];
     [self popFrame];
     [self updateUI];
+    [self saveToDisk];
 }
 
 - (void)duplicateCurrentFrame {
@@ -505,10 +508,9 @@
     [self.framesArray insertObject:drawView atIndex:self.currentFrame];
     [self.sketchView addSubview:drawView];
     
-    [self saveToDisk];
     [self popFrame];
-
     [self updateUI];
+    [self saveToDisk];
 }
 
 - (void)deleteCurrentFrame {
@@ -541,7 +543,6 @@
 
 - (void)nextFrame {
     if (!self.currentView.isClean) {
-        self.currentView.isClean = YES;
         [self saveToDisk];
     }
     self.currentFrame++;
@@ -554,7 +555,6 @@
 
 - (void)prevFrame {
     if (!self.currentView.isClean) {
-        self.currentView.isClean = YES;
         [self saveToDisk];
     }
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
@@ -644,6 +644,8 @@
         self.addAnimationButtonH.hidden = YES;
         self.settingsButton.hidden = YES;
         self.settingsButtonH.hidden = YES;
+        self.duplicateButton.hidden = YES;
+        self.duplicateButtonH.hidden = YES;
     } else {
         if (self.isVertical) self.myAnimationsButton.hidden = NO;
         if (!self.isVertical) self.myAnimationsButtonH.hidden = NO;

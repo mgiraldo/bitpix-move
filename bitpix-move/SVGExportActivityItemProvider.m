@@ -56,7 +56,7 @@
 }
 
 - (UIImage *)activityImage {
-    return [UIImage imageNamed:@"video-icon.png"];
+    return [UIImage imageNamed:@"video-icon"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
@@ -87,7 +87,7 @@
 }
 
 - (UIImage *)activityImage {
-    return [UIImage imageNamed:@"svg-icon.png"];
+    return [UIImage imageNamed:@"svg-icon"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {

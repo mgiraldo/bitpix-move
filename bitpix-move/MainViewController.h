@@ -53,6 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *myAnimationsButton;
 @property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 @property (weak, nonatomic) IBOutlet UIButton *addAnimationButton;
+@property (weak, nonatomic) IBOutlet UIView *mainArrowView;
 
 // horizontal ui
 @property (weak, nonatomic) IBOutlet UIButton *myAnimationsButtonH;
