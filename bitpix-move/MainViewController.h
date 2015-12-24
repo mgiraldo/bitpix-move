@@ -39,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *previousButton;
 @property (weak, nonatomic) IBOutlet UILabel *frameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exportButton;
+@property (weak, nonatomic) IBOutlet UIButton *duplicateButton;
+@property (weak, nonatomic) IBOutlet UIButton *duplicateButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *previewButton;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopPreviewButton;
@@ -85,6 +87,7 @@
 - (IBAction)onUndoTapped:(id)sender;
 - (IBAction)onMyAnimationsTapped:(id)sender;
 - (IBAction)onNewTapped:(id)sender;
+- (IBAction)onDuplicateTapped:(id)sender;
 
 @end
 

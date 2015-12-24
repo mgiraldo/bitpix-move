@@ -58,7 +58,7 @@
                                             <constraint firstAttribute="height" constant="40" id="wks-eO-fQP"/>
                                             <constraint firstAttribute="width" constant="40" id="yrT-rD-Sbi"/>
                                         </constraints>
-                                        <state key="normal" title="List" image="list_w.png"/>
+                                        <state key="normal" title="List" image="list_w"/>
                                         <connections>
                                             <action selector="onMyAnimationsTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jbz-Zf-jpx"/>
                                         </connections>
@@ -68,7 +68,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="4sa-5H-90I" secondAttribute="height" multiplier="1:1" id="1Xh-zv-jCF"/>
                                         </constraints>
-                                        <state key="normal" image="settings_w.png"/>
+                                        <state key="normal" image="settings_w"/>
                                         <connections>
                                             <segue destination="Iew-2U-iKY" kind="modal" identifier="viewInfo" modalTransitionStyle="coverVertical" id="aFj-E1-IaB"/>
                                         </connections>
@@ -106,7 +106,7 @@
                                             <constraint firstAttribute="height" constant="40" id="Ada-mL-RYM"/>
                                             <constraint firstAttribute="width" constant="40" id="bTt-bv-AI0"/>
                                         </constraints>
-                                        <state key="normal" title="List" image="list_w.png"/>
+                                        <state key="normal" title="List" image="list_w"/>
                                         <connections>
                                             <action selector="onMyAnimationsTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vTJ-iQ-bQl"/>
                                         </connections>
@@ -117,7 +117,7 @@
                                             <constraint firstAttribute="height" constant="40" id="Wwp-wU-Iwl"/>
                                             <constraint firstAttribute="width" constant="40" id="nxG-9O-iql"/>
                                         </constraints>
-                                        <state key="normal" title="Button" image="settings_w.png"/>
+                                        <state key="normal" title="Button" image="settings_w"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeb-Cz-qiG">
                                         <rect key="frame" x="80" y="120" width="40" height="40"/>
@@ -139,7 +139,7 @@
                                                     <constraint firstAttribute="width" constant="40" id="eP2-Mf-btq"/>
                                                     <constraint firstAttribute="height" constant="40" id="hC2-kV-jp0"/>
                                                 </constraints>
-                                                <state key="normal" title="Previous" image="previous-small_w.png"/>
+                                                <state key="normal" title="Previous" image="previous-small_w"/>
                                                 <connections>
                                                     <action selector="onPreviousTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u80-gF-WPd"/>
                                                 </connections>
@@ -150,7 +150,7 @@
                                                     <constraint firstAttribute="width" constant="40" id="Csi-eV-jPh"/>
                                                     <constraint firstAttribute="height" constant="40" id="b4y-15-o5j"/>
                                                 </constraints>
-                                                <state key="normal" title="Next" image="next-small_w.png"/>
+                                                <state key="normal" title="Next" image="next-small_w"/>
                                                 <connections>
                                                     <action selector="onNextTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tWb-Sm-k2e"/>
                                                 </connections>
@@ -162,7 +162,7 @@
                                                     <constraint firstAttribute="width" constant="40" id="WY6-me-UXB"/>
                                                     <constraint firstAttribute="height" constant="40" id="iM2-Xi-d11"/>
                                                 </constraints>
-                                                <state key="normal" title="Add" image="new_w.png"/>
+                                                <state key="normal" title="Add" image="new_w"/>
                                                 <connections>
                                                     <action selector="onAddTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DPi-e2-iKf"/>
                                                 </connections>
@@ -207,52 +207,63 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ISY-oE-qn4">
-                                        <rect key="frame" x="80" y="0.0" width="40" height="40"/>
+                                        <rect key="frame" x="80" y="5" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="NBd-nU-dNR"/>
+                                            <constraint firstAttribute="width" constant="30" id="NBd-nU-dNR"/>
                                             <constraint firstAttribute="width" secondItem="ISY-oE-qn4" secondAttribute="height" multiplier="1:1" id="lKk-xS-Iwk"/>
                                         </constraints>
-                                        <state key="normal" title="Delete" image="trash_w.png"/>
+                                        <state key="normal" title="Delete" image="trash_w"/>
                                         <connections>
                                             <action selector="onDeleteTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qg5-Sc-Ptk"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if2-WW-VGb">
-                                        <rect key="frame" x="140" y="0.0" width="40" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DVV-f7-fE0">
+                                        <rect key="frame" x="130" y="5" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="pJX-ic-5iM"/>
-                                            <constraint firstAttribute="width" constant="40" id="wrJ-3j-EIe"/>
+                                            <constraint firstAttribute="width" secondItem="DVV-f7-fE0" secondAttribute="height" multiplier="1:1" id="Sgg-eb-dV1"/>
+                                            <constraint firstAttribute="width" constant="30" id="qia-l1-64m"/>
                                         </constraints>
-                                        <state key="normal" title="Undo" image="undo_w.png"/>
+                                        <state key="normal" title="Duplicate" image="duplicate_w"/>
+                                        <connections>
+                                            <action selector="onDuplicateTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hFh-Us-ud2"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if2-WW-VGb">
+                                        <rect key="frame" x="180" y="5" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="if2-WW-VGb" secondAttribute="height" multiplier="1:1" id="Pbk-eG-o2f"/>
+                                            <constraint firstAttribute="width" constant="30" id="wrJ-3j-EIe"/>
+                                        </constraints>
+                                        <state key="normal" title="Undo" image="undo_w"/>
                                         <connections>
                                             <action selector="onUndoTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aHo-ax-jly"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egh-fJ-Dr0">
-                                        <rect key="frame" x="200" y="0.0" width="40" height="40"/>
+                                        <rect key="frame" x="230" y="5" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="AHM-OH-vDT"/>
-                                            <constraint firstAttribute="width" constant="40" id="jUp-NF-P6u"/>
+                                            <constraint firstAttribute="width" constant="30" id="jUp-NF-P6u"/>
+                                            <constraint firstAttribute="width" secondItem="egh-fJ-Dr0" secondAttribute="height" multiplier="1:1" id="kul-ip-EUW"/>
                                         </constraints>
-                                        <state key="normal" title="Preview" image="play_w.png"/>
+                                        <state key="normal" title="Preview" image="play_w"/>
                                         <connections>
                                             <action selector="onPreviewTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SvX-kw-Li7"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gc7-BE-d1B">
-                                        <rect key="frame" x="200" y="0.0" width="40" height="40"/>
-                                        <state key="normal" title="Stop" image="stop_w.png"/>
+                                        <rect key="frame" x="230" y="5" width="30" height="30"/>
+                                        <state key="normal" title="Stop" image="stop_w"/>
                                         <connections>
                                             <action selector="onStopPreviewTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hp6-24-zRk"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qfn-62-Bj9">
-                                        <rect key="frame" x="260" y="0.0" width="40" height="40"/>
+                                        <rect key="frame" x="270" y="5" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="WuX-r8-lk4"/>
-                                            <constraint firstAttribute="height" constant="40" id="XcV-ow-t4h"/>
+                                            <constraint firstAttribute="width" constant="30" id="WuX-r8-lk4"/>
+                                            <constraint firstAttribute="width" secondItem="Qfn-62-Bj9" secondAttribute="height" multiplier="1:1" id="r7s-b5-y3d"/>
                                         </constraints>
-                                        <state key="normal" title="Export" image="export_w.png"/>
+                                        <state key="normal" title="Export" image="export_w"/>
                                         <connections>
                                             <action selector="onExportTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="seB-wN-v5K"/>
                                         </connections>
@@ -262,13 +273,15 @@
                                 <constraints>
                                     <constraint firstItem="Gc7-BE-d1B" firstAttribute="height" secondItem="egh-fJ-Dr0" secondAttribute="height" id="9bl-F3-vBM"/>
                                     <constraint firstItem="ZUf-cq-p2a" firstAttribute="centerY" secondItem="O9X-HZ-Yr2" secondAttribute="centerY" id="A3i-NT-Gqj"/>
+                                    <constraint firstItem="DVV-f7-fE0" firstAttribute="leading" secondItem="ISY-oE-qn4" secondAttribute="trailing" constant="20" id="CNc-OG-tNc"/>
                                     <constraint firstItem="ISY-oE-qn4" firstAttribute="leading" secondItem="ZUf-cq-p2a" secondAttribute="trailing" constant="20" id="FL6-n7-gsZ"/>
+                                    <constraint firstItem="if2-WW-VGb" firstAttribute="leading" secondItem="DVV-f7-fE0" secondAttribute="trailing" constant="20" id="Fqh-1z-Lzt"/>
                                     <constraint firstItem="ZUf-cq-p2a" firstAttribute="leading" secondItem="O9X-HZ-Yr2" secondAttribute="leading" id="Jrv-ZV-fmB"/>
-                                    <constraint firstItem="if2-WW-VGb" firstAttribute="leading" secondItem="ISY-oE-qn4" secondAttribute="trailing" constant="20" id="MXr-P6-vU9"/>
                                     <constraint firstItem="egh-fJ-Dr0" firstAttribute="leading" secondItem="if2-WW-VGb" secondAttribute="trailing" constant="20" id="Qhk-Y0-ZIB"/>
                                     <constraint firstItem="egh-fJ-Dr0" firstAttribute="centerY" secondItem="O9X-HZ-Yr2" secondAttribute="centerY" id="Qxp-x3-1pI"/>
                                     <constraint firstItem="Qfn-62-Bj9" firstAttribute="centerY" secondItem="O9X-HZ-Yr2" secondAttribute="centerY" id="YHd-Yk-Kko"/>
                                     <constraint firstAttribute="height" constant="40" id="bUG-TW-AYE"/>
+                                    <constraint firstItem="DVV-f7-fE0" firstAttribute="centerY" secondItem="ISY-oE-qn4" secondAttribute="centerY" id="gZW-oD-tby"/>
                                     <constraint firstItem="Gc7-BE-d1B" firstAttribute="centerY" secondItem="O9X-HZ-Yr2" secondAttribute="centerY" id="l6O-g2-PhD"/>
                                     <constraint firstItem="ISY-oE-qn4" firstAttribute="centerY" secondItem="O9X-HZ-Yr2" secondAttribute="centerY" id="mmF-FS-qwt"/>
                                     <constraint firstItem="Gc7-BE-d1B" firstAttribute="centerX" secondItem="egh-fJ-Dr0" secondAttribute="centerX" id="nJ4-Lu-87f"/>
@@ -291,52 +304,63 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PKJ-3y-fvc">
-                                        <rect key="frame" x="0.0" y="60" width="40" height="40"/>
+                                        <rect key="frame" x="0.0" y="60" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="7mQ-fT-gSD"/>
+                                            <constraint firstAttribute="width" constant="30" id="7mQ-fT-gSD"/>
                                             <constraint firstAttribute="width" secondItem="PKJ-3y-fvc" secondAttribute="height" multiplier="1:1" id="iaT-a2-NYq"/>
                                         </constraints>
-                                        <state key="normal" title="Delete" image="trash_w.png"/>
+                                        <state key="normal" title="Delete" image="trash_w"/>
                                         <connections>
                                             <action selector="onDeleteTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UZZ-sT-1hW"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BFA-xz-c62">
-                                        <rect key="frame" x="0.0" y="120" width="40" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dW7-w8-QGO">
+                                        <rect key="frame" x="0.0" y="110" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="aos-8k-WS3"/>
-                                            <constraint firstAttribute="width" constant="40" id="fxv-jB-T4S"/>
+                                            <constraint firstAttribute="width" constant="30" id="0ED-ck-v7V"/>
+                                            <constraint firstAttribute="width" secondItem="dW7-w8-QGO" secondAttribute="height" multiplier="1:1" id="FRR-bI-7fb"/>
                                         </constraints>
-                                        <state key="normal" title="Undo" image="undo_w.png"/>
+                                        <state key="normal" title="Duplicate" image="duplicate_w"/>
+                                        <connections>
+                                            <action selector="onDuplicateTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bpt-mn-uOu"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BFA-xz-c62">
+                                        <rect key="frame" x="0.0" y="160" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="BFA-xz-c62" secondAttribute="height" multiplier="1:1" id="Zra-h3-7Nj"/>
+                                            <constraint firstAttribute="width" constant="30" id="fxv-jB-T4S"/>
+                                        </constraints>
+                                        <state key="normal" title="Undo" image="undo_w"/>
                                         <connections>
                                             <action selector="onUndoTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BQp-Rr-4Xy"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1iv-ua-1jB">
-                                        <rect key="frame" x="0.0" y="180" width="40" height="40"/>
+                                        <rect key="frame" x="0.0" y="210" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="5dH-yr-8Y5"/>
-                                            <constraint firstAttribute="width" constant="40" id="D92-mK-TUZ"/>
+                                            <constraint firstAttribute="width" constant="30" id="D92-mK-TUZ"/>
+                                            <constraint firstAttribute="width" secondItem="1iv-ua-1jB" secondAttribute="height" multiplier="1:1" id="QNd-vT-sMe"/>
                                         </constraints>
-                                        <state key="normal" title="Preview" image="play_w.png"/>
+                                        <state key="normal" title="Preview" image="play_w"/>
                                         <connections>
                                             <action selector="onPreviewTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pso-Ke-Xbu"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3MI-Td-PHB">
-                                        <rect key="frame" x="0.0" y="180" width="40" height="40"/>
-                                        <state key="normal" title="Stop" image="stop_w.png"/>
+                                        <rect key="frame" x="0.0" y="210" width="30" height="30"/>
+                                        <state key="normal" title="Stop" image="stop_w"/>
                                         <connections>
                                             <action selector="onStopPreviewTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nfn-CV-8dD"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQG-tM-UM2">
-                                        <rect key="frame" x="0.0" y="240" width="40" height="40"/>
+                                        <rect key="frame" x="0.0" y="260" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="lHp-Ay-aT8"/>
-                                            <constraint firstAttribute="width" constant="40" id="p0T-nQ-5TN"/>
+                                            <constraint firstAttribute="width" secondItem="LQG-tM-UM2" secondAttribute="height" multiplier="1:1" id="DGj-Ia-qqX"/>
+                                            <constraint firstAttribute="width" constant="30" id="p0T-nQ-5TN"/>
                                         </constraints>
-                                        <state key="normal" title="Export" image="export_w.png"/>
+                                        <state key="normal" title="Export" image="export_w"/>
                                         <connections>
                                             <action selector="onExportTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jvO-vT-zhw"/>
                                         </connections>
@@ -344,11 +368,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="BFA-xz-c62" firstAttribute="top" secondItem="dW7-w8-QGO" secondAttribute="bottom" constant="20" id="0OY-27-QaJ"/>
                                     <constraint firstItem="1iv-ua-1jB" firstAttribute="top" secondItem="BFA-xz-c62" secondAttribute="bottom" constant="20" id="5Fw-RD-OG0"/>
                                     <constraint firstItem="3MI-Td-PHB" firstAttribute="centerY" secondItem="1iv-ua-1jB" secondAttribute="centerY" id="7kx-kC-Pec"/>
-                                    <constraint firstItem="BFA-xz-c62" firstAttribute="top" secondItem="PKJ-3y-fvc" secondAttribute="bottom" constant="20" id="BJ2-qt-leL"/>
                                     <constraint firstItem="3MI-Td-PHB" firstAttribute="top" secondItem="1iv-ua-1jB" secondAttribute="top" id="Cit-TP-llp"/>
                                     <constraint firstItem="LQG-tM-UM2" firstAttribute="leading" secondItem="yQ8-8Y-c79" secondAttribute="leading" id="EAo-YB-421"/>
+                                    <constraint firstItem="dW7-w8-QGO" firstAttribute="top" secondItem="PKJ-3y-fvc" secondAttribute="bottom" constant="20" id="GzX-RC-I7x"/>
                                     <constraint firstItem="PKJ-3y-fvc" firstAttribute="top" secondItem="3vA-UB-EVV" secondAttribute="bottom" constant="20" id="IYO-lv-0aB"/>
                                     <constraint firstItem="3MI-Td-PHB" firstAttribute="centerX" secondItem="1iv-ua-1jB" secondAttribute="centerX" id="K3d-im-f0w"/>
                                     <constraint firstItem="LQG-tM-UM2" firstAttribute="top" secondItem="3MI-Td-PHB" secondAttribute="bottom" constant="20" id="ZFl-8J-wwL"/>
@@ -356,9 +381,9 @@
                                     <constraint firstItem="PKJ-3y-fvc" firstAttribute="leading" secondItem="yQ8-8Y-c79" secondAttribute="leading" id="eOD-1F-9F0"/>
                                     <constraint firstAttribute="width" constant="60" id="ehm-4H-eJ3"/>
                                     <constraint firstItem="3vA-UB-EVV" firstAttribute="top" secondItem="yQ8-8Y-c79" secondAttribute="top" id="h0l-Up-hSY"/>
+                                    <constraint firstItem="dW7-w8-QGO" firstAttribute="centerX" secondItem="PKJ-3y-fvc" secondAttribute="centerX" id="nlM-ya-64Y"/>
                                     <constraint firstItem="1iv-ua-1jB" firstAttribute="leading" secondItem="yQ8-8Y-c79" secondAttribute="leading" id="oeV-su-ws7"/>
                                     <constraint firstItem="BFA-xz-c62" firstAttribute="leading" secondItem="yQ8-8Y-c79" secondAttribute="leading" id="osg-zL-kQP"/>
-                                    <constraint firstItem="BFA-xz-c62" firstAttribute="top" secondItem="PKJ-3y-fvc" secondAttribute="bottom" constant="20" id="sdQ-xs-cDv"/>
                                     <constraint firstAttribute="height" constant="300" id="tCT-yY-0zo"/>
                                     <constraint firstItem="3vA-UB-EVV" firstAttribute="leading" secondItem="yQ8-8Y-c79" secondAttribute="leading" id="uJy-Hd-GEy"/>
                                 </constraints>
@@ -372,7 +397,7 @@
                                             <constraint firstAttribute="height" constant="40" id="YI5-lc-ZKI"/>
                                             <constraint firstAttribute="width" constant="100" id="bG5-Hm-bht"/>
                                         </constraints>
-                                        <state key="normal" title="Previous" image="previous_w.png"/>
+                                        <state key="normal" title="Previous" image="previous_w"/>
                                         <connections>
                                             <action selector="onPreviousTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oAm-Sk-Ia6"/>
                                         </connections>
@@ -383,7 +408,7 @@
                                             <constraint firstAttribute="height" constant="40" id="ST0-hm-DbK"/>
                                             <constraint firstAttribute="width" constant="100" id="bb0-ao-aoi"/>
                                         </constraints>
-                                        <state key="normal" title="Next" image="next_w.png"/>
+                                        <state key="normal" title="Next" image="next_w"/>
                                         <connections>
                                             <action selector="onNextTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vzY-RE-9Vw"/>
                                         </connections>
@@ -395,7 +420,7 @@
                                             <constraint firstAttribute="width" constant="40" id="ec7-bi-B6S"/>
                                             <constraint firstAttribute="height" constant="40" id="hVM-m5-RkC"/>
                                         </constraints>
-                                        <state key="normal" title="Add" image="new_w.png"/>
+                                        <state key="normal" title="Add" image="new_w"/>
                                         <connections>
                                             <action selector="onAddTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xHk-mT-L6L"/>
                                         </connections>
@@ -479,6 +504,8 @@
                         <outlet property="deleteButton" destination="ISY-oE-qn4" id="exP-wy-paN"/>
                         <outlet property="deleteButtonH" destination="PKJ-3y-fvc" id="4ja-d5-RtM"/>
                         <outlet property="drawLabel" destination="bJD-98-ROr" id="PSI-Xg-d1x"/>
+                        <outlet property="duplicateButton" destination="DVV-f7-fE0" id="UWz-nG-szM"/>
+                        <outlet property="duplicateButtonH" destination="dW7-w8-QGO" id="oWK-Ni-lkf"/>
                         <outlet property="exportButton" destination="Qfn-62-Bj9" id="Mjq-eo-2qb"/>
                         <outlet property="exportButtonH" destination="LQG-tM-UM2" id="21r-R0-ALI"/>
                         <outlet property="frameActionsView" destination="O9X-HZ-Yr2" id="4p1-Tb-0Jv"/>
@@ -819,18 +846,19 @@
         </scene>
     </scenes>
     <resources>
-        <image name="export_w.png" width="40" height="40"/>
-        <image name="list_w.png" width="40" height="40"/>
-        <image name="new_w.png" width="40" height="40"/>
-        <image name="next-small_w.png" width="40" height="40"/>
-        <image name="next_w.png" width="100" height="40"/>
-        <image name="play_w.png" width="40" height="40"/>
-        <image name="previous-small_w.png" width="40" height="40"/>
-        <image name="previous_w.png" width="100" height="40"/>
-        <image name="settings_w.png" width="40" height="40"/>
-        <image name="stop_w.png" width="40" height="40"/>
-        <image name="trash_w.png" width="40" height="40"/>
-        <image name="undo_w.png" width="40" height="40"/>
+        <image name="duplicate_w" width="40" height="40"/>
+        <image name="export_w" width="40" height="40"/>
+        <image name="list_w" width="40" height="40"/>
+        <image name="new_w" width="40" height="40"/>
+        <image name="next-small_w" width="40" height="40"/>
+        <image name="next_w" width="100" height="40"/>
+        <image name="play_w" width="40" height="40"/>
+        <image name="previous-small_w" width="40" height="40"/>
+        <image name="previous_w" width="100" height="40"/>
+        <image name="settings_w" width="40" height="40"/>
+        <image name="stop_w" width="40" height="40"/>
+        <image name="trash_w" width="40" height="40"/>
+        <image name="undo_w" width="40" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="eZQ-dG-9L9"/>

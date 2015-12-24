@@ -232,7 +232,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
         [self.collectionView bringSubviewToFront:self.deleteButton];
         [self.deleteButton addTarget:self action:@selector(deleteTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-        UIImage *duplicateImage = [UIImage imageNamed:@"duplicate"];
+        UIImage *duplicateImage = [UIImage imageNamed:@"duplicate_w"];
         self.duplicateButton = [UIButton buttonWithType:UIButtonTypeCustom];
         w = duplicateImage.size.width;
         h = duplicateImage.size.height;

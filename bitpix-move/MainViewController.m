@@ -192,26 +192,28 @@
     
     self.frameLabel.textColor = tintColor;
     self.frameLabelH.textColor = tintColor;
-    [self.nextButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next%@.png", letter]] forState:UIControlStateNormal];
-    [self.nextButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next-small%@.png", letter]] forState:UIControlStateNormal];
-    [self.addButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@.png", letter]] forState:UIControlStateNormal];
-    [self.addButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@.png", letter]] forState:UIControlStateNormal];
-    [self.previousButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"previous%@.png", letter]] forState:UIControlStateNormal];
-    [self.previousButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"previous-small%@.png", letter]] forState:UIControlStateNormal];
-    [self.exportButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export%@.png", letter]] forState:UIControlStateNormal];
-    [self.exportButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export%@.png", letter]] forState:UIControlStateNormal];
-    [self.stopPreviewButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stop%@.png", letter]] forState:UIControlStateNormal];
-    [self.stopPreviewButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stop%@.png", letter]] forState:UIControlStateNormal];
-    [self.previewButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play%@.png", letter]] forState:UIControlStateNormal];
-    [self.previewButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play%@.png", letter]] forState:UIControlStateNormal];
-    [self.deleteButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"trash%@.png", letter]] forState:UIControlStateNormal];
-    [self.deleteButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"trash%@.png", letter]] forState:UIControlStateNormal];
-    [self.undoButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"undo%@.png", letter]] forState:UIControlStateNormal];
-    [self.undoButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"undo%@.png", letter]] forState:UIControlStateNormal];
-    [self.myAnimationsButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"list%@.png", letter]] forState:UIControlStateNormal];
-    [self.myAnimationsButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"list%@.png", letter]] forState:UIControlStateNormal];
-    [self.settingsButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"settings%@.png", letter]] forState:UIControlStateNormal];
-    [self.settingsButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"settings%@.png", letter]] forState:UIControlStateNormal];
+    [self.nextButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next%@", letter]] forState:UIControlStateNormal];
+    [self.nextButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next-small%@", letter]] forState:UIControlStateNormal];
+    [self.addButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@", letter]] forState:UIControlStateNormal];
+    [self.addButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@", letter]] forState:UIControlStateNormal];
+    [self.previousButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"previous%@", letter]] forState:UIControlStateNormal];
+    [self.previousButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"previous-small%@", letter]] forState:UIControlStateNormal];
+    [self.exportButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export%@", letter]] forState:UIControlStateNormal];
+    [self.exportButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export%@", letter]] forState:UIControlStateNormal];
+    [self.stopPreviewButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stop%@", letter]] forState:UIControlStateNormal];
+    [self.stopPreviewButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stop%@", letter]] forState:UIControlStateNormal];
+    [self.previewButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play%@", letter]] forState:UIControlStateNormal];
+    [self.previewButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"play%@", letter]] forState:UIControlStateNormal];
+    [self.deleteButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"trash%@", letter]] forState:UIControlStateNormal];
+    [self.deleteButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"trash%@", letter]] forState:UIControlStateNormal];
+    [self.duplicateButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"duplicate%@", letter]] forState:UIControlStateNormal];
+    [self.duplicateButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"duplicate%@", letter]] forState:UIControlStateNormal];
+    [self.undoButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"undo%@", letter]] forState:UIControlStateNormal];
+    [self.undoButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"undo%@", letter]] forState:UIControlStateNormal];
+    [self.myAnimationsButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"list%@", letter]] forState:UIControlStateNormal];
+    [self.myAnimationsButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"list%@", letter]] forState:UIControlStateNormal];
+    [self.settingsButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"settings%@", letter]] forState:UIControlStateNormal];
+    [self.settingsButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"settings%@", letter]] forState:UIControlStateNormal];
 }
 
 #pragma mark - Preview stuff
@@ -487,6 +489,28 @@
     [self updateUI];
 }
 
+- (void)duplicateCurrentFrame {
+    self.isClean = NO;
+    // duplicate view
+    DrawView *originalView = [self.framesArray objectAtIndex:self.currentFrame];
+
+    self.currentFrame++;
+
+    DrawView *drawView = [[DrawView alloc] initWithFrame:self.sketchView.bounds];
+    drawView.uuid = self.uuid;
+    drawView.delegate = self;
+    drawView.isClean = NO;
+    drawView.lineList = [NSMutableArray arrayWithArray:originalView.lineList];
+
+    [self.framesArray insertObject:drawView atIndex:self.currentFrame];
+    [self.sketchView addSubview:drawView];
+    
+    [self saveToDisk];
+    [self popFrame];
+
+    [self updateUI];
+}
+
 - (void)deleteCurrentFrame {
     self.isClean = NO;
     // dispose of view
@@ -570,6 +594,7 @@
         self.myAnimationsButtonH.hidden = YES;
         self.addAnimationButtonH.hidden = YES;
         self.deleteButtonH.hidden = YES;
+        self.duplicateButtonH.hidden = YES;
         self.exportButtonH.hidden = YES;
         self.previewButtonH.hidden = YES;
         self.settingsButtonH.hidden = YES;
@@ -580,6 +605,7 @@
         self.myAnimationsButton.hidden = YES;
         self.addAnimationButton.hidden = YES;
         self.deleteButton.hidden = YES;
+        self.duplicateButton.hidden = YES;
         self.exportButton.hidden = YES;
         self.previewButton.hidden = YES;
         self.settingsButton.hidden = YES;
@@ -641,8 +667,14 @@
             if (!self.isVertical) self.previewButtonH.hidden = NO;
         }
         if (self.tappedStop) {
-            if (self.isVertical) self.exportButton.hidden = NO;
-            if (!self.isVertical) self.exportButtonH.hidden = NO;
+            if (self.isVertical) {
+                self.exportButton.hidden = NO;
+                self.duplicateButton.hidden = NO;
+            }
+            if (!self.isVertical) {
+                self.exportButtonH.hidden = NO;
+                self.duplicateButtonH.hidden = NO;
+            }
         }
     } else {
         self.exportButton.hidden = YES;
@@ -661,6 +693,7 @@
     self.addButton.hidden = YES;
     self.exportButton.hidden = YES;
     self.deleteButton.hidden = YES;
+    self.duplicateButton.hidden = YES;
     self.undoButton.hidden = YES;
 
     self.previousButtonH.hidden = YES;
@@ -668,6 +701,7 @@
     self.addButtonH.hidden = YES;
     self.exportButtonH.hidden = YES;
     self.deleteButtonH.hidden = YES;
+    self.duplicateButtonH.hidden = YES;
     self.undoButtonH.hidden = YES;
 }
 
@@ -675,9 +709,13 @@
     if ([drawView hasLines]) {
         self.undoButton.hidden = NO;
         self.undoButtonH.hidden = NO;
+        self.duplicateButton.hidden = NO;
+        self.duplicateButtonH.hidden = NO;
     } else {
         self.undoButton.hidden = YES;
         self.undoButtonH.hidden = YES;
+        self.duplicateButton.hidden = YES;
+        self.duplicateButtonH.hidden = YES;
     }
 }
 
@@ -741,6 +779,32 @@
 
 - (IBAction)onNewTapped:(id)sender {
     [self newAnimation];
+}
+
+- (IBAction)onDuplicateTapped:(id)sender {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Duplicate frame" style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self duplicateCurrentFrame];
+                                                          }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
+    
+    UIPopoverPresentationController *popover = alert.popoverPresentationController;
+    if (popover) {
+        popover.sourceView = self.sketchView;
+        popover.sourceRect = CGRectMake(self.sketchView.bounds.size.width * .5, self.sketchView.bounds.size.height * .5, 1.0, 1.0);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    }
+    
+    [self presentViewController:alert animated:NO completion:nil];
 }
 
 - (IBAction)onNextTapped:(id)sender {
