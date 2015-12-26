@@ -63,7 +63,7 @@
     NSArray *toArray;
     
     // clear the canvas
-    self.drawingImageView.image = [UIImage imageNamed:@""];
+    self.drawingImageView.image = [UIImage imageWithData:[[NSData alloc] init]];
     
 	UIGraphicsBeginImageContext(self.drawingImageView.frame.size);
 	

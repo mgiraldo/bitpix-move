@@ -330,8 +330,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     self.currentDuplicates++;
 
     NSInteger originalIndex = self.selectedRow;
-    // put it "after" the current one (showing in reverse order so -1)
-    NSInteger newIndex = self.selectedRow;
+    NSInteger newIndex = 0;
     __block NSString *olduuid = [[self.collectionData objectAtIndex:originalIndex] valueForKey:@"name"];
     __block NSString *uuid = [[NSUUID UUID] UUIDString];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newIndex inSection:0];

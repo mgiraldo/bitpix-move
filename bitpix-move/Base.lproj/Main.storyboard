@@ -635,16 +635,20 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Designed and programmed by Mauricio Giraldo @mgiraldo" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DbJ-7b-W4g">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="8SE-oR-nyq">
                                 <rect key="frame" x="60" y="421" width="200" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="6wp-4Z-Fgk"/>
-                                    <constraint firstAttribute="width" constant="200" id="grx-M4-VYt"/>
+                                    <constraint firstAttribute="height" constant="40" id="IIL-yJ-VTN"/>
+                                    <constraint firstAttribute="width" constant="200" id="eNp-kK-3wX"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <state key="normal" title="Designed and programmed by Mauricio Giraldo @mgiraldo">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onCreditsTapped:" destination="Iew-2U-iKY" eventType="touchUpInside" id="7Mw-Vb-nIn"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MovePix Version X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPI-il-ax5">
                                 <rect key="frame" x="0.0" y="471" width="320" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -703,7 +707,6 @@
                         <constraints>
                             <constraint firstItem="jrP-CQ-Y1A" firstAttribute="top" secondItem="iIF-Gu-hqn" secondAttribute="bottom" constant="10" id="1vU-KV-Fm4"/>
                             <constraint firstItem="U2C-Er-Ouv" firstAttribute="top" secondItem="BPI-il-ax5" secondAttribute="bottom" constant="20" id="1wz-J2-Ddr"/>
-                            <constraint firstItem="BPI-il-ax5" firstAttribute="top" secondItem="DbJ-7b-W4g" secondAttribute="bottom" constant="10" id="2RU-Wt-xWh"/>
                             <constraint firstItem="K58-L0-TBm" firstAttribute="centerY" secondItem="Z5v-xl-4Jz" secondAttribute="centerY" id="7uc-B7-PKt"/>
                             <constraint firstItem="jCI-Qc-BOA" firstAttribute="top" secondItem="A3W-X1-R5w" secondAttribute="bottom" constant="10" id="CKH-Nl-Squ"/>
                             <constraint firstItem="U2C-Er-Ouv" firstAttribute="width" secondItem="Z5v-xl-4Jz" secondAttribute="width" id="D9U-JB-sm1"/>
@@ -714,8 +717,8 @@
                             <constraint firstItem="A3W-X1-R5w" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="LTd-8c-Xve"/>
                             <constraint firstItem="K58-L0-TBm" firstAttribute="width" secondItem="Z5v-xl-4Jz" secondAttribute="width" id="N8f-BR-7NB"/>
                             <constraint firstItem="5dA-nN-ilH" firstAttribute="centerY" secondItem="BGU-dy-BSO" secondAttribute="centerY" id="O98-Sa-zih"/>
-                            <constraint firstItem="DbJ-7b-W4g" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="S2b-ih-SAO"/>
                             <constraint firstItem="IjD-pJ-Fli" firstAttribute="top" secondItem="U2C-Er-Ouv" secondAttribute="top" id="UkH-zN-AGq"/>
+                            <constraint firstItem="8SE-oR-nyq" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="Vbx-OF-uTB"/>
                             <constraint firstItem="jCI-Qc-BOA" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="WIm-ds-caE"/>
                             <constraint firstItem="jrP-CQ-Y1A" firstAttribute="centerX" secondItem="Z5v-xl-4Jz" secondAttribute="centerX" id="Xmw-2a-oQ0"/>
                             <constraint firstItem="Iy6-p8-0ye" firstAttribute="centerY" secondItem="BGU-dy-BSO" secondAttribute="centerY" id="YCP-K3-3mQ"/>
@@ -732,6 +735,7 @@
                             <constraint firstItem="IjD-pJ-Fli" firstAttribute="width" secondItem="U2C-Er-Ouv" secondAttribute="width" id="sPs-uR-Tkn"/>
                             <constraint firstItem="bAD-5O-xii" firstAttribute="top" secondItem="U2C-Er-Ouv" secondAttribute="bottom" id="tTk-gh-jys"/>
                             <constraint firstItem="5dA-nN-ilH" firstAttribute="leading" secondItem="BGU-dy-BSO" secondAttribute="trailing" constant="10" id="vYX-rl-B44"/>
+                            <constraint firstItem="BPI-il-ax5" firstAttribute="top" secondItem="8SE-oR-nyq" secondAttribute="bottom" constant="10" id="yfe-YR-ZxH"/>
                         </constraints>
                     </view>
                     <connections>

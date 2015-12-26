@@ -169,7 +169,7 @@
     NSNumber *frameCount = [NSNumber numberWithInteger:frames.count];
     [animation setValue:uuid forKey:@"name"];
     [animation setValue:today forKey:@"date"];
-    NSInteger newIndex = (index == self.userAnimations.count-1) ? self.userAnimations.count : index + 1;
+    NSInteger newIndex = self.userAnimations.count;//(index == self.userAnimations.count-1) ? self.userAnimations.count : index + 1;
     [self.userAnimations insertObject:animation atIndex:newIndex];
     [self save];
     NSDictionary *result = [NSDictionary dictionaryWithObjects:@[olduuid, uuid, frameCount] forKeys:@[@"olduuid", @"newuuid", @"frameCount"]];

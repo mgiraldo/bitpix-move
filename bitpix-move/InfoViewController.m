@@ -555,6 +555,10 @@ static const NSUInteger BUFFER_SIZE = 1024;
     [self presentViewController:alert animated:NO completion:nil];
 }
 
+- (IBAction)onCreditsTapped:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://twitter.com/mgiraldo"]];
+}
+
 - (IBAction)onThemeChanged:(UISwitch *)sender {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithBool:sender.isOn] forKey:@"blackTheme"];

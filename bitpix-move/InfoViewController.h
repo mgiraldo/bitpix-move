@@ -36,5 +36,6 @@
 - (IBAction)onRefreshTapped:(id)sender;
 - (IBAction)onReturnTapped:(id)sender;
 - (IBAction)onBackupTapped:(id)sender;
+- (IBAction)onCreditsTapped:(id)sender;
 - (IBAction)onThemeChanged:(UISwitch *)sender;
 @end
