@@ -33,12 +33,6 @@ static const NSUInteger BUFFER_SIZE = 1024;
 
     self.statusView.hidden = YES;
     self.statusProgress.hidden = YES;
-
-    // gradient background
-//    CAGradientLayer *gradient = [CAGradientLayer layer];
-//    gradient.frame = self.view.bounds;
-//    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:.15f green:.15f blue:.15f alpha:1.0f] CGColor], (id)[[UIColor blackColor] CGColor], nil];
-//    [self.view.layer insertSublayer:gradient atIndex:0];
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];

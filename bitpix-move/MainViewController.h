@@ -32,6 +32,7 @@
 
 @property (atomic) AppDelegate *appDelegate;
 @property (nonatomic) NSMutableArray *framesArray;
+@property (nonatomic) NSMutableArray *tempFramesArray;
 @property (nonatomic) NSString  *uuid;
 @property (weak, nonatomic) IBOutlet UIView *sketchView;
 @property (weak, nonatomic) IBOutlet DrawView *currentView;
@@ -82,6 +83,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *frameCollectionView;
+@property (weak, nonatomic) IBOutlet UILabel *frameCollectionViewLabel;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;

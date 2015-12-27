@@ -16,14 +16,8 @@
     self.backgroundColor = [UIColor whiteColor];
     self.frameImageView.backgroundColor = [UIColor whiteColor];
     self.frameImageView.image = [UIImage imageWithCGImage:_drawView.drawingImageView.image.CGImage];
-}
-
-- (void)setFilename:(NSString *)filename {
-    self.backgroundColor = [UIColor whiteColor];
-    self.frameImageView.backgroundColor = [UIColor whiteColor];
-    
-    UIImage *frame = [UIImage imageWithContentsOfFile:filename];
-    self.frameImageView.image = frame;
+    self.layer.borderColor = [UIColor blackColor].CGColor;
+    self.layer.borderWidth = 1.0;
 }
 
 @end

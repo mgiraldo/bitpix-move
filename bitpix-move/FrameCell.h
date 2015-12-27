@@ -14,6 +14,4 @@
 @property (nonatomic) DrawView *drawView;
 @property (nonatomic) IBOutlet UIImageView *frameImageView;
 
-- (void)setFilename:(NSString *)filename;
-
 @end

@@ -38,6 +38,7 @@
     self.isVertical = YES;
     self.frameBuffer = 3;
     self.frameViewShown = NO;
+    self.frameCollectionView.hidden = YES;
 
     self.statusView.hidden = YES;
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -63,12 +64,6 @@
         self.addButtonH.hidden = YES;
         self.drawLabel.text = @"Draw here";
     }
-    
-    // gradient background
-//    CAGradientLayer *gradient = [CAGradientLayer layer];
-//    gradient.frame = self.view.bounds;
-//    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:.15f green:.15f blue:.15f alpha:1.0f] CGColor], (id)[[UIColor blackColor] CGColor], (id)[[UIColor blackColor] CGColor], (id)[[UIColor colorWithRed:.15f green:.15f blue:.15f alpha:1.0f] CGColor], nil];
-//    [self.view.layer insertSublayer:gradient atIndex:0];
     
     // the next id will be the count
     self.uuid = [[NSUUID UUID] UUIDString];
@@ -136,6 +131,8 @@
     self.mainActionsView.hidden = YES;
     self.frameActionsView.hidden = YES;
     self.mainArrowView.hidden = YES;
+    // TODO: fix settings view to work on landscape mode
+    self.settingsButtonH.hidden = YES;
 
     if (!self.firstLoad) {
         self.mainActionsViewH.hidden = NO;
@@ -198,6 +195,9 @@
     [self.view setBackgroundColor:bgColor];
     [self.view setTintColor:tintColor];
     
+    [self.frameCollectionView setBackgroundColor:bgColor];
+    [self.frameCollectionView setTintColor:tintColor];
+    [self.frameCollectionViewLabel setTextColor:tintColor];
     self.frameLabel.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [self.frameLabel setTitleColor:tintColor forState:UIControlStateNormal];
     self.frameLabelH.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -482,6 +482,19 @@
 }
 
 #pragma mark - Frame stuff
+
+- (void)refreshDrawViews {
+    if ([self.framesArray isEqualToArray:self.tempFramesArray]) return;
+    self.tempFramesArray = nil;
+    [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    // add frames
+    self.currentFrame = 0;
+    DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
+    [self.sketchView addSubview:drawView];
+    [self.previewView createFrames:self.framesArray withSpeed:_fps];
+    self.isClean = NO;
+    [self updateUI];
+}
 
 - (void)removeFrames {
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -799,14 +812,16 @@
     self.frameCollectionView.collectionViewLayout = layout;
     self.frameCollectionView.bounces = YES;
     self.frameCollectionView.alwaysBounceHorizontal = YES;
+    self.frameCollectionView.hidden = NO;
     [self.frameCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
     [self showStatusView:@""];
+    self.tempFramesArray = [NSMutableArray arrayWithArray:self.framesArray];
     [UIView animateWithDuration:0.25
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          self.frameViewConstraint.constant = 0;
-                         self.statusViewHConstraint.constant = -120;
+                         self.statusViewHConstraint.constant = -140;
                          [self.view layoutIfNeeded];
                      }
                      completion:^(BOOL finished) {
@@ -820,12 +835,14 @@
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         self.frameViewConstraint.constant = -120;
+                         self.frameViewConstraint.constant = -140;
                          self.statusViewHConstraint.constant = 0;
                          [self.view layoutIfNeeded];
                      }
                      completion:^(BOOL finished) {
                          //
+                         self.frameCollectionView.hidden = YES;
+                         [self refreshDrawViews];
                          [self hideStatusView];
                      }];
 }
@@ -844,24 +861,22 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     DrawView *drawView = self.framesArray[indexPath.item];
-//    NSString *filename = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", drawView.uuid, drawView.uuid, _fileSuffix, (int)indexPath.row]];
     FrameCell *frameCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FrameCell" forIndexPath:indexPath];
     frameCell.drawView = drawView;
-//    [frameCell setFilename:filename];
     return frameCell;
 }
 
 #pragma mark - LXReorderableCollectionViewDataSource methods
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath {
-    DebugLog(@"from %ld, to %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
+//    DebugLog(@"from %ld, to %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
     DrawView *drawView = self.framesArray[fromIndexPath.item];
     
     [self.framesArray removeObjectAtIndex:fromIndexPath.item];
     [self.framesArray insertObject:drawView atIndex:toIndexPath.item];
     self.currentView.isClean = NO;
-    [self updateUI];
     [self saveToDisk];
+    [self updateUI];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -880,23 +895,23 @@
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(10, 10, 10, 10);
+    return UIEdgeInsetsMake(30, 10, 10, 10);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"will begin drag");
+//    NSLog(@"will begin drag");
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"did begin drag");
+//    NSLog(@"did begin drag");
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"will end drag");
+//    NSLog(@"will end drag");
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"did end drag");
+//    NSLog(@"did end drag");
 }
 
 #pragma mark - Button actions
@@ -936,7 +951,7 @@
 }
 
 - (IBAction)onFrameViewTapped:(id)sender {
-    [self showFrameCollectionView];
+    if (self.framesArray.count > 2) [self showFrameCollectionView];
 }
 
 - (IBAction)onNextTapped:(id)sender {
