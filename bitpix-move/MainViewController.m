@@ -131,8 +131,6 @@
     self.mainActionsView.hidden = YES;
     self.frameActionsView.hidden = YES;
     self.mainArrowView.hidden = YES;
-    // TODO: fix settings view to work on landscape mode
-    self.settingsButtonH.hidden = YES;
 
     if (!self.firstLoad) {
         self.mainActionsViewH.hidden = NO;
@@ -679,7 +677,8 @@
         if (self.isVertical) self.addAnimationButton.hidden = NO;
         if (!self.isVertical) self.addAnimationButtonH.hidden = NO;
         if (self.isVertical) self.settingsButton.hidden = NO;
-        if (!self.isVertical) self.settingsButtonH.hidden = NO;
+        // TODO: fix settings view to work on landscape mode
+//        if (!self.isVertical) self.settingsButtonH.hidden = NO;
     }
     
     if (self.framesArray.count > 1) {
