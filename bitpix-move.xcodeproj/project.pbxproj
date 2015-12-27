@@ -76,6 +76,8 @@
 		CC4D441E1BEFE8B4000B0209 /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = CC4D44041BEFE8B4000B0209 /* uncompr.c */; };
 		CC4D441F1BEFE8B4000B0209 /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = CC4D44071BEFE8B4000B0209 /* zutil.c */; };
 		CC4D44221BF00558000B0209 /* SVGExportActivityItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D44211BF00558000B0209 /* SVGExportActivityItemProvider.m */; };
+		CC4FCC251C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4FCC241C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m */; };
+		CC4FCC281C2F5A4000B973EF /* FrameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4FCC271C2F5A4000B973EF /* FrameCell.m */; };
 		CC96A21E1C0D2BE500DADB79 /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CC96A21D1C0D2BE500DADB79 /* CEMovieMaker.m */; };
 		CC96A22C1C0E9AA100DADB79 /* DMActivityInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC96A2271C0E9AA100DADB79 /* DMActivityInstagram.m */; };
 		CC96A22D1C0E9AA100DADB79 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A2281C0E9AA100DADB79 /* instagram.png */; };
@@ -203,6 +205,10 @@
 		CC4D44081BEFE8B4000B0209 /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
 		CC4D44201BF00558000B0209 /* SVGExportActivityItemProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGExportActivityItemProvider.h; sourceTree = "<group>"; };
 		CC4D44211BF00558000B0209 /* SVGExportActivityItemProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGExportActivityItemProvider.m; sourceTree = "<group>"; };
+		CC4FCC231C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		CC4FCC241C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		CC4FCC261C2F5A4000B973EF /* FrameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameCell.h; sourceTree = "<group>"; };
+		CC4FCC271C2F5A4000B973EF /* FrameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameCell.m; sourceTree = "<group>"; };
 		CC96A21C1C0D2BE500DADB79 /* CEMovieMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
 		CC96A21D1C0D2BE500DADB79 /* CEMovieMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
 		CC96A2261C0E9AA100DADB79 /* DMActivityInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMActivityInstagram.h; sourceTree = "<group>"; };
@@ -251,6 +257,7 @@
 		CC4D078C1BD85D5400A52613 = {
 			isa = PBXGroup;
 			children = (
+				CC4FCC221C2F585000B973EF /* LXReorderableCollectionViewFlowLayout */,
 				CC96A2251C0E9AA100DADB79 /* DMActivityInstagram */,
 				CC96A21B1C0D2BE500DADB79 /* CEMovieMaker */,
 				CC4D43CC1BEFE679000B0209 /* Objective-Zip */,
@@ -403,8 +410,19 @@
 				CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */,
 				CC4D44201BF00558000B0209 /* SVGExportActivityItemProvider.h */,
 				CC4D44211BF00558000B0209 /* SVGExportActivityItemProvider.m */,
+				CC4FCC261C2F5A4000B973EF /* FrameCell.h */,
+				CC4FCC271C2F5A4000B973EF /* FrameCell.m */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		CC4FCC221C2F585000B973EF /* LXReorderableCollectionViewFlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				CC4FCC231C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.h */,
+				CC4FCC241C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m */,
+			);
+			path = LXReorderableCollectionViewFlowLayout;
 			sourceTree = "<group>";
 		};
 		CC96A21B1C0D2BE500DADB79 /* CEMovieMaker */ = {
@@ -605,6 +623,7 @@
 				CC96A21E1C0D2BE500DADB79 /* CEMovieMaker.m in Sources */,
 				CC4D441A1BEFE8B4000B0209 /* inffast.c in Sources */,
 				CC4D44191BEFE8B4000B0209 /* infback.c in Sources */,
+				CC4FCC281C2F5A4000B973EF /* FrameCell.m in Sources */,
 				CC1D32691BDD9D6D002E9294 /* UIImageXtras.m in Sources */,
 				CC4D44141BEFE8B4000B0209 /* deflate.c in Sources */,
 				CC4D44121BEFE8B4000B0209 /* compress.c in Sources */,
@@ -617,6 +636,7 @@
 				CC4D440B1BEFE8B4000B0209 /* zip.c in Sources */,
 				CC4D441D1BEFE8B4000B0209 /* trees.c in Sources */,
 				CCF3F9761BDC59F80019059B /* DrawViewAnimator.m in Sources */,
+				CC4FCC251C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				CC4D44221BF00558000B0209 /* SVGExportActivityItemProvider.m in Sources */,
 				CC4D441F1BEFE8B4000B0209 /* zutil.c in Sources */,
 				CC4D079A1BD85D5400A52613 /* main.m in Sources */,

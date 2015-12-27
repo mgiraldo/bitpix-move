@@ -13,8 +13,9 @@
 #import "InfoViewController.h"
 #import "UserData.h"
 #import "AppDelegate.h"
+#import "LXReorderableCollectionViewFlowLayout.h"
 
-@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, InfoViewControllerDelegate>
+@interface MainViewController : UIViewController <DrawViewDelegate, GridViewControllerDelegate, InfoViewControllerDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout>
 
 @property (atomic) BOOL isSavingVideo;
 @property (atomic) BOOL isRestoring;
@@ -77,6 +78,7 @@
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
+@property (weak, nonatomic) IBOutlet UICollectionView *frameCollectionView;
 
 - (IBAction)onNextTapped:(id)sender;
 - (IBAction)onAddTapped:(id)sender;

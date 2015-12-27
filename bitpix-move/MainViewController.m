@@ -12,6 +12,7 @@
 #import "SVGExportActivityItemProvider.h"
 #import "CEMovieMaker.h"
 #import "DMActivityInstagram.h"
+#import "FrameCell.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface MainViewController ()
@@ -26,6 +27,7 @@
 	[super viewDidLoad];
 
     [self updateTheme];
+    
     self.currentFrame = -1;
     self.isPreviewing = NO;
     self.isClean = YES;
@@ -81,6 +83,12 @@
         self.isRestoring = NO;
         [self performSelector:@selector(restoreBackup) withObject:nil afterDelay:0.0];
     }
+    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    self.frameCollectionView.collectionViewLayout = layout;
+    self.frameCollectionView.bounces = YES;
+    self.frameCollectionView.alwaysBounceHorizontal = YES;
+    [self.frameCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
 }
 
 - (void)restoreBackup {
@@ -329,6 +337,7 @@
         }
     }
     [self.previewView createFrames:self.framesArray withSpeed:_fps];
+    [self.frameCollectionView reloadData];
     self.isClean = YES;
     self.currentFrame = 0;
     [self updateUI];
@@ -463,6 +472,7 @@
     self.isClean = NO;
     [self updateUndoButtonForDrawView:drawView];
     [self.framesArray replaceObjectAtIndex:self.currentFrame withObject:drawView];
+    [self.frameCollectionView reloadData];
     [self updateUI];
 }
 
@@ -476,6 +486,7 @@
 - (void)removeFrames {
     [[self.sketchView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.framesArray = [@[] mutableCopy];
+    [self.frameCollectionView reloadData];
 }
 
 - (void)addFrame {
@@ -487,6 +498,7 @@
     drawView.isClean = self.isClean;
     [self.framesArray insertObject:drawView atIndex:self.currentFrame];
     [self.sketchView addSubview:drawView];
+    [self.frameCollectionView reloadData];
     [self popFrame];
     [self updateUI];
     [self saveToDisk];
@@ -508,6 +520,7 @@
     [self.framesArray insertObject:drawView atIndex:self.currentFrame];
     [self.sketchView addSubview:drawView];
     
+    [self.frameCollectionView reloadData];
     [self popFrame];
     [self updateUI];
     [self saveToDisk];
@@ -536,6 +549,7 @@
     drawView = [self.framesArray objectAtIndex:self.currentFrame];
     drawView.isClean = NO;
 
+    [self.frameCollectionView reloadData];
     [self clean];
     [self saveToDisk];
     [self updateUI];
@@ -771,6 +785,69 @@
 - (void)hideStatusView {
     self.statusLabel.text = @"";
     self.statusView.hidden = YES;
+}
+
+#pragma mark - UICollectionViewDataSource methods
+
+- (NSInteger)collectionView:(UICollectionView *)theCollectionView numberOfItemsInSection:(NSInteger)theSectionIndex {
+    return self.framesArray.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    DrawView *drawView = self.framesArray[indexPath.item];
+    NSString *filename = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", drawView.uuid, drawView.uuid, _fileSuffix, (int)indexPath.row]];
+    FrameCell *frameCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FrameCell" forIndexPath:indexPath];
+    frameCell.drawView = drawView;
+    [frameCell setFilename:filename];
+    return frameCell;
+}
+
+#pragma mark - LXReorderableCollectionViewDataSource methods
+
+- (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath {
+    DebugLog(@"from %ld, to %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
+    DrawView *drawView = self.framesArray[fromIndexPath.item];
+    
+    [self.framesArray removeObjectAtIndex:fromIndexPath.item];
+    [self.framesArray insertObject:drawView atIndex:toIndexPath.item];
+    self.currentView.isClean = NO;
+    [self updateUI];
+    [self saveToDisk];
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath canMoveToIndexPath:(NSIndexPath *)toIndexPath {
+    return YES;
+}
+
+#pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGSize retval = CGSizeMake(_thumbSize*.5, _thumbSize*.5);
+    return retval;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(10, 10, 10, 10);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"will begin drag");
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"did begin drag");
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"will end drag");
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"did end drag");
 }
 
 #pragma mark - Button actions
