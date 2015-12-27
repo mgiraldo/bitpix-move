@@ -22,6 +22,7 @@
 @property (atomic) int currentFrame;
 @property (atomic) BOOL isPreviewing;
 @property (atomic) BOOL isClean;
+@property (atomic) BOOL frameViewShown;
 @property (atomic) BOOL firstLoad;
 @property (atomic) BOOL tappedAdd;
 @property (atomic) BOOL tappedPreview;
@@ -38,7 +39,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousButton;
-@property (weak, nonatomic) IBOutlet UILabel *frameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *frameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exportButton;
 @property (weak, nonatomic) IBOutlet UIButton *duplicateButton;
 @property (weak, nonatomic) IBOutlet UIButton *duplicateButtonH;
@@ -60,7 +61,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *myAnimationsButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *settingsButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *addAnimationButtonH;
-@property (weak, nonatomic) IBOutlet UILabel *frameLabelH;
+@property (weak, nonatomic) IBOutlet UIButton *frameLabelH;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *undoButtonH;
 @property (weak, nonatomic) IBOutlet UIButton *previewButtonH;
@@ -74,6 +75,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalCenterConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *arrowButtonsConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *frameViewConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewHConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
@@ -91,6 +94,7 @@
 - (IBAction)onMyAnimationsTapped:(id)sender;
 - (IBAction)onNewTapped:(id)sender;
 - (IBAction)onDuplicateTapped:(id)sender;
+- (IBAction)onFrameViewTapped:(id)sender;
 
 @end
 

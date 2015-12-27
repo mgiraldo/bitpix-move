@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *backupButton;
 @property (weak, nonatomic) IBOutlet UIView *borderView;
 @property (weak, nonatomic) IBOutlet UIButton *returnButton;
+@property (weak, nonatomic) IBOutlet UIButton *creditsButton;
 @property (nonatomic, weak) id <InfoViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UISwitch *themeSwitch;
 @property (nonatomic) dispatch_queue_t refreshQueue;

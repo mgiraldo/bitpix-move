@@ -37,8 +37,12 @@
     self.tappedStop = NO;
     self.isVertical = YES;
     self.frameBuffer = 3;
-    
+    self.frameViewShown = NO;
+
     self.statusView.hidden = YES;
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                    action:@selector(handleTap:)];
+    [self.statusView addGestureRecognizer:tapRecognizer];
     
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -83,12 +87,6 @@
         self.isRestoring = NO;
         [self performSelector:@selector(restoreBackup) withObject:nil afterDelay:0.0];
     }
-    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    self.frameCollectionView.collectionViewLayout = layout;
-    self.frameCollectionView.bounces = YES;
-    self.frameCollectionView.alwaysBounceHorizontal = YES;
-    [self.frameCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
 }
 
 - (void)restoreBackup {
@@ -200,8 +198,10 @@
     [self.view setBackgroundColor:bgColor];
     [self.view setTintColor:tintColor];
     
-    self.frameLabel.textColor = tintColor;
-    self.frameLabelH.textColor = tintColor;
+    self.frameLabel.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    [self.frameLabel setTitleColor:tintColor forState:UIControlStateNormal];
+    self.frameLabelH.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    [self.frameLabelH setTitleColor:tintColor forState:UIControlStateNormal];
     [self.nextButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next%@", letter]] forState:UIControlStateNormal];
     [self.nextButtonH setImage:[UIImage imageNamed:[NSString stringWithFormat:@"next-small%@", letter]] forState:UIControlStateNormal];
     [self.addButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"new%@", letter]] forState:UIControlStateNormal];
@@ -698,9 +698,11 @@
         self.previewButton.hidden = YES;
         self.previewButtonH.hidden = YES;
     }
+    
+    NSString * frameString = [NSString stringWithFormat:@"%i/%i", self.currentFrame+1, (int)self.framesArray.count];
 
-    self.frameLabel.text = [NSString stringWithFormat:@"%i/%i", self.currentFrame+1, (int)self.framesArray.count];
-    self.frameLabelH.text = [NSString stringWithFormat:@"%i/%i", self.currentFrame+1, (int)self.framesArray.count];
+    [self.frameLabel setTitle:frameString forState:UIControlStateNormal];
+    [self.frameLabelH setTitle:frameString forState:UIControlStateNormal];
 }
 
 - (void)disableUI {
@@ -773,6 +775,7 @@
 
 - (void)showStatusView:(NSString *)text {
     self.statusView.hidden = NO;
+    if ([text isEqualToString:@""]) return;
     srand ((int)time(NULL));
     NSArray *emojiArray = @[@"📹", @"🎥", @"👯", @"🐌", @"🐢", @"🚀"];
     int emojiCount = (int)emojiArray.count;
@@ -787,6 +790,52 @@
     self.statusView.hidden = YES;
 }
 
+#pragma mark - frame collection view show/hide
+
+- (void)showFrameCollectionView {
+    self.frameViewShown = YES;
+    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    self.frameCollectionView.collectionViewLayout = layout;
+    self.frameCollectionView.bounces = YES;
+    self.frameCollectionView.alwaysBounceHorizontal = YES;
+    [self.frameCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
+    [self showStatusView:@""];
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.frameViewConstraint.constant = 0;
+                         self.statusViewHConstraint.constant = -120;
+                         [self.view layoutIfNeeded];
+                     }
+                     completion:^(BOOL finished) {
+                         //
+                     }];
+}
+
+- (void)hideFrameCollectionView {
+    self.frameViewShown = NO;
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.frameViewConstraint.constant = -120;
+                         self.statusViewHConstraint.constant = 0;
+                         [self.view layoutIfNeeded];
+                     }
+                     completion:^(BOOL finished) {
+                         //
+                         [self hideStatusView];
+                     }];
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateEnded){
+        if (self.frameViewShown) [self hideFrameCollectionView];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource methods
 
 - (NSInteger)collectionView:(UICollectionView *)theCollectionView numberOfItemsInSection:(NSInteger)theSectionIndex {
@@ -795,10 +844,10 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     DrawView *drawView = self.framesArray[indexPath.item];
-    NSString *filename = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", drawView.uuid, drawView.uuid, _fileSuffix, (int)indexPath.row]];
+//    NSString *filename = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", drawView.uuid, drawView.uuid, _fileSuffix, (int)indexPath.row]];
     FrameCell *frameCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FrameCell" forIndexPath:indexPath];
     frameCell.drawView = drawView;
-    [frameCell setFilename:filename];
+//    [frameCell setFilename:filename];
     return frameCell;
 }
 
@@ -826,7 +875,7 @@
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize retval = CGSizeMake(_thumbSize*.5, _thumbSize*.5);
+    CGSize retval = CGSizeMake(_thumbSize, _thumbSize);
     return retval;
 }
 
@@ -884,6 +933,10 @@
     }
     
     [self presentViewController:alert animated:NO completion:nil];
+}
+
+- (IBAction)onFrameViewTapped:(id)sender {
+    [self showFrameCollectionView];
 }
 
 - (IBAction)onNextTapped:(id)sender {

@@ -28,6 +28,8 @@ static const NSUInteger BUFFER_SIZE = 1024;
     self.currentRefresh = -1;
     
     self.refreshQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.refreshqueue", NULL);
+    
+    self.creditsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 
     self.statusView.hidden = YES;
     self.statusProgress.hidden = YES;
@@ -556,7 +558,7 @@ static const NSUInteger BUFFER_SIZE = 1024;
 }
 
 - (IBAction)onCreditsTapped:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://twitter.com/mgiraldo"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://movepix.co"]];
 }
 
 - (IBAction)onThemeChanged:(UISwitch *)sender {

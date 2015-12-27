@@ -10,6 +10,14 @@
 
 @implementation FrameCell
 
+- (void)setDrawView:(DrawView *)drawView {
+    _drawView = drawView;
+    [_drawView drawLines];
+    self.backgroundColor = [UIColor whiteColor];
+    self.frameImageView.backgroundColor = [UIColor whiteColor];
+    self.frameImageView.image = [UIImage imageWithCGImage:_drawView.drawingImageView.image.CGImage];
+}
+
 - (void)setFilename:(NSString *)filename {
     self.backgroundColor = [UIColor whiteColor];
     self.frameImageView.backgroundColor = [UIColor whiteColor];
