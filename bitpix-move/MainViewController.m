@@ -752,6 +752,7 @@
 - (void)undo {
     DrawView *drawView = [self.framesArray objectAtIndex:self.currentFrame];
     [drawView undo];
+    self.isClean = NO;
 //    [self saveToDisk];
     [self updateUI];
 }
@@ -950,7 +951,7 @@
 }
 
 - (IBAction)onFrameViewTapped:(id)sender {
-    if (self.framesArray.count > 2) [self showFrameCollectionView];
+    [self showFrameCollectionView];
 }
 
 - (IBAction)onNextTapped:(id)sender {

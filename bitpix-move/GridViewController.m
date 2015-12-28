@@ -338,6 +338,7 @@ static NSString * const reuseIdentifier = @"AnimationCell";
     [[self.collectionData objectAtIndex:originalIndex] setValue:@YES forKey:@"duplicating"];
     [self.collectionData insertObject:[@{@"name":uuid, @"duplicating":@YES} mutableCopy] atIndex:newIndex];
     [self.collectionView insertItemsAtIndexPaths:indexes];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
     
     dispatch_async(self.appDelegate.backgroundSaveQueue, ^{
         __block NSDictionary *duplicationOutput;

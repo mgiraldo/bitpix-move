@@ -144,6 +144,7 @@
 - (void)undo {
     if (self.lineList.count > 0) {
         [self.lineList removeObject:self.lineList.lastObject];
+        self.isClean = NO;
     }
     [self drawLines];
 }
