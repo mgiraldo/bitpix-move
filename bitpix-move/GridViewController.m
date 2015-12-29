@@ -127,10 +127,12 @@ static NSString * const reuseIdentifier = @"AnimationCell";
         BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
         return found;
     }];
+
+    BOOL duplicating = [[[self.collectionData objectAtIndex:indexPath.row] valueForKey:@"duplicating"] boolValue];
     
     // update the cell
     cell.backgroundColor = [UIColor whiteColor];
-    if (index != NSNotFound) {
+    if (index != NSNotFound && !duplicating) {
         // Configure the cell
         NSArray * frames = [[self.appDelegate.appData.userAnimations objectAtIndex:index] objectForKey:@"frames"];
         cell.frameCount = frames.count;
