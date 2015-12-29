@@ -300,6 +300,7 @@
 #pragma mark - Load/new/save stuff
 
 - (void)newAnimation {
+    [self clean];
     if (self.isPreviewing) {
         [self stopPreview];
     }
