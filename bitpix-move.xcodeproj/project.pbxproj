@@ -84,6 +84,21 @@
 		CC96A22E1C0E9AA100DADB79 /* instagram@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A2291C0E9AA100DADB79 /* instagram@2x.png */; };
 		CC96A22F1C0E9AA100DADB79 /* instagram~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A22A1C0E9AA100DADB79 /* instagram~ipad.png */; };
 		CC96A2301C0E9AA100DADB79 /* instagram~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC96A22B1C0E9AA100DADB79 /* instagram~ipad@2x.png */; };
+		CCBF5ADE1C6FDFC30068E71E /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCBF5ADC1C6FDFC30068E71E /* Interface.storyboard */; };
+		CCBF5AE01C6FDFC30068E71E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCBF5ADF1C6FDFC30068E71E /* Assets.xcassets */; };
+		CCBF5AE71C6FDFC30068E71E /* MovePix Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CCBF5AE61C6FDFC30068E71E /* MovePix Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CCBF5AF01C6FDFC30068E71E /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF5AEF1C6FDFC30068E71E /* ExtensionDelegate.swift */; };
+		CCBF5AF21C6FDFC30068E71E /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF5AF11C6FDFC30068E71E /* NotificationController.swift */; };
+		CCBF5AF41C6FDFC30068E71E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCBF5AF31C6FDFC30068E71E /* Assets.xcassets */; };
+		CCBF5AF81C6FDFC30068E71E /* MovePix.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CCBF5ADA1C6FDFC20068E71E /* MovePix.app */; };
+		CCBF5B011C6FF1E80068E71E /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCF3F9801BDC61EC0019059B /* Data.plist */; };
+		CCBF5B021C6FF43D0068E71E /* launch-logo.pdf in Resources */ = {isa = PBXBuildFile; fileRef = CC41AC901C114DA1004D2963 /* launch-logo.pdf */; };
+		CCBF5B061C6FF61E0068E71E /* AnimationInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF5B051C6FF61E0068E71E /* AnimationInterfaceController.swift */; };
+		CCBF5B071C6FF61E0068E71E /* AnimationInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF5B051C6FF61E0068E71E /* AnimationInterfaceController.swift */; };
+		CCBF5B081C6FF8450068E71E /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F97B1BDC60850019059B /* UserData.m */; };
+		CCBF5B0B1C6FF93F0068E71E /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF5B0A1C6FF93F0068E71E /* Animation.swift */; };
+		CCBF5B0C1C6FF93F0068E71E /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF5B0A1C6FF93F0068E71E /* Animation.swift */; };
+		CCBF5B121C70408D0068E71E /* WatchConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBF5B111C70408D0068E71E /* WatchConnectivity.framework */; };
 		CCF3F9761BDC59F80019059B /* DrawViewAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */; };
 		CCF3F9791BDC5E6E0019059B /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F9781BDC5E6E0019059B /* GridViewController.m */; };
 		CCF3F97C1BDC60850019059B /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3F97B1BDC60850019059B /* UserData.m */; };
@@ -92,6 +107,48 @@
 		CCFB14FB1BDDAD2300D513D3 /* ThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FA1BDDAD2300D513D3 /* ThumbnailCell.m */; };
 		CCFB14FE1BDDAF2800D513D3 /* ThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFB14FD1BDDAF2800D513D3 /* ThumbnailView.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CCBF5AE81C6FDFC30068E71E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4D078D1BD85D5400A52613 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCBF5AE51C6FDFC30068E71E;
+			remoteInfo = "MovePix Extension";
+		};
+		CCBF5AF61C6FDFC30068E71E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4D078D1BD85D5400A52613 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCBF5AD91C6FDFC20068E71E;
+			remoteInfo = MovePix;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CCBF5AFE1C6FDFC30068E71E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CCBF5AE71C6FDFC30068E71E /* MovePix Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCBF5B001C6FDFC30068E71E /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				CCBF5AF81C6FDFC30068E71E /* MovePix.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CC0D9E6C1BF6A3910048B18C /* backup-help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backup-help.png"; sourceTree = "<group>"; };
@@ -217,6 +274,20 @@
 		CC96A2291C0E9AA100DADB79 /* instagram@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@2x.png"; sourceTree = "<group>"; };
 		CC96A22A1C0E9AA100DADB79 /* instagram~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram~ipad.png"; sourceTree = "<group>"; };
 		CC96A22B1C0E9AA100DADB79 /* instagram~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram~ipad@2x.png"; sourceTree = "<group>"; };
+		CCBF5ADA1C6FDFC20068E71E /* MovePix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovePix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCBF5ADD1C6FDFC30068E71E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		CCBF5ADF1C6FDFC30068E71E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CCBF5AE11C6FDFC30068E71E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CCBF5AE61C6FDFC30068E71E /* MovePix Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "MovePix Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCBF5AEC1C6FDFC30068E71E /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		CCBF5AEF1C6FDFC30068E71E /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		CCBF5AF11C6FDFC30068E71E /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		CCBF5AF31C6FDFC30068E71E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CCBF5AF51C6FDFC30068E71E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CCBF5B051C6FF61E0068E71E /* AnimationInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationInterfaceController.swift; sourceTree = "<group>"; };
+		CCBF5B0A1C6FF93F0068E71E /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		CCBF5B101C701A2A0068E71E /* bitpix-move-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bitpix-move-Bridging-Header.h"; sourceTree = "<group>"; };
+		CCBF5B111C70408D0068E71E /* WatchConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchConnectivity.framework; path = System/Library/Frameworks/WatchConnectivity.framework; sourceTree = SDKROOT; };
 		CCF3F9741BDC59F80019059B /* DrawViewAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawViewAnimator.h; sourceTree = "<group>"; };
 		CCF3F9751BDC59F80019059B /* DrawViewAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawViewAnimator.m; sourceTree = "<group>"; };
 		CCF3F9771BDC5E6E0019059B /* GridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewController.h; sourceTree = "<group>"; };
@@ -234,6 +305,14 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		CC4D07921BD85D5400A52613 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCBF5B121C70408D0068E71E /* WatchConnectivity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCBF5AE31C6FDFC30068E71E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -257,11 +336,14 @@
 		CC4D078C1BD85D5400A52613 = {
 			isa = PBXGroup;
 			children = (
+				CCBF5B111C70408D0068E71E /* WatchConnectivity.framework */,
 				CC4FCC221C2F585000B973EF /* LXReorderableCollectionViewFlowLayout */,
 				CC96A2251C0E9AA100DADB79 /* DMActivityInstagram */,
 				CC96A21B1C0D2BE500DADB79 /* CEMovieMaker */,
 				CC4D43CC1BEFE679000B0209 /* Objective-Zip */,
 				CC4D07971BD85D5400A52613 /* MovePix */,
+				CCBF5ADB1C6FDFC30068E71E /* Watch */,
+				CCBF5AEA1C6FDFC30068E71E /* Watch Extension */,
 				CC4D07961BD85D5400A52613 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -270,6 +352,8 @@
 			isa = PBXGroup;
 			children = (
 				CC4D07951BD85D5400A52613 /* MovePix.app */,
+				CCBF5ADA1C6FDFC20068E71E /* MovePix.app */,
+				CCBF5AE61C6FDFC30068E71E /* MovePix Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -277,6 +361,7 @@
 		CC4D07971BD85D5400A52613 /* MovePix */ = {
 			isa = PBXGroup;
 			children = (
+				CCBF5B091C6FF9300068E71E /* Shared */,
 				CC4D44291BF00CFA000B0209 /* Classes */,
 				CCF3F97D1BDC61880019059B /* Visual assets */,
 				CC41AC891C114603004D2963 /* XIBs */,
@@ -293,6 +378,7 @@
 				CC4D07A91BD85D5400A52613 /* Info.plist */,
 				CC4D07991BD85D5400A52613 /* main.m */,
 				CCF3F9801BDC61EC0019059B /* Data.plist */,
+				CCBF5B101C701A2A0068E71E /* bitpix-move-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -447,6 +533,47 @@
 			path = DMActivityInstagram;
 			sourceTree = "<group>";
 		};
+		CCBF5ADB1C6FDFC30068E71E /* Watch */ = {
+			isa = PBXGroup;
+			children = (
+				CCBF5ADC1C6FDFC30068E71E /* Interface.storyboard */,
+				CCBF5ADF1C6FDFC30068E71E /* Assets.xcassets */,
+				CCBF5AE11C6FDFC30068E71E /* Info.plist */,
+			);
+			name = Watch;
+			path = MovePix;
+			sourceTree = "<group>";
+		};
+		CCBF5AEA1C6FDFC30068E71E /* Watch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CCBF5AEF1C6FDFC30068E71E /* ExtensionDelegate.swift */,
+				CCBF5AF11C6FDFC30068E71E /* NotificationController.swift */,
+				CCBF5AF31C6FDFC30068E71E /* Assets.xcassets */,
+				CCBF5AF51C6FDFC30068E71E /* Info.plist */,
+				CCBF5AEB1C6FDFC30068E71E /* Supporting Files */,
+				CCBF5B051C6FF61E0068E71E /* AnimationInterfaceController.swift */,
+			);
+			name = "Watch Extension";
+			path = "MovePix Extension";
+			sourceTree = "<group>";
+		};
+		CCBF5AEB1C6FDFC30068E71E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CCBF5AEC1C6FDFC30068E71E /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CCBF5B091C6FF9300068E71E /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				CCBF5B0A1C6FF93F0068E71E /* Animation.swift */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		CCF3F97D1BDC61880019059B /* Visual assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,15 +627,51 @@
 				CC4D07911BD85D5400A52613 /* Sources */,
 				CC4D07921BD85D5400A52613 /* Frameworks */,
 				CC4D07931BD85D5400A52613 /* Resources */,
+				CCBF5B001C6FDFC30068E71E /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CCBF5AF71C6FDFC30068E71E /* PBXTargetDependency */,
 			);
 			name = "bitpix-move";
 			productName = "bitpix-move";
 			productReference = CC4D07951BD85D5400A52613 /* MovePix.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CCBF5AD91C6FDFC20068E71E /* MovePix */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCBF5AFF1C6FDFC30068E71E /* Build configuration list for PBXNativeTarget "MovePix" */;
+			buildPhases = (
+				CCBF5AD81C6FDFC20068E71E /* Resources */,
+				CCBF5AFE1C6FDFC30068E71E /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CCBF5AE91C6FDFC30068E71E /* PBXTargetDependency */,
+			);
+			name = MovePix;
+			productName = MovePix;
+			productReference = CCBF5ADA1C6FDFC20068E71E /* MovePix.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		CCBF5AE51C6FDFC30068E71E /* MovePix Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCBF5AFD1C6FDFC30068E71E /* Build configuration list for PBXNativeTarget "MovePix Extension" */;
+			buildPhases = (
+				CCBF5AE21C6FDFC30068E71E /* Sources */,
+				CCBF5AE31C6FDFC30068E71E /* Frameworks */,
+				CCBF5AE41C6FDFC30068E71E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MovePix Extension";
+			productName = "MovePix Extension";
+			productReference = CCBF5AE61C6FDFC30068E71E /* MovePix Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -516,12 +679,20 @@
 		CC4D078D1BD85D5400A52613 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ping Pong Estudio";
 				TargetAttributes = {
 					CC4D07941BD85D5400A52613 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 7GV57M66F4;
+					};
+					CCBF5AD91C6FDFC20068E71E = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 7GV57M66F4;
+					};
+					CCBF5AE51C6FDFC30068E71E = {
+						CreatedOnToolsVersion = 7.2;
 					};
 				};
 			};
@@ -539,6 +710,8 @@
 			projectRoot = "";
 			targets = (
 				CC4D07941BD85D5400A52613 /* bitpix-move */,
+				CCBF5AD91C6FDFC20068E71E /* MovePix */,
+				CCBF5AE51C6FDFC30068E71E /* MovePix Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -596,6 +769,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CCBF5AD81C6FDFC20068E71E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCBF5AE01C6FDFC30068E71E /* Assets.xcassets in Resources */,
+				CCBF5ADE1C6FDFC30068E71E /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCBF5AE41C6FDFC30068E71E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCBF5B011C6FF1E80068E71E /* Data.plist in Resources */,
+				CCBF5AF41C6FDFC30068E71E /* Assets.xcassets in Resources */,
+				CCBF5B021C6FF43D0068E71E /* launch-logo.pdf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -622,6 +814,7 @@
 				CC4D440C1BEFE8B4000B0209 /* OZFileInZipInfo.m in Sources */,
 				CC96A21E1C0D2BE500DADB79 /* CEMovieMaker.m in Sources */,
 				CC4D441A1BEFE8B4000B0209 /* inffast.c in Sources */,
+				CCBF5B0B1C6FF93F0068E71E /* Animation.swift in Sources */,
 				CC4D44191BEFE8B4000B0209 /* infback.c in Sources */,
 				CC4FCC281C2F5A4000B973EF /* FrameCell.m in Sources */,
 				CC1D32691BDD9D6D002E9294 /* UIImageXtras.m in Sources */,
@@ -629,6 +822,7 @@
 				CC4D44121BEFE8B4000B0209 /* compress.c in Sources */,
 				CC4D44101BEFE8B4000B0209 /* OZZipWriteStream.m in Sources */,
 				CC4D07B11BD85F3400A52613 /* DrawView.m in Sources */,
+				CCBF5B061C6FF61E0068E71E /* AnimationInterfaceController.swift in Sources */,
 				CC96A22C1C0E9AA100DADB79 /* DMActivityInstagram.m in Sources */,
 				CC4D441C1BEFE8B4000B0209 /* inftrees.c in Sources */,
 				CC4D440F1BEFE8B4000B0209 /* OZZipReadStream.m in Sources */,
@@ -645,7 +839,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CCBF5AE21C6FDFC30068E71E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCBF5AF21C6FDFC30068E71E /* NotificationController.swift in Sources */,
+				CCBF5B071C6FF61E0068E71E /* AnimationInterfaceController.swift in Sources */,
+				CCBF5B081C6FF8450068E71E /* UserData.m in Sources */,
+				CCBF5B0C1C6FF93F0068E71E /* Animation.swift in Sources */,
+				CCBF5AF01C6FDFC30068E71E /* ExtensionDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CCBF5AE91C6FDFC30068E71E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCBF5AE51C6FDFC30068E71E /* MovePix Extension */;
+			targetProxy = CCBF5AE81C6FDFC30068E71E /* PBXContainerItemProxy */;
+		};
+		CCBF5AF71C6FDFC30068E71E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCBF5AD91C6FDFC20068E71E /* MovePix */;
+			targetProxy = CCBF5AF61C6FDFC30068E71E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CC4D07A11BD85D5400A52613 /* Main.storyboard */ = {
@@ -662,6 +881,14 @@
 				CC4D07A71BD85D5400A52613 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		CCBF5ADC1C6FDFC30068E71E /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCBF5ADD1C6FDFC30068E71E /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -753,13 +980,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "bitpix-move/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "bitpix-move/bitpix-move-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -768,14 +999,91 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "bitpix-move/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "bitpix-move/bitpix-move-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CCBF5AF91C6FDFC30068E71E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = MovePix_Extension;
+				INFOPLIST_FILE = MovePix/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MovePix Extension/MovePix-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		CCBF5AFA1C6FDFC30068E71E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = MovePix_Extension;
+				INFOPLIST_FILE = MovePix/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MovePix Extension/MovePix-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
+		CCBF5AFB1C6FDFC30068E71E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "MovePix Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "bitpix-move/bitpix-move-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		CCBF5AFC1C6FDFC30068E71E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "MovePix Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "bitpix-move/bitpix-move-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;
 		};
@@ -799,6 +1107,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CCBF5AFD1C6FDFC30068E71E /* Build configuration list for PBXNativeTarget "MovePix Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCBF5AFB1C6FDFC30068E71E /* Debug */,
+				CCBF5AFC1C6FDFC30068E71E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CCBF5AFF1C6FDFC30068E71E /* Build configuration list for PBXNativeTarget "MovePix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCBF5AF91C6FDFC30068E71E /* Debug */,
+				CCBF5AFA1C6FDFC30068E71E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

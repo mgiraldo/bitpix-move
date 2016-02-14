@@ -21,7 +21,19 @@
 	// Override point for customization after application launch.
     self.appData = [[UserData alloc] initWithDefaultData];
     self.backgroundSaveQueue = dispatch_queue_create("com.pingpongestudio.bitpix-move.bgqueue", NULL);
-	return YES;
+
+    if ([WCSession isSupported]) {
+        WCSession *session = [WCSession defaultSession];
+        session.delegate = self;
+        [session activateSession];
+        NSLog(@"WCSession is supported");
+        if ([[WCSession defaultSession] isReachable]) {
+            NSDictionary *animations = @{@"animations": self.appData.userAnimations};
+            [session transferUserInfo:animations];
+        }
+    }
+
+    return YES;
 }
 
 - (void)restoreBackup {

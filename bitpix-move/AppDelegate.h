@@ -6,10 +6,11 @@
 //  Copyright © 2015 Ping Pong Estudio. All rights reserved.
 //
 
+#import <WatchConnectivity/WatchConnectivity.h>
 #import <UIKit/UIKit.h>
 #import "UserData.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, WCSessionDelegate>
 
 @property (nonatomic) UserData *appData;
 @property (nonatomic) UIWindow *window;

@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>MovePix.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>Notification - MovePix.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>bitpix-move.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -13,6 +23,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>CC4D07941BD85D5400A52613</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CCBF5AD91C6FDFC20068E71E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
