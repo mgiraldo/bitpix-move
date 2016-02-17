@@ -10,18 +10,18 @@ import WatchKit
 import Foundation
 
 class Animation {
-    var images: Array<UIImage>
+    var images = [UIImage]()
     var date: NSDate
     var name: String
-    var frames: Array<String>
+    var frames = [String]()
     var duration:Double
     
     class func allAnimations() -> [Animation] {
         var animations = [Animation]()
         if let path = NSBundle.mainBundle().pathForResource("Data", ofType: "plist"), let data = NSDictionary (contentsOfFile: path) {
             do {
-                let arr = data["userAnimations"] as? [NSDictionary]
-                for dict in arr! {
+                let arr = data["userAnimations"] as! [NSDictionary]
+                for dict in arr {
                     let date = dict["date"] as! NSDate
                     let name = dict["name"] as! String
                     let frames: Array<String> = dict["frames"] as! [String]

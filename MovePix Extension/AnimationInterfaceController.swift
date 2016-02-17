@@ -8,6 +8,7 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
 class AnimationInterfaceController: WKInterfaceController {
 
@@ -18,8 +19,19 @@ class AnimationInterfaceController: WKInterfaceController {
     var animation: Animation? {
         didSet {
             if let animation = animation {
-                animationImage.setImage(animation.images[0])
-                animationImage.startAnimatingWithImagesInRange(NSRange(location: 0,length: animation.images.count), duration: animation.duration, repeatCount: 0)
+                if animation.images.count > 0 {
+                    animationImage.setImage(animation.images[0])
+                    animationImage.startAnimatingWithImagesInRange(NSRange(location: 0,length: animation.images.count), duration: animation.duration, repeatCount: 0)
+                }
+            }
+        }
+    }
+    
+    var session: WCSession? {
+        didSet {
+            if let session = session {
+                session.delegate = self
+                session.activateSession()
             }
         }
     }
@@ -36,14 +48,39 @@ class AnimationInterfaceController: WKInterfaceController {
         }
     }
 
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
+    override func didAppear() {
+        super.didAppear()
+        // 1
+        if let animation = animation where animation.images.count == 0 && WCSession.isSupported() {
+            // 2
+            session = WCSession.defaultSession()
+            // 3
+            session!.sendMessage(["name": animation.name], replyHandler: { (response) -> Void in
+                // 4
+//                if let boardingPassData = response["imagesData"] as? NSData, boardingPass = UIImage(data: imagesData) {
+//                    // 5
+//                    animation.images = imagesData
+//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                        self.showBoardingPass()
+//                    })
+//                }
+                }, errorHandler: { (error) -> Void in
+                    // 6
+                    print(error)
+            })
+        }
+    }
+    
+    private func showAnimation() {
+        animationImage.stopAnimating()
+        animationImage.setWidth(100)
+        animationImage.setHeight(100)
+        animationImage.setImage(animation?.images[0])
+        animationImage.startAnimating()
     }
 
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
-    }
+}
 
+extension AnimationInterfaceController: WCSessionDelegate {
+    
 }

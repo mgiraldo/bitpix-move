@@ -76,6 +76,7 @@
 		CC4D441E1BEFE8B4000B0209 /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = CC4D44041BEFE8B4000B0209 /* uncompr.c */; };
 		CC4D441F1BEFE8B4000B0209 /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = CC4D44071BEFE8B4000B0209 /* zutil.c */; };
 		CC4D44221BF00558000B0209 /* SVGExportActivityItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4D44211BF00558000B0209 /* SVGExportActivityItemProvider.m */; };
+		CC4EFDE91C7435CB00B237DA /* bitpix-move-80.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4EFDE81C7435CB00B237DA /* bitpix-move-80.png */; };
 		CC4FCC251C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4FCC241C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m */; };
 		CC4FCC281C2F5A4000B973EF /* FrameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4FCC271C2F5A4000B973EF /* FrameCell.m */; };
 		CC96A21E1C0D2BE500DADB79 /* CEMovieMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CC96A21D1C0D2BE500DADB79 /* CEMovieMaker.m */; };
@@ -262,6 +263,7 @@
 		CC4D44081BEFE8B4000B0209 /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
 		CC4D44201BF00558000B0209 /* SVGExportActivityItemProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGExportActivityItemProvider.h; sourceTree = "<group>"; };
 		CC4D44211BF00558000B0209 /* SVGExportActivityItemProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGExportActivityItemProvider.m; sourceTree = "<group>"; };
+		CC4EFDE81C7435CB00B237DA /* bitpix-move-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-80.png"; sourceTree = "<group>"; };
 		CC4FCC231C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		CC4FCC241C2F585000B973EF /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		CC4FCC261C2F5A4000B973EF /* FrameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameCell.h; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 		CCBF5ADB1C6FDFC30068E71E /* Watch */ = {
 			isa = PBXGroup;
 			children = (
+				CC4EFDE81C7435CB00B237DA /* bitpix-move-80.png */,
 				CCBF5ADC1C6FDFC30068E71E /* Interface.storyboard */,
 				CCBF5ADF1C6FDFC30068E71E /* Assets.xcassets */,
 				CCBF5AE11C6FDFC30068E71E /* Info.plist */,
@@ -755,6 +758,7 @@
 				CC3C93101C2C36AF00C17DD0 /* video-icon.pdf in Resources */,
 				CC0D9E6E1BF6A3910048B18C /* backup-help.png in Resources */,
 				CC3C92F81C2BAF0900C17DD0 /* next-small.pdf in Resources */,
+				CC4EFDE91C7435CB00B237DA /* bitpix-move-80.png in Resources */,
 				CC3C93041C2BAF0900C17DD0 /* trash.pdf in Resources */,
 				CC4D07A31BD85D5400A52613 /* Main.storyboard in Resources */,
 				CCF3F9811BDC61EC0019059B /* Data.plist in Resources */,
@@ -984,7 +988,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "bitpix-move/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
@@ -1003,7 +1007,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "bitpix-move/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pingpongestudio.bitpix-move";
 				PRODUCT_NAME = MovePix;
@@ -1115,6 +1119,7 @@
 				CCBF5AFC1C6FDFC30068E71E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CCBF5AFF1C6FDFC30068E71E /* Build configuration list for PBXNativeTarget "MovePix" */ = {
 			isa = XCConfigurationList;
@@ -1123,6 +1128,7 @@
 				CCBF5AFA1C6FDFC30068E71E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

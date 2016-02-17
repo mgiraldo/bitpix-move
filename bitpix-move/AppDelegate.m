@@ -28,7 +28,8 @@
         [session activateSession];
         NSLog(@"WCSession is supported");
         if ([[WCSession defaultSession] isReachable]) {
-            NSDictionary *animations = @{@"animations": self.appData.userAnimations};
+            NSArray *firstTen = [self.appData.userAnimations subarrayWithRange:NSMakeRange(0, 10)];
+            NSDictionary *animations = @{@"animations": firstTen};
             [session transferUserInfo:animations];
         }
     }
