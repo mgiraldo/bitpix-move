@@ -50,18 +50,13 @@ class AnimationInterfaceController: WKInterfaceController {
 
     override func didAppear() {
         super.didAppear()
-        // 1
         if let animation = animation where animation.images.count == 0 && WCSession.isSupported() {
-            // 2
             session = WCSession.defaultSession()
-            // 3
             session!.sendMessage(["name": animation.name], replyHandler: { (response) -> Void in
-                // 4
-//                if let boardingPassData = response["imagesData"] as? NSData, boardingPass = UIImage(data: imagesData) {
-//                    // 5
+//                if let frames = response["imagesData"] as? NSData, frame = UIImage(data: imagesData) {
 //                    animation.images = imagesData
 //                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        self.showBoardingPass()
+//                        self.showAnimation()
 //                    })
 //                }
                 }, errorHandler: { (error) -> Void in
