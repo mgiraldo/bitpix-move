@@ -60,7 +60,6 @@ class AnimationInterfaceController: WKInterfaceController {
 //                    })
 //                }
                 }, errorHandler: { (error) -> Void in
-                    // 6
                     print(error)
             })
         }
