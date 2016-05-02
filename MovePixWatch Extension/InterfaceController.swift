@@ -76,9 +76,9 @@ class InterfaceController: WKInterfaceController {
         session = WCSession.defaultSession()
         session!.sendMessage(["name": "ten"], replyHandler: { (response) -> Void in
             print("received info!")
-//                            print(response)
+//            print(response)
             if let animationsData = response["animations"] as? NSArray {
-//                                    print(animationsData)
+//                print(animationsData)
                 self.animations = [Animation]()
                 for (_, stuff) in animationsData.enumerate() {
                     if let frames = stuff["frames"] as? Array<NSData>, name = stuff["name"] as? String {
