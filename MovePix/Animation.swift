@@ -34,7 +34,7 @@ class Animation {
     init(frames:Array<NSData>, name:String) {
         self.name = name
         self.images = [UIImage]()
-        self.duration = Double(frames.count) / Double(_fps);
+        self.duration = Double(frames.count) / Double(_fps)
         for (_, frame) in frames.enumerate() {
             let image:UIImage = UIImage(data: frame)!
             self.images.append(image)
