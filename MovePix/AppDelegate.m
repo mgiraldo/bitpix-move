@@ -34,13 +34,13 @@
 
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void (^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     if ([[WCSession defaultSession] isReachable]) {
-        NSMutableArray *firstTen = [@[] mutableCopy];
+        NSMutableArray *firstFew = [@[] mutableCopy];
 //        if (self.appData.userAnimations.count > 10) {
 //            firstTen = [self.appData.userAnimations subarrayWithRange:NSMakeRange(0, 10)];
 //        } else {
 //            firstTen = [NSArray arrayWithArray:self.appData.userAnimations];
 //        }
-        NSUInteger limit = 10;
+        NSUInteger limit = 1;
         if (self.appData.userAnimations.count < limit) limit = self.appData.userAnimations.count;
         for (int i=0; i<limit; i++) {
             NSDictionary *animation = [self.appData.userAnimations objectAtIndex:i];
@@ -55,9 +55,9 @@
                 if (frameData != nil) [frames addObject:frameData];
 //                DebugLog(@"frames: %@", fullPath);
             }
-            [firstTen addObject:@{@"frames":frames, @"name":filename}];
+            [firstFew addObject:@{@"frames":frames, @"name":filename}];
         }
-        replyHandler(@{@"animations": firstTen});
+        replyHandler(@{@"animations": firstFew});
 //        [session transferUserInfo:@{@"animations": firstTen}];
     }
 }
