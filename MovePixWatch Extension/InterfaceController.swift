@@ -19,6 +19,7 @@ class InterfaceController: WKInterfaceController {
 
     var animations = [Animation]()
     
+    
     var animation: Animation? {
         didSet {
             if let animation = animation where animation.images.count > 0 {
@@ -105,7 +106,8 @@ class InterfaceController: WKInterfaceController {
             statusLabel.setHidden(true)
             animationImage.setHidden(false)
             animationImage.stopAnimating()
-            animationImage.startAnimating()
+            animationImage.startAnimatingWithImagesInRange(NSMakeRange(0, animation!.images.count), duration: (animation?.duration)!, repeatCount: 0)
+//            animationImage.startAnimating()
         }
     }
 

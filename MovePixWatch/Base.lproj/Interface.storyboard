@@ -13,7 +13,7 @@
                         <group width="1" alignment="left" verticalAlignment="center" id="WQc-n8-9DE">
                             <items>
                                 <label width="1" height="1" alignment="left" verticalAlignment="center" text="Loading animations…" numberOfLines="3" id="DmS-qG-WIk"/>
-                                <imageView width="1" height="1" alignment="left" contentMode="scaleAspectFit" id="fNI-Ql-HOI"/>
+                                <imageView width="1" height="1" alignment="left" contentMode="scaleAspectFill" id="fNI-Ql-HOI"/>
                             </items>
                         </group>
                     </items>
