@@ -23,6 +23,7 @@
 - (void)removeThumbnailsForUUID:(NSString *)uuid;
 - (void)createThumbnailsForUUID:(NSString *)uuid withArray:(NSArray *)thumbArray;
 - (void)deleteAnimationWithUUID:(NSString *)uuid;
+- (NSUInteger)indexOfAnimationWithUUID:(NSString *)uuid;
 - (NSString *)deleteAnimationAtIndex:(NSInteger)index;
 - (void)deleteFilesWithUUID:(NSString *)uuid;
 - (NSDictionary *)duplicateAnimationWithUUID:(NSString *)uuid withUUID:(NSString *)toUUID;

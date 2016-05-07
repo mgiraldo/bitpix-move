@@ -13,23 +13,21 @@ import WatchConnectivity
 
 class InterfaceController: WKInterfaceController {
 
-    @IBOutlet var animationImage: WKInterfaceImage!
     @IBOutlet var statusGroup: WKInterfaceGroup!
     @IBOutlet var statusLabel: WKInterfaceLabel!
 
-    var animations = [Animation]()
+    var animations: [String]?
     
-    
-    var animation: Animation? {
-        didSet {
-            if let animation = animation where animation.images.count > 0 {
-                animationImage.setImage(nil)
-                let frames = UIImage.animatedImageWithImages(animation.images, duration: animation.duration)
-                animationImage.setImage(frames)
-                showAnimation()
-            }
-        }
-    }
+//    var animation: Animation? {
+//        didSet {
+//            if let animation = animation where animation.images.count > 0 {
+//                animationImage.setImage(nil)
+//                let frames = UIImage.animatedImageWithImages(animation.images, duration: animation.duration)
+//                animationImage.setImage(frames)
+//                showAnimation()
+//            }
+//        }
+//    }
 
     var session: WCSession? {
         didSet {
@@ -42,9 +40,9 @@ class InterfaceController: WKInterfaceController {
 
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        if let animation = context as? Animation { self.animation = animation }
+//        if let animation = context as? Animation { self.animation = animation }
 //        animation = Animation.allAnimations().first
-        print(animation)
+//        print(animation)
 //        if (animation != nil) {
 //            statusGroup.setHidden(true)
 //        } else {
@@ -67,7 +65,7 @@ class InterfaceController: WKInterfaceController {
     override func didAppear() {
         super.didAppear()
         print("hello!")
-        if animation == nil && WCSession.isSupported() {
+        if animations == nil && WCSession.isSupported() {
             print("nothing")
             requestAnimations()
         }
@@ -75,23 +73,38 @@ class InterfaceController: WKInterfaceController {
     
     func requestAnimations() {
         session = WCSession.defaultSession()
-        session!.sendMessage(["name": "ten"], replyHandler: { (response) -> Void in
+        session!.sendMessage(["request": "few"], replyHandler: { (response) -> Void in
             print("received info!")
 //            print(response)
-            if let animationsData = response["animations"] as? NSArray {
-//                print(animationsData)
-                self.animations = [Animation]()
-                for (_, stuff) in animationsData.enumerate() {
-                    if let frames = stuff["frames"] as? Array<NSData>, name = stuff["name"] as? String {
-                        let tmp:Animation = Animation(frames: frames, name: name)
-                        self.animations.append(tmp)
+            if let total = response["total"] as? NSInteger, uuids = response["uuids"] as? [String] {
+                if (total > 0) {
+                    self.statusGroup.setHidden(true)
+                    self.animations = uuids
+                    var pages = [String]()
+                    for (_, _) in uuids.enumerate() {
+                        pages.append("Page")
                     }
+                    WKInterfaceController.reloadRootControllersWithNames(pages, contexts: uuids)
+//                    print(pages, uuids)
+                } else {
+                    self.statusLabel.setText("Use your phone to create an animation")
                 }
-                print("animations: \(self.animations)")
-                self.animation = self.animations[0]
             }
-            }, errorHandler: { (error) -> Void in
-                print("Error \(error)")
+            
+//            if let animationsData = response["animations"] as? NSArray {
+//                print(animationsData)
+//                self.animations = [Animation]()
+//                for (_, stuff) in animationsData.enumerate() {
+//                    if let frames = stuff["frames"] as? Array<NSData>, name = stuff["name"] as? String {
+//                        let tmp:Animation = Animation(frames: frames, name: name)
+//                        self.animations.append(tmp)
+//                    }
+//                }
+//                print("animations: \(self.animations)")
+//                self.animation = self.animations[0]
+//            }
+        }, errorHandler: { (error) -> Void in
+            print("Error \(error)")
         })
     }
     
@@ -100,16 +113,15 @@ class InterfaceController: WKInterfaceController {
 //        print(userInfo)
     }
 
-    private func showAnimation() {
-        print(animation?.duration, _fps, animation?.images.count)
-        if (animation != nil) {
-            statusLabel.setHidden(true)
-            animationImage.setHidden(false)
-            animationImage.stopAnimating()
-            animationImage.startAnimatingWithImagesInRange(NSMakeRange(0, animation!.images.count), duration: (animation?.duration)!, repeatCount: 0)
-//            animationImage.startAnimating()
-        }
-    }
+//    private func showAnimation() {
+//        print(animation?.duration, _fps, animation?.images.count)
+//        if (animation != nil) {
+//            statusLabel.setHidden(true)
+//            animationImage.setHidden(false)
+//            animationImage.stopAnimating()
+//            animationImage.startAnimatingWithImagesInRange(NSMakeRange(0, animation!.images.count), duration: (animation?.duration)!, repeatCount: 0)
+//        }
+//    }
 
 }
 

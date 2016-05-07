@@ -13,18 +13,36 @@
                         <group width="1" alignment="left" verticalAlignment="center" id="WQc-n8-9DE">
                             <items>
                                 <label width="1" height="1" alignment="left" verticalAlignment="center" text="Loading animations…" numberOfLines="3" id="DmS-qG-WIk"/>
-                                <imageView width="1" height="1" alignment="left" contentMode="scaleAspectFill" id="fNI-Ql-HOI"/>
                             </items>
                         </group>
                     </items>
                     <connections>
-                        <outlet property="animationImage" destination="fNI-Ql-HOI" id="HVx-MK-ney"/>
                         <outlet property="statusGroup" destination="WQc-n8-9DE" id="1uW-xN-qPV"/>
                         <outlet property="statusLabel" destination="DmS-qG-WIk" id="Wtl-Tk-Bys"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="326" y="365"/>
+        </scene>
+        <!--Page-->
+        <scene sceneID="4Pi-Ta-EI8">
+            <objects>
+                <controller identifier="Page" id="U8Z-9P-qQ5" customClass="PageInterfaceController" customModule="MovePixWatch_Extension">
+                    <items>
+                        <group width="1" height="1" alignment="left" id="LHk-PL-Nuu">
+                            <items>
+                                <label width="1" alignment="left" verticalAlignment="center" text="Loading…" id="1gs-df-z1l"/>
+                                <imageView width="1" height="1" alignment="left" contentMode="scaleAspectFill" id="iWN-nK-VU3"/>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="animationImage" destination="iWN-nK-VU3" id="bcx-6b-uXE"/>
+                        <outlet property="statusLabel" destination="1gs-df-z1l" id="wLa-L5-DOq"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="614" y="365"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">

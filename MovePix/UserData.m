@@ -122,15 +122,19 @@
 }
 
 - (void)deleteAnimationWithUUID:(NSString *)uuid {
-    NSUInteger index = [self.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDictionary *animation = (NSDictionary *)obj;
-        BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
-        return found;
-    }];
+    NSUInteger index = [self indexOfAnimationWithUUID:uuid];
     
     if (index != NSNotFound) {
         [self deleteAnimationAtIndex:index];
     }
+}
+
+- (NSUInteger)indexOfAnimationWithUUID:(NSString *)uuid {
+    return [self.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *animation = (NSDictionary *)obj;
+        BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
+        return found;
+    }];
 }
 
 - (NSString *)deleteAnimationAtIndex:(NSInteger)index {
@@ -147,11 +151,7 @@
 }
 
 - (NSDictionary *)duplicateAnimationWithUUID:(NSString *)uuid withUUID:(NSString *)toUUID {
-    NSUInteger index = [self.userAnimations indexOfObjectPassingTest:^BOOL(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDictionary *animation = (NSDictionary *)obj;
-        BOOL found = [[animation objectForKey:@"name"] isEqualToString:uuid];
-        return found;
-    }];
+    NSUInteger index = [self indexOfAnimationWithUUID:uuid];
     
     if (index != NSNotFound) {
         NSDictionary *result = [self duplicateAnimationAtIndex:index withUUID:toUUID];

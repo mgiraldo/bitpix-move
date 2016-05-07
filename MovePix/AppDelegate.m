@@ -34,32 +34,56 @@
 
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void (^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     if ([[WCSession defaultSession] isReachable]) {
-        NSMutableArray *firstFew = [@[] mutableCopy];
 //        if (self.appData.userAnimations.count > 10) {
 //            firstTen = [self.appData.userAnimations subarrayWithRange:NSMakeRange(0, 10)];
 //        } else {
 //            firstTen = [NSArray arrayWithArray:self.appData.userAnimations];
 //        }
-        NSUInteger limit = 1;
-        if (self.appData.userAnimations.count < limit) limit = self.appData.userAnimations.count;
-        for (int i=0; i<limit; i++) {
-            NSDictionary *animation = [self.appData.userAnimations objectAtIndex:i];
-            NSArray *svgframes = [animation objectForKey:@"frames"];
-            NSUInteger frameCount = svgframes.count;
-            NSMutableArray *frames = [NSMutableArray arrayWithCapacity:frameCount];
-            NSString *filename = [animation objectForKey:@"name"];
-            for (int j = 0; j<frameCount; j++) {
-                NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", filename, filename, _fileSuffix, j]];
-//                UIImage *frame = [UIImage imageWithContentsOfFile:fullPath];
-                NSData *frameData = [NSData dataWithContentsOfFile:fullPath];
-                if (frameData != nil) [frames addObject:frameData];
-//                DebugLog(@"frames: %@", fullPath);
-            }
-            [firstFew addObject:@{@"frames":frames, @"name":filename}];
+        NSString *action = message[@"request"];
+        if ([action isEqualToString:@"few"]) {
+            NSArray *firstFew = [self getFew];
+            NSNumber *total = [NSNumber numberWithUnsignedInteger:self.appData.userAnimations.count];
+            replyHandler(@{@"total":total, @"uuids": firstFew});
+        } else {
+            NSDictionary *animation = [self getFramesForUUID:action];
+            replyHandler(@{@"animation": animation});
         }
-        replyHandler(@{@"animations": firstFew});
 //        [session transferUserInfo:@{@"animations": firstTen}];
     }
+}
+
+- (NSArray *)getFew {
+    NSMutableArray *firstFew = [@[] mutableCopy];
+    NSUInteger limit = 25;
+
+    if (self.appData.userAnimations.count < limit) limit = self.appData.userAnimations.count;
+
+    for (NSUInteger i=0; i<limit; i++) {
+        NSDictionary *animation = [self getFramesForIndex:i];
+        [firstFew addObject:animation[@"name"]];
+    }
+
+    NSArray *few = [NSArray arrayWithArray:firstFew];
+    return few;
+}
+
+- (NSDictionary *)getFramesForUUID:(NSString *)uuid {
+    NSUInteger index = [self.appData indexOfAnimationWithUUID:uuid];
+    return [self getFramesForIndex:index];
+}
+
+- (NSDictionary *)getFramesForIndex:(NSUInteger)index {
+    NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
+    NSArray *svgframes = [animation objectForKey:@"frames"];
+    NSUInteger frameCount = svgframes.count;
+    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:frameCount];
+    NSString *filename = [animation objectForKey:@"name"];
+    for (int j = 0; j<frameCount; j++) {
+        NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", filename, filename, _fileSuffix, j]];
+        NSData *frameData = [NSData dataWithContentsOfFile:fullPath];
+        if (frameData != nil) [frames addObject:frameData];
+    }
+    return @{@"frames":frames, @"name":filename};
 }
 
 - (void)restoreBackup {

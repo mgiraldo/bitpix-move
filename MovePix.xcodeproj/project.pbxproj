@@ -105,6 +105,7 @@
 		CC9FE9D61C9F5BAB007F1F4D /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9D01C9F5937007F1F4D /* Data.plist */; };
 		CC9FE9D71C9F5CC7007F1F4D /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9FE9461C9F574C007F1F4D /* UserData.m */; };
 		CC9FE9D91C9F5D0D007F1F4D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9D81C9F5D0D007F1F4D /* Images.xcassets */; };
+		CCDE0CFA1CDE8A7C006E77F3 /* PageInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE0CF91CDE8A7C006E77F3 /* PageInterfaceController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -301,6 +302,7 @@
 		CC9FE9D01C9F5937007F1F4D /* Data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Data.plist; sourceTree = "<group>"; };
 		CC9FE9D31C9F5969007F1F4D /* bitpix-move-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-80.png"; sourceTree = "<group>"; };
 		CC9FE9D81C9F5D0D007F1F4D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CCDE0CF91CDE8A7C006E77F3 /* PageInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageInterfaceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -551,6 +553,7 @@
 				CC9FE9761C9F5864007F1F4D /* Assets.xcassets */,
 				CC9FE9781C9F5864007F1F4D /* Info.plist */,
 				CC9FE96E1C9F5864007F1F4D /* Supporting Files */,
+				CCDE0CF91CDE8A7C006E77F3 /* PageInterfaceController.swift */,
 			);
 			path = "MovePixWatch Extension";
 			sourceTree = "<group>";
@@ -833,6 +836,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCDE0CFA1CDE8A7C006E77F3 /* PageInterfaceController.swift in Sources */,
 				CC9FE9751C9F5864007F1F4D /* NotificationController.swift in Sources */,
 				CC9FE9731C9F5864007F1F4D /* ExtensionDelegate.swift in Sources */,
 				CC9FE9D51C9F5B86007F1F4D /* Animation.swift in Sources */,
