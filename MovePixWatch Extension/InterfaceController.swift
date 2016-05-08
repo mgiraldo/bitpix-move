@@ -40,15 +40,6 @@ class InterfaceController: WKInterfaceController {
 
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-//        if let animation = context as? Animation { self.animation = animation }
-//        animation = Animation.allAnimations().first
-//        print(animation)
-//        if (animation != nil) {
-//            statusGroup.setHidden(true)
-//        } else {
-//            animationImage.setHidden(true)
-//            statusLabel.setText("Use your phone to create an animation")
-//        }
     }
 
     override func willActivate() {

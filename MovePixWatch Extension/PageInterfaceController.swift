@@ -51,7 +51,6 @@ class PageInterfaceController: WKInterfaceController {
         super.awakeWithContext(context)
         helpButton.setHidden(true)
         if let name = context as? String { self.name = name }
-//        print("page", name)
     }
 
     override func willActivate() {
@@ -66,9 +65,8 @@ class PageInterfaceController: WKInterfaceController {
 
     override func didAppear() {
         super.didAppear()
-//        print("page hello!")
         if name != nil && WCSession.isSupported() {
-//            print("page nothing")
+            print("page", name)
             requestFrames()
         }
     }
