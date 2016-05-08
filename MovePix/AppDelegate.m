@@ -34,11 +34,6 @@
 
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void (^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     if ([[WCSession defaultSession] isReachable]) {
-//        if (self.appData.userAnimations.count > 10) {
-//            firstTen = [self.appData.userAnimations subarrayWithRange:NSMakeRange(0, 10)];
-//        } else {
-//            firstTen = [NSArray arrayWithArray:self.appData.userAnimations];
-//        }
         NSString *action = message[@"request"];
         if ([action isEqualToString:@"few"]) {
             NSArray *firstFew = [self getFew];
@@ -48,15 +43,14 @@
             NSDictionary *animation = [self getFramesForUUID:action];
             replyHandler(@{@"animation": animation});
         }
-//        [session transferUserInfo:@{@"animations": firstTen}];
     }
 }
 
 - (NSArray *)getFew {
     NSMutableArray *firstFew = [@[] mutableCopy];
-    NSUInteger limit = 25;
+    NSUInteger limit = _watchAnimationLimit;
 
-    if (self.appData.userAnimations.count < limit) limit = self.appData.userAnimations.count;
+    limit = MIN(self.appData.userAnimations.count, limit);
 
     for (NSUInteger i=0; i<limit; i++) {
         NSDictionary *animation = [self getFramesForIndex:i];
@@ -76,14 +70,17 @@
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
     NSArray *svgframes = [animation objectForKey:@"frames"];
     NSUInteger frameCount = svgframes.count;
-    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:frameCount];
+    NSUInteger limit = _watchFrameLimit;
+    NSNumber *isTruncated = [NSNumber numberWithBool:(limit < frameCount)];
+    limit = MIN(frameCount, limit);
+    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:limit];
     NSString *filename = [animation objectForKey:@"name"];
-    for (int j = 0; j<frameCount; j++) {
+    for (int j = 0; j<limit; j++) {
         NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", filename, filename, _fileSuffix, j]];
         NSData *frameData = [NSData dataWithContentsOfFile:fullPath];
         if (frameData != nil) [frames addObject:frameData];
     }
-    return @{@"frames":frames, @"name":filename};
+    return @{@"frames":frames, @"name":filename, @"truncated":isTruncated};
 }
 
 - (void)restoreBackup {

@@ -90,19 +90,6 @@ class InterfaceController: WKInterfaceController {
                     self.statusLabel.setText("Use your phone to create an animation")
                 }
             }
-            
-//            if let animationsData = response["animations"] as? NSArray {
-//                print(animationsData)
-//                self.animations = [Animation]()
-//                for (_, stuff) in animationsData.enumerate() {
-//                    if let frames = stuff["frames"] as? Array<NSData>, name = stuff["name"] as? String {
-//                        let tmp:Animation = Animation(frames: frames, name: name)
-//                        self.animations.append(tmp)
-//                    }
-//                }
-//                print("animations: \(self.animations)")
-//                self.animation = self.animations[0]
-//            }
         }, errorHandler: { (error) -> Void in
             print("Error \(error)")
         })

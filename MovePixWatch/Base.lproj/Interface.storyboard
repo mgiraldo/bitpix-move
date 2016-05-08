@@ -12,7 +12,7 @@
                     <items>
                         <group width="1" alignment="left" verticalAlignment="center" id="WQc-n8-9DE">
                             <items>
-                                <label width="1" height="1" alignment="left" verticalAlignment="center" text="Loading animations…" numberOfLines="3" id="DmS-qG-WIk"/>
+                                <label width="1" height="1" alignment="left" verticalAlignment="center" text="Loading animations…" textAlignment="center" numberOfLines="3" id="DmS-qG-WIk"/>
                             </items>
                         </group>
                     </items>
@@ -29,15 +29,21 @@
             <objects>
                 <controller identifier="Page" id="U8Z-9P-qQ5" customClass="PageInterfaceController" customModule="MovePixWatch_Extension">
                     <items>
-                        <group width="1" height="1" alignment="left" id="LHk-PL-Nuu">
+                        <group width="1" height="1" alignment="left" contentMode="scaleAspectFill" layout="vertical" id="LHk-PL-Nuu">
                             <items>
-                                <label width="1" alignment="left" verticalAlignment="center" text="Loading…" id="1gs-df-z1l"/>
-                                <imageView width="1" height="1" alignment="left" contentMode="scaleAspectFill" id="iWN-nK-VU3"/>
+                                <label width="1" alignment="left" verticalAlignment="center" text="Loading…" textAlignment="center" id="1gs-df-z1l"/>
+                                <button width="1" alignment="left" verticalAlignment="bottom" title="First 12 frames" id="cGo-qV-9nG">
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.25" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="onHelpTapped" destination="U8Z-9P-qQ5" id="wCg-ge-aoc"/>
+                                    </connections>
+                                </button>
                             </items>
                         </group>
                     </items>
                     <connections>
-                        <outlet property="animationImage" destination="iWN-nK-VU3" id="bcx-6b-uXE"/>
+                        <outlet property="helpButton" destination="cGo-qV-9nG" id="4ww-wg-HWM"/>
+                        <outlet property="statusGroup" destination="LHk-PL-Nuu" id="6v3-jO-J76"/>
                         <outlet property="statusLabel" destination="1gs-df-z1l" id="wLa-L5-DOq"/>
                     </connections>
                 </controller>
@@ -68,4 +74,5 @@
             <point key="canvasLocation" x="468" y="643"/>
         </scene>
     </scenes>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

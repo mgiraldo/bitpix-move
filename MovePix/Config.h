@@ -26,6 +26,8 @@ static float _lineWidth = 2.0f;
 static float _opacity = 0.8f;
 static const char _fileSuffix[] = "_t";
 static const float _minHeight = 500.0f;
+static const int _watchAnimationLimit = 100;
+static const int _watchFrameLimit = 24;
 
 typedef enum {
     kDeleteAction,

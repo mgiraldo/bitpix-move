@@ -100,12 +100,12 @@
 		CC9FE9CC1C9F58F3007F1F4D /* video-icon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9A81C9F58F3007F1F4D /* video-icon.pdf */; };
 		CC9FE9D11C9F5937007F1F4D /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9FE9CE1C9F5937007F1F4D /* Animation.swift */; };
 		CC9FE9D21C9F5937007F1F4D /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9D01C9F5937007F1F4D /* Data.plist */; };
-		CC9FE9D41C9F5969007F1F4D /* bitpix-move-80.png in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9D31C9F5969007F1F4D /* bitpix-move-80.png */; };
 		CC9FE9D51C9F5B86007F1F4D /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9FE9CE1C9F5937007F1F4D /* Animation.swift */; };
 		CC9FE9D61C9F5BAB007F1F4D /* Data.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9D01C9F5937007F1F4D /* Data.plist */; };
 		CC9FE9D71C9F5CC7007F1F4D /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9FE9461C9F574C007F1F4D /* UserData.m */; };
 		CC9FE9D91C9F5D0D007F1F4D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC9FE9D81C9F5D0D007F1F4D /* Images.xcassets */; };
 		CCDE0CFA1CDE8A7C006E77F3 /* PageInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE0CF91CDE8A7C006E77F3 /* PageInterfaceController.swift */; };
+		CCDE0CFC1CDEA15F006E77F3 /* bitpix-move-watch-80.png in Resources */ = {isa = PBXBuildFile; fileRef = CCDE0CFB1CDEA15F006E77F3 /* bitpix-move-watch-80.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,9 +300,9 @@
 		CC9FE9CE1C9F5937007F1F4D /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		CC9FE9CF1C9F5937007F1F4D /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		CC9FE9D01C9F5937007F1F4D /* Data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Data.plist; sourceTree = "<group>"; };
-		CC9FE9D31C9F5969007F1F4D /* bitpix-move-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-80.png"; sourceTree = "<group>"; };
 		CC9FE9D81C9F5D0D007F1F4D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CCDE0CF91CDE8A7C006E77F3 /* PageInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageInterfaceController.swift; sourceTree = "<group>"; };
+		CCDE0CFB1CDEA15F006E77F3 /* bitpix-move-watch-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitpix-move-watch-80.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -536,7 +536,7 @@
 		CC9FE95E1C9F5863007F1F4D /* MovePixWatch */ = {
 			isa = PBXGroup;
 			children = (
-				CC9FE9D31C9F5969007F1F4D /* bitpix-move-80.png */,
+				CCDE0CFB1CDEA15F006E77F3 /* bitpix-move-watch-80.png */,
 				CC9FE95F1C9F5863007F1F4D /* Interface.storyboard */,
 				CC9FE9621C9F5863007F1F4D /* Assets.xcassets */,
 				CC9FE9641C9F5863007F1F4D /* Info.plist */,
@@ -768,8 +768,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC9FE9631C9F5863007F1F4D /* Assets.xcassets in Resources */,
-				CC9FE9D41C9F5969007F1F4D /* bitpix-move-80.png in Resources */,
 				CC9FE9611C9F5863007F1F4D /* Interface.storyboard in Resources */,
+				CCDE0CFC1CDEA15F006E77F3 /* bitpix-move-watch-80.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
