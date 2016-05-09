@@ -19,6 +19,7 @@ class PageInterfaceController: WKInterfaceController {
     
     var name: String!
     var truncated: NSNumber = 0
+    var framesRequested: Bool = false
 
     var animation: Animation? {
         didSet {
@@ -44,7 +45,7 @@ class PageInterfaceController: WKInterfaceController {
     @IBAction func onHelpTapped() {
         print("help")
         let action = WKAlertAction(title: "OK", style: .Default){}
-        presentAlertControllerWithTitle(nil, message: "Animation is too long for the watch. Displaying first \(_watchFrameLimit) frames only", preferredStyle: .Alert, actions: [action])
+        presentAlertControllerWithTitle(nil, message: "Animation is too long for the watch. Displaying the first \(_watchFrameLimit) frames only", preferredStyle: .Alert, actions: [action])
     }
     
     override func awakeWithContext(context: AnyObject?) {
@@ -67,16 +68,19 @@ class PageInterfaceController: WKInterfaceController {
         super.didAppear()
         if name != nil && WCSession.isSupported() {
             print("page", name)
-            requestFrames()
+            if (!framesRequested) {
+                requestFrames()
+            }
+            framesRequested = true
         }
     }
     
     func requestFrames() {
         session = WCSession.defaultSession()
-        session!.sendMessage(["request": name], replyHandler: { (response) -> Void in
+        session!.sendMessage(["request": ["action": "first", "name": name]], replyHandler: { (response) -> Void in
             print("page received info!")
 //            print(response)
-            if let animation = response["animation"] as? NSDictionary, frames = animation["frames"] as? Array<NSData>, truncated = animation["truncated"] as? NSNumber {
+            if let animation = response["animation"] as? NSDictionary, frames = animation["frames"] as? Array<NSData> where frames.count > self.animation?.images.count, let truncated = animation["truncated"] as? NSNumber {
 //                print(animation)
                 let tmp:Animation = Animation(frames: frames, name: self.name)
                 self.truncated = truncated
@@ -84,6 +88,7 @@ class PageInterfaceController: WKInterfaceController {
             }
         }, errorHandler: { (error) -> Void in
             print("page Error \(error)")
+            self.framesRequested = false
         })
     }
     
@@ -105,4 +110,7 @@ class PageInterfaceController: WKInterfaceController {
 
 extension PageInterfaceController: WCSessionDelegate {
     
+    func session(session: WCSession, didReceiveFile file: WCSessionFile) {
+        print("received: ", self.name, file)
+    }
 }

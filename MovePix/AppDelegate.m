@@ -34,14 +34,27 @@
 
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void (^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     if ([[WCSession defaultSession] isReachable]) {
-        NSString *action = message[@"request"];
+        NSDictionary *data = message[@"request"];
+        NSString *action = data[@"action"];
         if ([action isEqualToString:@"few"]) {
             NSArray *firstFew = [self getFew];
             NSNumber *total = [NSNumber numberWithUnsignedInteger:self.appData.userAnimations.count];
             replyHandler(@{@"total":total, @"uuids": firstFew});
-        } else {
-            NSDictionary *animation = [self getFramesForUUID:action];
-            replyHandler(@{@"animation": animation});
+        } else if ([action isEqualToString:@"first"]) {
+            NSString *uuid = data[@"name"];
+            // send just the first frame and prepare to send the rest via transferUserInfo
+            NSArray *frames = [self getFramesForUUID:uuid limit:_watchFrameLimit];
+            NSUInteger index = [self.appData indexOfAnimationWithUUID:uuid];
+            NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
+            NSArray *svgframes = [animation objectForKey:@"frames"];
+            NSNumber *isTruncated = [NSNumber numberWithBool:(_watchFrameLimit < svgframes.count)];
+            replyHandler(@{@"animation": @{@"frames":frames, @"name":action, @"truncated":isTruncated}});
+        } else if ([action isEqualToString:@"all"]) {
+            NSString *uuid = data[@"name"];
+            // now send the rest
+            dispatch_async(self.backgroundSaveQueue, ^{
+                [self sendFilesForUUID:uuid];
+            });
         }
     }
 }
@@ -53,25 +66,20 @@
     limit = MIN(self.appData.userAnimations.count, limit);
 
     for (NSUInteger i=0; i<limit; i++) {
-        NSDictionary *animation = [self getFramesForIndex:i];
-        [firstFew addObject:animation[@"name"]];
+        NSDictionary *animation = [self.appData.userAnimations objectAtIndex:i];
+        NSString *filename = [animation objectForKey:@"name"];
+        [firstFew addObject:filename];
     }
 
     NSArray *few = [NSArray arrayWithArray:firstFew];
     return few;
 }
 
-- (NSDictionary *)getFramesForUUID:(NSString *)uuid {
+- (NSArray *)getFramesForUUID:(NSString *)uuid limit:(NSUInteger)limit {
     NSUInteger index = [self.appData indexOfAnimationWithUUID:uuid];
-    return [self getFramesForIndex:index];
-}
-
-- (NSDictionary *)getFramesForIndex:(NSUInteger)index {
     NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
     NSArray *svgframes = [animation objectForKey:@"frames"];
     NSUInteger frameCount = svgframes.count;
-    NSUInteger limit = _watchFrameLimit;
-    NSNumber *isTruncated = [NSNumber numberWithBool:(limit < frameCount)];
     limit = MIN(frameCount, limit);
     NSMutableArray *frames = [NSMutableArray arrayWithCapacity:limit];
     NSString *filename = [animation objectForKey:@"name"];
@@ -80,7 +88,20 @@
         NSData *frameData = [NSData dataWithContentsOfFile:fullPath];
         if (frameData != nil) [frames addObject:frameData];
     }
-    return @{@"frames":frames, @"name":filename, @"truncated":isTruncated};
+    return frames;
+}
+
+- (void)sendFilesForUUID:(NSString *)uuid {
+    NSUInteger index = [self.appData indexOfAnimationWithUUID:uuid];
+    NSDictionary *animation = [self.appData.userAnimations objectAtIndex:index];
+    NSArray *svgframes = [animation objectForKey:@"frames"];
+    NSUInteger frameCount = svgframes.count;
+    NSString *filename = [animation objectForKey:@"name"];
+    for (int j = 0; j<frameCount; j++) {
+        NSString *fullPath = [UserData dataFilePath:[NSString stringWithFormat:@"%@/%@%s%d.png", filename, filename, _fileSuffix, j]];
+        NSURL *url = [NSURL fileURLWithPath:fullPath];
+        if (url != nil) [[WCSession defaultSession] transferFile:url metadata:@{@"name":uuid}];
+    }
 }
 
 - (void)restoreBackup {

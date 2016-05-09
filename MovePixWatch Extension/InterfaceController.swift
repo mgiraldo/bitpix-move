@@ -18,17 +18,6 @@ class InterfaceController: WKInterfaceController {
 
     var animations: [String]?
     
-//    var animation: Animation? {
-//        didSet {
-//            if let animation = animation where animation.images.count > 0 {
-//                animationImage.setImage(nil)
-//                let frames = UIImage.animatedImageWithImages(animation.images, duration: animation.duration)
-//                animationImage.setImage(frames)
-//                showAnimation()
-//            }
-//        }
-//    }
-
     var session: WCSession? {
         didSet {
             if let session = session {
@@ -64,7 +53,7 @@ class InterfaceController: WKInterfaceController {
     
     func requestAnimations() {
         session = WCSession.defaultSession()
-        session!.sendMessage(["request": "few"], replyHandler: { (response) -> Void in
+        session!.sendMessage(["request": ["action": "few"]], replyHandler: { (response) -> Void in
             print("received info!")
 //            print(response)
             if let total = response["total"] as? NSInteger, uuids = response["uuids"] as? [String] {
